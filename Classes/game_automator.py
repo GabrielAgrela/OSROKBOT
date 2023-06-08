@@ -2,11 +2,13 @@ import time
 from image_finder import ImageFinder
 from window_handler import WindowHandler
 from keyboard_handler import KeyboardHandler
+from manual_click import ManualClick
 import threading
 from Actions.find_and_click_image_action import FindAndClickImageAction
 from Actions.press_key_action import PressKeyAction
 from Actions.find_image_action import FindImageAction
 from Actions.dont_find_image_action import DontFindImageAction
+from Actions.manual_click_action import ManualClickAction
 
 class GameAutomator:
     def __init__(self, window_title, image_finder, window_handler, keyboard_handler, delay=1):
@@ -36,6 +38,7 @@ if __name__ == "__main__":
     image_finder = ImageFinder()
     window_handler = WindowHandler()
     keyboard_handler = KeyboardHandler()
+    manual_click = ManualClick()
 
     
 
@@ -75,7 +78,7 @@ if __name__ == "__main__":
         PressKeyAction(keyboard_handler, 'f'),
         FindAndClickImageAction(image_finder, 'Media/cropland.png', 0, window_handler, 'Rise of Kingdoms'),
         FindAndClickImageAction(image_finder, 'Media/searchaction.png', 0, window_handler, 'Rise of Kingdoms'),
-        FindAndClickImageAction(image_finder, 'Media/crop.png', 0, window_handler, 'Rise of Kingdoms'),
+        ManualClickAction( window_handler, manual_click, 'Rise of Kingdoms'),
         FindAndClickImageAction(image_finder, 'Media/gatheraction.png', 0, window_handler, 'Rise of Kingdoms'),
         FindAndClickImageAction(image_finder, 'Media/newtroopaction.png', 0, window_handler, 'Rise of Kingdoms'),
         FindAndClickImageAction(image_finder, 'Media/marchaction.png', 0, window_handler, 'Rise of Kingdoms'),
@@ -88,7 +91,7 @@ if __name__ == "__main__":
 
     actions_groups = [farm_crop,scout_explore,pick_rss, help_alliance, cure_troops,pickup_cured_troops]
     #actions_groups = [farm_crop]
-    #actions_groups = [is_gathering] 
+    #actions_groups = [click] 
 
     game_automator = GameAutomator('Rise of Kingdoms', image_finder, window_handler, keyboard_handler)
     game_automator.start(actions_groups)
