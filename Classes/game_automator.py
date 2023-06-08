@@ -21,7 +21,7 @@ class GameAutomator:
                 time.sleep(2)
                 for action in action_group:
                     if not action.execute():
-                        print("Action failed")
+                        print("Action failed. trying next group...")
                         time.sleep(1)  # Wait 10 seconds
                         break  # If action fails, stop the loop and try again after 10 seconds
                     else:
@@ -59,7 +59,15 @@ if __name__ == "__main__":
         FindAndClickImageAction(image_finder, 'Media/alliancehelp.png', 0, window_handler, 'Rise of Kingdoms'),
     ]
 
-    actions_groups = [scout_explore,pick_rss,help_alliance]
+    cure_troops = [
+        FindAndClickImageAction(image_finder, 'Media/curetroops.png', 0, window_handler, 'Rise of Kingdoms'),
+        FindAndClickImageAction(image_finder, 'Media/healaction.png', 0, window_handler, 'Rise of Kingdoms'),
+    ]
+    pickup_cured_troops = [
+        FindAndClickImageAction(image_finder, 'Media/pickuptroopscured.png', 0, window_handler, 'Rise of Kingdoms'),
+    ]
+
+    actions_groups = [scout_explore,pick_rss, help_alliance, cure_troops,pickup_cured_troops]
 
     game_automator = GameAutomator('Rise of Kingdoms', image_finder, window_handler, keyboard_handler)
     game_automator.start(actions_groups)
