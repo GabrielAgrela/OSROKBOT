@@ -63,11 +63,25 @@ if __name__ == "__main__":
         FindAndClickImageAction(image_finder, 'Media/curetroops.png', 0, window_handler, 'Rise of Kingdoms'),
         FindAndClickImageAction(image_finder, 'Media/healaction.png', 0, window_handler, 'Rise of Kingdoms'),
     ]
+
     pickup_cured_troops = [
         FindAndClickImageAction(image_finder, 'Media/pickuptroopscured.png', 0, window_handler, 'Rise of Kingdoms'),
     ]
 
-    actions_groups = [scout_explore,pick_rss, help_alliance, cure_troops,pickup_cured_troops]
+    farm_crop = [
+        PressKeyAction(keyboard_handler, 'space'),
+        PressKeyAction(keyboard_handler, 'f'),
+        FindAndClickImageAction(image_finder, 'Media/cropland.png', 0, window_handler, 'Rise of Kingdoms'),
+        FindAndClickImageAction(image_finder, 'Media/searchaction.png', 0, window_handler, 'Rise of Kingdoms'),
+        FindAndClickImageAction(image_finder, 'Media/crop.png', 0, window_handler, 'Rise of Kingdoms'),
+        FindAndClickImageAction(image_finder, 'Media/gatheraction.png', 0, window_handler, 'Rise of Kingdoms'),
+        FindAndClickImageAction(image_finder, 'Media/newtroopaction.png', 0, window_handler, 'Rise of Kingdoms'),
+        FindAndClickImageAction(image_finder, 'Media/marchaction.png', 0, window_handler, 'Rise of Kingdoms'),
+        PressKeyAction(keyboard_handler, 'space'),
+    ]
+
+    #actions_groups = [scout_explore,pick_rss, help_alliance, cure_troops,pickup_cured_troops]
+    actions_groups = [farm_crop]
 
     game_automator = GameAutomator('Rise of Kingdoms', image_finder, window_handler, keyboard_handler)
     game_automator.start(actions_groups)
