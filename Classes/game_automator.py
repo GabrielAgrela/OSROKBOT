@@ -5,6 +5,7 @@ from keyboard_handler import KeyboardHandler
 import threading
 from Actions.find_and_click_image_action import FindAndClickImageAction
 from Actions.press_key_action import PressKeyAction
+from Actions.find_image_action import FindImageAction
 
 class GameAutomator:
     def __init__(self, window_title, image_finder, window_handler, keyboard_handler, delay=1):
@@ -21,8 +22,6 @@ class GameAutomator:
                 time.sleep(2)
                 for action in action_group:
                     if not action.execute():
-                        print("Action failed. trying next group...")
-                        time.sleep(1)  # Wait 10 seconds
                         break  # If action fails, stop the loop and try again after 10 seconds
                     else:
                         time.sleep(self.delay)
@@ -80,8 +79,9 @@ if __name__ == "__main__":
         PressKeyAction(keyboard_handler, 'space'),
     ]
 
-    #actions_groups = [scout_explore,pick_rss, help_alliance, cure_troops,pickup_cured_troops]
-    actions_groups = [farm_crop]
+    actions_groups = [scout_explore,pick_rss, help_alliance, cure_troops,pickup_cured_troops]
+    #actions_groups = [farm_crop]
+    #actions_groups = [is_gathering]
 
     game_automator = GameAutomator('Rise of Kingdoms', image_finder, window_handler, keyboard_handler)
     game_automator.start(actions_groups)
