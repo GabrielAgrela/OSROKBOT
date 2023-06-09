@@ -5,6 +5,7 @@ from keyboard_handler import KeyboardHandler
 from manual_click import ManualClick
 import threading
 from Actions.find_and_click_image_action import FindAndClickImageAction
+from Actions.soft_find_and_click_image_action import SoftFindAndClickImageAction
 from Actions.press_key_action import PressKeyAction
 from Actions.find_image_action import FindImageAction
 from Actions.dont_find_image_action import DontFindImageAction
@@ -52,9 +53,9 @@ if __name__ == "__main__":
     ]
 
     pick_rss = [
-        FindAndClickImageAction(image_finder, 'Media/wood.png', 0, window_handler, 'Rise of Kingdoms'),
-        FindAndClickImageAction(image_finder, 'Media/corn.png', 0, window_handler, 'Rise of Kingdoms'),
-        FindAndClickImageAction(image_finder, 'Media/rock.png', 0, window_handler, 'Rise of Kingdoms'),
+        SoftFindAndClickImageAction(image_finder, 'Media/wood.png', 0, window_handler, 'Rise of Kingdoms'),
+        SoftFindAndClickImageAction(image_finder, 'Media/corn.png', 0, window_handler, 'Rise of Kingdoms'),
+        SoftFindAndClickImageAction(image_finder, 'Media/rock.png', 0, window_handler, 'Rise of Kingdoms'),
     ]
 
     help_alliance = [
