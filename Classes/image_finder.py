@@ -3,7 +3,7 @@ import numpy as np
 import pyautogui
 
 class ImageFinder:
-    def __init__(self, threshold=0.75):
+    def __init__(self, threshold=0.65):
         self.threshold = threshold
         self.template_resolution = (1086, 637)  # original resolution at which the template was taken
 
