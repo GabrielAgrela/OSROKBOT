@@ -5,6 +5,7 @@ import pygetwindow as gw
 class WindowHandler:
     def get_window(self, title):
         windows = gw.getWindowsWithTitle(title)
+
         if not windows:
             print(f"No window found with title: {title}")
             return None

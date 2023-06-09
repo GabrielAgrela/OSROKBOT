@@ -58,7 +58,7 @@ if __name__ == "__main__":
     ]
 
     help_alliance = [
-        FindAndClickImageAction(image_finder, 'Media/alliancehelp.png', 0, window_handler, 'Rise of Kingdoms'),
+        FindAndClickImageAction(image_finder, 'Media/alliancehelp.png', 10, window_handler, 'Rise of Kingdoms'),
     ]
 
     cure_troops = [
