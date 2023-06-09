@@ -1,0 +1,4 @@
+# .gitignore
+
+# Ignore Python compiled files
+Classes/__pycache__/

@@ -10,6 +10,7 @@ from Actions.press_key_action import PressKeyAction
 from Actions.find_image_action import FindImageAction
 from Actions.dont_find_image_action import DontFindImageAction
 from Actions.manual_click_action import ManualClickAction
+import keyboard
 
 class GameAutomator:
     def __init__(self, window_title, image_finder, window_handler, keyboard_handler, delay=1.5):
@@ -19,9 +20,12 @@ class GameAutomator:
         self.keyboard_handler = keyboard_handler
         self.delay = delay
         self.stop_event = threading.Event()
+        self.pause_event = threading.Event()
 
     def run(self, actions_groups):
         while not self.stop_event.wait(1):  # Run every 10 seconds
+            if self.pause_event.is_set():
+                continue
             for action_group in actions_groups:
                 for action in action_group:
                     if not action.execute():
@@ -31,9 +35,16 @@ class GameAutomator:
 
     def start(self, steps):
         threading.Thread(target=self.run, args=(steps,)).start()
+        keyboard.add_hotkey('esc', self.toggle_pause)  # Set up 'esc' as a hotkey to toggle pause/resume
 
     def stop(self):
         self.stop_event.set()
+
+    def toggle_pause(self):
+        if self.pause_event.is_set():
+            self.pause_event.clear()  # Resume
+        else:
+            self.pause_event.set()  # Pause
 
 if __name__ == "__main__":
     image_finder = ImageFinder()
