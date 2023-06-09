@@ -12,7 +12,7 @@ from Actions.dont_find_image_action import DontFindImageAction
 from Actions.manual_click_action import ManualClickAction
 
 class GameAutomator:
-    def __init__(self, window_title, image_finder, window_handler, keyboard_handler, delay=1):
+    def __init__(self, window_title, image_finder, window_handler, keyboard_handler, delay=1.5):
         self.window_title = window_title
         self.image_finder = image_finder
         self.window_handler = window_handler
