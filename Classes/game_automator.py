@@ -156,6 +156,8 @@ if __name__ == "__main__":
         primary_actions=[
             FindAndClickImageAction('Media/barbreport.png', offset_x=370),
             FindAndClickImageAction('Media/villagereport.png', offset_x=370),
+            FindAndClickImageAction('Media/passreport.png', offset_x=370),
+            FindAndClickImageAction('Media/holyreport.png', offset_x=370),
             
         ],
         primary_subsequent_actions=[
@@ -164,7 +166,7 @@ if __name__ == "__main__":
         alternative_subsequent_actions=[
             ManualScrollAction(15)
         ],
-        retry_times=5  # retry up to 5 times
+        retry_times=15  # retry up to 5 times
     ),
         # other actions...
     ]
@@ -172,7 +174,7 @@ if __name__ == "__main__":
 
 
     #actions_groups = [scout_explore,pick_rss, help_alliance, cure_troops,pickup_cured_troops]
-    actions_groups = [explore_villages]
+    actions_groups = [reconnect,explore_villages]
     #actions_groups = [train_inf] 
 
     game_automator = GameAutomator('Rise of Kingdoms')

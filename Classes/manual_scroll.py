@@ -7,7 +7,7 @@ class ManualScroll:
         self.threshold = threshold
 
     def scroll(self, win, y_scroll):
-        print("scrolling",y_scroll)
+        print("scrolling")
         #click middle of the screen with pyautogui
         center_x = int(win.width // 2 + win.left)
         center_y = int(win.height // 2 + win.top)

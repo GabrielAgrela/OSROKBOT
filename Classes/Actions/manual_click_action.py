@@ -14,6 +14,6 @@ class ManualClickAction(Action):
 
 
     def execute(self):
-        time.sleep(2)
+        time.sleep(5)
         self.manual_click.click(self.window_handler.get_window(self.window_title),self.y_offset)
         return True
