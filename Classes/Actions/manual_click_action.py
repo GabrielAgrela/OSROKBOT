@@ -4,11 +4,12 @@ from manual_click import ManualClick
 from window_handler import WindowHandler
 
 class ManualClickAction(Action):
-    def __init__(self, window_handler: WindowHandler, manual_click: ManualClick, y_offset: int, window_title: str):
-        self.manual_click = manual_click
-        self.window_handler = window_handler
+    def __init__(self, y_offset= 0):
+        super().__init__(y_offset)
+        self.manual_click = ManualClick()
+        self.window_handler = WindowHandler()
         self.y_offset = y_offset
-        self.window_title = window_title
+        self.window_title = 'Rise of Kingdoms'
 
 
 

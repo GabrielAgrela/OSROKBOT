@@ -24,29 +24,33 @@ class ImageFinder:
             
         return scaling_factor, max_loc, max_val, target_image, screenshot_cv
 
-    def find_and_click_image(self, target_image_path, screenshot, win, y_offset):
+    def find_and_click_image(self, target_image_path, screenshot, win, x_offset, y_offset):
         best_scale, best_loc, best_max_val, target_image, screenshot_cv = self._match_image(target_image_path, screenshot)
 
         if best_max_val >= self.threshold:
             print(f"Found a match for {target_image_path} in screenshot at scale {best_scale} with confidence {best_max_val}.")
             pt = best_loc
             w, h = (target_image.shape[1] * best_scale[0], target_image.shape[0] * best_scale[1])
+
+            # scale offsets according to the best scaling factor
+            x_offset_scaled = int(x_offset * best_scale[0])
+            y_offset_scaled = int(y_offset * best_scale[1])
+
             cv2.rectangle(screenshot_cv, pt, (int(pt[0] + w), int(pt[1] + h)), (0,0,255), 2)
             center_x = int(pt[0] + w // 2 + win.left)
             center_y = int(pt[1] + h // 2 + win.top)
-            pyautogui.click(center_x, center_y+y_offset)
+            pyautogui.click(center_x+x_offset_scaled, center_y+y_offset_scaled)
             return True
         else:
             print(f"No matches for {target_image_path} found in screenshot.")
             return False
+
         
-    def find_image(self, target_image_path, screenshot, win, y_offset):
+    def find_image(self, target_image_path, screenshot):
         best_scale, best_loc, best_max_val, target_image, screenshot_cv = self._match_image(target_image_path, screenshot)
 
         if best_max_val >= self.threshold:
             print(f"Found a match for {target_image_path} in screenshot at scale {best_scale} with confidence {best_max_val}.")
-            pt = best_loc
-            w, h = (target_image.shape[1] * best_scale[0], target_image.shape[0] * best_scale[1])
             return True
         else:
             print(f"No matches for {target_image_path} found in screenshot.")

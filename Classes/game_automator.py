@@ -8,12 +8,14 @@ from Actions.find_and_click_image_action import FindAndClickImageAction
 from Actions.soft_find_and_click_image_action import SoftFindAndClickImageAction
 from Actions.press_key_action import PressKeyAction
 from Actions.find_image_action import FindImageAction
-from Actions.dont_find_image_action import DontFindImageAction
 from Actions.manual_click_action import ManualClickAction
+from Actions.manual_scroll_action import ManualScrollAction
+from Actions.conditional_action import ConditionalAction
+from Actions.manual_sleep_action import ManualSleepAction
 import keyboard
 
 class GameAutomator:
-    def __init__(self, window_title, image_finder, window_handler, keyboard_handler, delay=1.5):
+    def __init__(self, window_title, delay=1):
         self.window_title = window_title
         self.image_finder = image_finder
         self.window_handler = window_handler
@@ -35,7 +37,7 @@ class GameAutomator:
 
     def start(self, steps):
         threading.Thread(target=self.run, args=(steps,)).start()
-        keyboard.add_hotkey('esc', self.toggle_pause)  # Set up 'esc' as a hotkey to toggle pause/resume
+        keyboard.add_hotkey('l', self.toggle_pause)  # Set up 'esc' as a hotkey to toggle pause/resume
 
     def stop(self):
         self.stop_event.set()
@@ -55,82 +57,123 @@ if __name__ == "__main__":
     
 
     scout_explore = [
-        FindAndClickImageAction(image_finder, 'Media/explore.png', 25, window_handler, 'Rise of Kingdoms'),
-        FindAndClickImageAction(image_finder, 'Media/exploreicon.png', 0, window_handler, 'Rise of Kingdoms'),
-        FindAndClickImageAction(image_finder, 'Media/exploreaction.png', 0, window_handler, 'Rise of Kingdoms'),
-        FindAndClickImageAction(image_finder, 'Media/exploreaction.png', 0, window_handler, 'Rise of Kingdoms'),
-        FindAndClickImageAction(image_finder, 'Media/sendaction.png', 0, window_handler, 'Rise of Kingdoms'),
-        PressKeyAction(keyboard_handler, 'space')
+        FindAndClickImageAction('Media/explore.png', offset_y=25),
+        FindAndClickImageAction('Media/exploreicon.png'),
+        FindAndClickImageAction('Media/exploreaction.png'),
+        FindAndClickImageAction('Media/exploreaction.png'),
+        FindAndClickImageAction('Media/sendaction.png'),
+        PressKeyAction('space')
     ]
 
     pick_rss = [
-        SoftFindAndClickImageAction(image_finder, 'Media/wood.png', 0, window_handler, 'Rise of Kingdoms'),
-        SoftFindAndClickImageAction(image_finder, 'Media/corn.png', 0, window_handler, 'Rise of Kingdoms'),
-        SoftFindAndClickImageAction(image_finder, 'Media/rock.png', 0, window_handler, 'Rise of Kingdoms'),
+        FindAndClickImageAction('Media/wood.png', check=False),
+        FindAndClickImageAction('Media/corn.png', check=False),
+        FindAndClickImageAction('Media/rock.png', check=False),
     ]
 
     help_alliance = [
-        FindAndClickImageAction(image_finder, 'Media/alliancehelp.png', 10, window_handler, 'Rise of Kingdoms'),
+        FindAndClickImageAction('Media/alliancehelp.png', offset_y=10),
     ]
 
     cure_troops = [
-        FindAndClickImageAction(image_finder, 'Media/curetroops.png', 0, window_handler, 'Rise of Kingdoms'),
-        FindAndClickImageAction(image_finder, 'Media/healaction.png', 0, window_handler, 'Rise of Kingdoms'),
+        FindAndClickImageAction('Media/curetroops.png'),
+        FindAndClickImageAction('Media/healaction.png'),
     ]
 
     pickup_cured_troops = [
-        FindAndClickImageAction(image_finder, 'Media/pickuptroopscured.png', 0, window_handler, 'Rise of Kingdoms'),
+        FindAndClickImageAction('Media/pickuptroopscured.png'),
     ]
 
     farm_crop = [
-        DontFindImageAction(image_finder, 'Media/isgathering.png', 0, window_handler, 'Rise of Kingdoms'),
-        DontFindImageAction(image_finder, 'Media/isreturning.png', 0, window_handler, 'Rise of Kingdoms'),
-        DontFindImageAction(image_finder, 'Media/isgoing.png', 0, window_handler, 'Rise of Kingdoms'),
-        PressKeyAction(keyboard_handler, 'space'),
-        PressKeyAction(keyboard_handler, 'f'),
-        FindAndClickImageAction(image_finder, 'Media/cropland.png', 0, window_handler, 'Rise of Kingdoms'),
-        FindAndClickImageAction(image_finder, 'Media/searchaction.png', 0, window_handler, 'Rise of Kingdoms'),
-        ManualClickAction( window_handler, manual_click,0, 'Rise of Kingdoms'),
-        FindAndClickImageAction(image_finder, 'Media/gatheraction.png', 0, window_handler, 'Rise of Kingdoms'),
-        FindAndClickImageAction(image_finder, 'Media/newtroopaction.png', 0, window_handler, 'Rise of Kingdoms'),
-        FindAndClickImageAction(image_finder, 'Media/marchaction.png', 0, window_handler, 'Rise of Kingdoms'),
-        PressKeyAction(keyboard_handler, 'space'), 
+        FindImageAction('Media/isgathering.png',check=False, dont_find=True),
+        FindImageAction('Media/isreturning.png',check=False, dont_find=True),
+        FindImageAction('Media/isgoing.png',check=False, dont_find=True),
+        PressKeyAction('space'),
+        PressKeyAction('f'),
+        FindAndClickImageAction('Media/cropland.png'),
+        FindAndClickImageAction('Media/searchaction.png'),
+        ManualClickAction(),
+        FindAndClickImageAction('Media/gatheraction.png'),
+        FindAndClickImageAction('Media/newtroopaction.png'),
+        FindAndClickImageAction('Media/marchaction.png'),
+        PressKeyAction('space'), 
     ] 
 
     farm_wood = [
-        DontFindImageAction(image_finder, 'Media/isgathering.png', 0, window_handler, 'Rise of Kingdoms'),
-        DontFindImageAction(image_finder, 'Media/isreturning.png', 0, window_handler, 'Rise of Kingdoms'),
-        DontFindImageAction(image_finder, 'Media/isgoing.png', 0, window_handler, 'Rise of Kingdoms'),
-        PressKeyAction(keyboard_handler, 'space'),
-        PressKeyAction(keyboard_handler, 'f'),
-        FindAndClickImageAction(image_finder, 'Media/woodland.png', 0, window_handler, 'Rise of Kingdoms'),
-        FindAndClickImageAction(image_finder, 'Media/searchaction.png', 0, window_handler, 'Rise of Kingdoms'),
-        ManualClickAction( window_handler, manual_click,0, 'Rise of Kingdoms'),
-        FindAndClickImageAction(image_finder, 'Media/gatheraction.png', 0, window_handler, 'Rise of Kingdoms'),
-        FindAndClickImageAction(image_finder, 'Media/newtroopaction.png', 0, window_handler, 'Rise of Kingdoms'),
-        FindAndClickImageAction(image_finder, 'Media/marchaction.png', 0, window_handler, 'Rise of Kingdoms'),
-        PressKeyAction(keyboard_handler, 'space'), 
+        FindImageAction('Media/isgathering.png', dont_find=True),
+        FindImageAction('Media/isreturning.png', dont_find=True),
+        FindImageAction('Media/isgoing.png', dont_find=True),
+        PressKeyAction('space'),
+        PressKeyAction('f'),
+        FindAndClickImageAction('Media/woodland.png'),
+        FindAndClickImageAction('Media/searchaction.png'),
+        ManualClickAction(),
+        FindAndClickImageAction('Media/gatheraction.png'),
+        FindAndClickImageAction('Media/newtroopaction.png'),
+        FindAndClickImageAction('Media/marchaction.png'),
+        PressKeyAction('space'), 
     ] 
 
     farm_barb = [
-        FindImageAction(image_finder, 'Media/victory.png', 0, window_handler, 'Rise of Kingdoms', skip_first_time=True),
-        SoftFindAndClickImageAction(image_finder, 'Media/curetroops.png', 0, window_handler, 'Rise of Kingdoms'),
-        SoftFindAndClickImageAction(image_finder, 'Media/healaction.png', 0, window_handler, 'Rise of Kingdoms'),
-        FindAndClickImageAction(image_finder, 'Media/pickuptroopscured.png', 0, window_handler, 'Rise of Kingdoms', skip_first_time=True),
-        PressKeyAction(keyboard_handler, 'space'),
-        PressKeyAction(keyboard_handler, 'f'),
-        FindAndClickImageAction(image_finder, 'Media/barbland.png', 0, window_handler, 'Rise of Kingdoms'),
-        FindAndClickImageAction(image_finder, 'Media/searchaction.png', 0, window_handler, 'Rise of Kingdoms'),
-        FindAndClickImageAction(image_finder, 'Media/arrow.png', 40, window_handler, 'Rise of Kingdoms'),
-        FindAndClickImageAction(image_finder, 'Media/attackaction.png', 0, window_handler, 'Rise of Kingdoms'),
-        FindAndClickImageAction(image_finder, 'Media/newtroopaction.png', 0, window_handler, 'Rise of Kingdoms'),
-        FindAndClickImageAction(image_finder, 'Media/marchaction.png', 0, window_handler, 'Rise of Kingdoms'),
-        PressKeyAction(keyboard_handler, 'space'),
+        FindImageAction('Media/victory.png', skip_check_first_time=True),
+        #SoftFindAndClickImageAction('Media/curetroops.png'),
+        #SoftFindAndClickImageAction('Media/healaction.png'),
+        FindAndClickImageAction('Media/pickuptroopscured.png', skip_check_first_time=True),
+        PressKeyAction('space'),
+        PressKeyAction('f'),
+        FindAndClickImageAction('Media/barbland.png'),
+        FindAndClickImageAction('Media/searchaction.png'),
+        FindAndClickImageAction('Media/arrow.png', 40),
+        FindAndClickImageAction('Media/attackaction.png'),
+        FindAndClickImageAction('Media/newtroopaction.png'),
+        FindAndClickImageAction('Media/marchaction.png'),
+        PressKeyAction('space'),
     ]
 
-    actions_groups = [farm_wood,scout_explore,pick_rss, help_alliance, cure_troops,pickup_cured_troops]
-    #actions_groups = [farm_crop]
-    #actions_groups = [farm_barb] 
+    train_inf = [
+        FindAndClickImageAction('Media/infantryhouse.png'),
+        FindAndClickImageAction('Media/traininfantry.png'),
+        FindAndClickImageAction('Media/t1.png'),
+        FindAndClickImageAction('Media/upgrade.png'),
+        FindAndClickImageAction('Media/upgradeaction.png'),
+        FindAndClickImageAction('Media/infantryhouse.png'),
+        FindAndClickImageAction('Media/traininfantry.png'),
+        FindAndClickImageAction('Media/speedupaction.png'),
+        FindAndClickImageAction('Media/useaction.png'),
+        FindAndClickImageAction('Media/spam.png'),
+        FindAndClickImageAction('Media/useaction.png'),
+        FindAndClickImageAction('Media/infantryhouse.png'),
+    ]
 
-    game_automator = GameAutomator('Rise of Kingdoms', image_finder, window_handler, keyboard_handler)
+    reconnect = [
+        FindAndClickImageAction('Media/confirm.png'),
+    ]
+
+    explore_villages = [
+    PressKeyAction('z'),
+    FindAndClickImageAction('Media/explorationreport.png', check=False),
+    ConditionalAction(
+        primary_actions=[
+            FindAndClickImageAction('Media/barbreport.png', offset_x=370),
+            FindAndClickImageAction('Media/villagereport.png', offset_x=370),
+            
+        ],
+        primary_subsequent_actions=[
+            ManualClickAction(),
+        ],
+        alternative_subsequent_actions=[
+            ManualScrollAction(15)
+        ],
+        retry_times=5  # retry up to 5 times
+    ),
+        # other actions...
+    ]
+
+
+
+    #actions_groups = [scout_explore,pick_rss, help_alliance, cure_troops,pickup_cured_troops]
+    actions_groups = [explore_villages]
+    #actions_groups = [train_inf] 
+
+    game_automator = GameAutomator('Rise of Kingdoms')
     game_automator.start(actions_groups)

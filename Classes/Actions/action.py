@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 
 class Action(ABC):
-    def __init__(self, skip_first_time=False):
-        self.skip_first_time = skip_first_time
+    def __init__(self, skip_check_first_time=False):
+        self.skip_check_first_time = skip_check_first_time
         self.first_run = True
 
     @abstractmethod
