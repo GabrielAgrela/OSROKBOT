@@ -21,6 +21,7 @@ class FindAndClickImageAction(Action):
     def execute(self):
         screenshot, win = self.window_handler.screenshot_window(self.window_title)
         break_action_group = self.image_finder.find_and_click_image(self.image, screenshot, win, self.offset_x, self.offset_y)
+        print(self.check)
         if not self.check:  # if check is True, no need for checks
             return True
         elif self.skip_check_first_time and self.first_run: # if its first time and theres no need to check for first time

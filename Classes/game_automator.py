@@ -15,7 +15,7 @@ from Actions.manual_sleep_action import ManualSleepAction
 import keyboard
 
 class GameAutomator:
-    def __init__(self, window_title, delay=1):
+    def __init__(self, window_title, delay=3):
         self.window_title = window_title
         self.image_finder = image_finder
         self.window_handler = window_handler
@@ -25,7 +25,7 @@ class GameAutomator:
         self.pause_event = threading.Event()
 
     def run(self, actions_groups):
-        while not self.stop_event.wait(1):  # Run every 10 seconds
+        while not self.stop_event.wait(2):  # Run every 10 seconds
             if self.pause_event.is_set():
                 continue
             for action_group in actions_groups:
@@ -118,16 +118,17 @@ if __name__ == "__main__":
         FindImageAction('Media/victory.png', skip_check_first_time=True),
         #SoftFindAndClickImageAction('Media/curetroops.png'),
         #SoftFindAndClickImageAction('Media/healaction.png'),
-        FindAndClickImageAction('Media/pickuptroopscured.png', skip_check_first_time=True),
-        PressKeyAction('space'),
+        #FindAndClickImageAction('Media/pickuptroopscured.png', skip_check_first_time=True),
+        #PressKeyAction('space'),
         PressKeyAction('f'),
         FindAndClickImageAction('Media/barbland.png'),
         FindAndClickImageAction('Media/searchaction.png'),
-        FindAndClickImageAction('Media/arrow.png', 40),
+        FindAndClickImageAction('Media/arrow.png', offset_y=80),
         FindAndClickImageAction('Media/attackaction.png'),
-        FindAndClickImageAction('Media/newtroopaction.png'),
-        FindAndClickImageAction('Media/marchaction.png'),
-        PressKeyAction('space'),
+        FindAndClickImageAction('Media/minamoto.png'),
+        #FindAndClickImageAction('Media/newtroopaction.png'),
+        FindAndClickImageAction('Media/smallmarchaction.png'),
+        #PressKeyAction('space'),
     ]
 
     train_inf = [
@@ -149,33 +150,56 @@ if __name__ == "__main__":
         FindAndClickImageAction('Media/confirm.png'),
     ]
 
-    explore_villages = [
+    explore_villages=[
     PressKeyAction('z'),
-    FindAndClickImageAction('Media/explorationreport.png', check=False),
+    FindAndClickImageAction('Media/report.png', check=False),
     ConditionalAction(
-        primary_actions=[
-            FindAndClickImageAction('Media/barbreport.png', offset_x=370),
-            FindAndClickImageAction('Media/villagereport.png', offset_x=370),
-            FindAndClickImageAction('Media/passreport.png', offset_x=370),
-            FindAndClickImageAction('Media/holyreport.png', offset_x=370),
-            
+        primary_actions=
+        [
+            FindAndClickImageAction('Media/explorationreport.png') or FindAndClickImageAction('Media/explorationreportactive.png'),
         ],
-        primary_subsequent_actions=[
-            ManualClickAction(),
+        primary_subsequent_actions=
+        [
+            ConditionalAction
+            (
+                primary_actions=
+                [
+                    FindAndClickImageAction('Media/barbreport.png', offset_x=370, check=True),
+                    FindAndClickImageAction('Media/villagereport.png', offset_x=370, check=True),
+                    FindAndClickImageAction('Media/passreport.png', offset_x=370, check=True),
+                    FindAndClickImageAction('Media/holyreport.png', offset_x=370, check=True),
+                    
+                ],
+                primary_subsequent_actions=
+                [
+                    ManualClickAction(),
+                ],
+                alternative_subsequent_actions=
+                [
+                    FindAndClickImageAction('Media/reportside.png'),
+                    ManualScrollAction(15)
+                ],
+                retry_times=15  # retry up to 5 times
+            ),
         ],
-        alternative_subsequent_actions=[
-            ManualScrollAction(15)
+        alternative_subsequent_actions=
+        [
+            FindAndClickImageAction('Media/reportside.png'),
+            ManualScrollAction(y_scroll=15)
         ],
         retry_times=15  # retry up to 5 times
     ),
-        # other actions...
+    ]
+
+    captcha = [
+        FindImageAction('Media/captcha.png'),
     ]
 
 
 
     #actions_groups = [scout_explore,pick_rss, help_alliance, cure_troops,pickup_cured_troops]
-    actions_groups = [reconnect,explore_villages]
-    #actions_groups = [train_inf] 
+    #actions_groups = [reconnect,explore_villages]
+    actions_groups = [farm_barb] 
 
     game_automator = GameAutomator('Rise of Kingdoms')
     game_automator.start(actions_groups)
