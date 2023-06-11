@@ -176,7 +176,7 @@ if __name__ == "__main__":
                 ],
                 alternative_subsequent_actions=
                 [
-                    FindAndClickImageAction('Media/reportside.png'),
+                    FindAndClickImageAction('Media/reportbanner.png'),
                     ManualScrollAction(15)
                 ],
                 retry_times=15  # retry up to 5 times
@@ -198,8 +198,8 @@ if __name__ == "__main__":
 
 
     #actions_groups = [scout_explore,pick_rss, help_alliance, cure_troops,pickup_cured_troops]
-    #actions_groups = [reconnect,explore_villages]
-    actions_groups = [farm_barb] 
+    actions_groups = [reconnect,explore_villages]
+    #actions_groups = [farm_barb] 
 
     game_automator = GameAutomator('Rise of Kingdoms')
     game_automator.start(actions_groups)
