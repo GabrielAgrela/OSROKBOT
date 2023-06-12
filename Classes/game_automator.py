@@ -3,6 +3,7 @@ from image_finder import ImageFinder
 from window_handler import WindowHandler
 from keyboard_handler import KeyboardHandler
 from manual_click import ManualClick
+from email_handler import EmailHandler
 import threading
 from Actions.find_and_click_image_action import FindAndClickImageAction
 from Actions.soft_find_and_click_image_action import SoftFindAndClickImageAction
@@ -12,6 +13,7 @@ from Actions.manual_click_action import ManualClickAction
 from Actions.manual_scroll_action import ManualScrollAction
 from Actions.conditional_action import ConditionalAction
 from Actions.manual_sleep_action import ManualSleepAction
+from Actions.email_action import EmailAction
 import keyboard
 
 class GameAutomator:
@@ -25,7 +27,7 @@ class GameAutomator:
         self.pause_event = threading.Event()
 
     def run(self, actions_groups):
-        while not self.stop_event.wait(2):  # Run every 10 seconds
+        while not self.stop_event.wait(4):  # Run every 10 seconds
             if self.pause_event.is_set():
                 continue
             for action_group in actions_groups:
@@ -53,8 +55,7 @@ if __name__ == "__main__":
     window_handler = WindowHandler()
     keyboard_handler = KeyboardHandler()
     manual_click = ManualClick()
-
-    
+    email_handler = EmailHandler("fdsfsdfsrfwefes@proton.me", "fdsfsADDA1235+")
 
     scout_explore = [
         
@@ -213,11 +214,17 @@ if __name__ == "__main__":
         FindImageAction('Media/captcha.png'),
     ]
 
+    send_email = [
+        FindAndClickImageAction('Media/captcha.png'),
+        EmailAction(email_handler, "100cabessa@gmail.com", "Rise of Kingdoms Captcha", " ")
+    ]
 
 
-    actions_groups = [scout_explore,pick_rss, help_alliance, cure_troops,pickup_cured_troops]
+
+    actions_groups = [send_email,scout_explore,pick_rss]
     #actions_groups = [reconnect,explore_villages]
     #actions_groups = [farm_barb] 
+    #actions_groups = [send_email] 
 
     game_automator = GameAutomator('Rise of Kingdoms')
     game_automator.start(actions_groups)
