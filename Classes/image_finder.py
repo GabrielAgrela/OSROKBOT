@@ -28,7 +28,6 @@ class ImageFinder:
         best_scale, best_loc, best_max_val, target_image, screenshot_cv = self._match_image(target_image_path, screenshot)
 
         if best_max_val >= self.threshold:
-            print(f"Found a match for {target_image_path} in screenshot at scale {best_scale} with confidence {best_max_val}.")
             pt = best_loc
             w, h = (target_image.shape[1] * best_scale[0], target_image.shape[0] * best_scale[1])
 
@@ -50,7 +49,6 @@ class ImageFinder:
         best_scale, best_loc, best_max_val, target_image, screenshot_cv = self._match_image(target_image_path, screenshot)
 
         if best_max_val >= self.threshold:
-            print(f"Found a match for {target_image_path} in screenshot at scale {best_scale} with confidence {best_max_val}.")
             return True
         else:
             print(f"No matches for {target_image_path} found in screenshot.")

@@ -15,7 +15,7 @@ from Actions.manual_sleep_action import ManualSleepAction
 import keyboard
 
 class GameAutomator:
-    def __init__(self, window_title, delay=3):
+    def __init__(self, window_title, delay=1.5):
         self.window_title = window_title
         self.image_finder = image_finder
         self.window_handler = window_handler
@@ -57,7 +57,24 @@ if __name__ == "__main__":
     
 
     scout_explore = [
-        FindAndClickImageAction('Media/explore.png', offset_y=25),
+        
+       
+        ConditionalAction
+                (
+                    primary_actions=
+                    [
+                        FindAndClickImageAction('Media/explorenight.png', offset_y=25, check=True),
+                    ],
+                        primary_subsequent_actions=
+                        [
+                        ],
+                        alternative_subsequent_actions=
+                        [
+                            FindAndClickImageAction('Media/explore.png', offset_y=25, check=False),
+                        ],
+                        retry_times=0  # retry up to 5 times
+                ),
+        
         FindAndClickImageAction('Media/exploreicon.png'),
         FindAndClickImageAction('Media/exploreaction.png'),
         FindAndClickImageAction('Media/exploreaction.png'),
@@ -156,38 +173,39 @@ if __name__ == "__main__":
     ConditionalAction(
         primary_actions=
         [
-            FindAndClickImageAction('Media/explorationreport.png') or FindAndClickImageAction('Media/explorationreportactive.png'),
+            FindAndClickImageAction('Media/explorationreport.png', check=True),
+            FindAndClickImageAction('Media/explorationreportactive.png', check=True),
         ],
-        primary_subsequent_actions=
-        [
-            ConditionalAction
-            (
-                primary_actions=
-                [
-                    FindAndClickImageAction('Media/barbreport.png', offset_x=370, check=True),
-                    FindAndClickImageAction('Media/villagereport.png', offset_x=370, check=True),
-                    FindAndClickImageAction('Media/passreport.png', offset_x=370, check=True),
-                    FindAndClickImageAction('Media/holyreport.png', offset_x=370, check=True),
-                    
-                ],
-                primary_subsequent_actions=
-                [
-                    ManualClickAction(),
-                ],
-                alternative_subsequent_actions=
-                [
-                    FindAndClickImageAction('Media/reportbanner.png'),
-                    ManualScrollAction(15)
-                ],
-                retry_times=15  # retry up to 5 times
-            ),
-        ],
-        alternative_subsequent_actions=
-        [
-            FindAndClickImageAction('Media/reportside.png'),
-            ManualScrollAction(y_scroll=15)
-        ],
-        retry_times=15  # retry up to 5 times
+            primary_subsequent_actions=
+            [
+                ConditionalAction
+                (
+                    primary_actions=
+                    [
+                        FindAndClickImageAction('Media/barbreport.png', offset_x=370, check=True),
+                        FindAndClickImageAction('Media/villagereport.png', offset_x=370, check=True),
+                        FindAndClickImageAction('Media/passreport.png', offset_x=370, check=True),
+                        FindAndClickImageAction('Media/holyreport.png', offset_x=370, check=True),
+                        
+                    ],
+                        primary_subsequent_actions=
+                        [
+                            ManualClickAction(),
+                        ],
+                        alternative_subsequent_actions=
+                        [
+                            FindAndClickImageAction('Media/reportbanner.png'),
+                            ManualScrollAction(15)
+                        ],
+                        retry_times=15  # retry up to 5 times
+                ),
+            ],
+            alternative_subsequent_actions=
+            [
+                FindAndClickImageAction('Media/reportside.png'),
+                ManualScrollAction(y_scroll=15)
+            ],
+            retry_times=15  # retry up to 5 times
     ),
     ]
 
@@ -197,8 +215,8 @@ if __name__ == "__main__":
 
 
 
-    #actions_groups = [scout_explore,pick_rss, help_alliance, cure_troops,pickup_cured_troops]
-    actions_groups = [reconnect,explore_villages]
+    actions_groups = [scout_explore,pick_rss, help_alliance, cure_troops,pickup_cured_troops]
+    #actions_groups = [reconnect,explore_villages]
     #actions_groups = [farm_barb] 
 
     game_automator = GameAutomator('Rise of Kingdoms')
