@@ -16,7 +16,7 @@ class WindowHandler:
         if not win:
             return None, None
 
-        win.activate()
+        #win.activate()
         sct = mss()
         monitor = {"top": win.top, "left": win.left, "width": win.width, "height": win.height}
         img = sct.grab(monitor)

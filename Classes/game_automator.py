@@ -14,10 +14,12 @@ from Actions.manual_scroll_action import ManualScrollAction
 from Actions.conditional_action import ConditionalAction
 from Actions.manual_sleep_action import ManualSleepAction
 from Actions.email_action import EmailAction
+from Actions.extract_text_action import ExtractTextAction
+from Actions.screenshot_action import ScreenshotAction
 import keyboard
 
 class GameAutomator:
-    def __init__(self, window_title, delay=1.5):
+    def __init__(self, window_title, delay=0):
         self.window_title = window_title
         self.image_finder = image_finder
         self.window_handler = window_handler
@@ -27,7 +29,7 @@ class GameAutomator:
         self.pause_event = threading.Event()
 
     def run(self, actions_groups):
-        while not self.stop_event.wait(4):  # Run every 10 seconds
+        while not self.stop_event.wait(.5):  # Run every 10 seconds
             if self.pause_event.is_set():
                 continue
             for action_group in actions_groups:
@@ -164,17 +166,19 @@ if __name__ == "__main__":
         FindAndClickImageAction('Media/infantryhouse.png'),
     ]
 
+
     reconnect = [
         FindAndClickImageAction('Media/confirm.png'),
     ]
 
     explore_villages=[
     PressKeyAction('z'),
-    FindAndClickImageAction('Media/report.png', check=False),
+    FindAndClickImageAction('Media/reportactive.png', check=False,delay=.2),
+    FindAndClickImageAction('Media/report.png', check=False, offset_y=-10),
     ConditionalAction(
         primary_actions=
         [
-            FindAndClickImageAction('Media/explorationreport.png', check=True),
+            FindAndClickImageAction('Media/explorationreport.png', check=True,delay=.2),
             FindAndClickImageAction('Media/explorationreportactive.png', check=True),
         ],
             primary_subsequent_actions=
@@ -183,22 +187,23 @@ if __name__ == "__main__":
                 (
                     primary_actions=
                     [
-                        FindAndClickImageAction('Media/barbreport.png', offset_x=370, check=True),
-                        FindAndClickImageAction('Media/villagereport.png', offset_x=370, check=True),
-                        FindAndClickImageAction('Media/passreport.png', offset_x=370, check=True),
-                        FindAndClickImageAction('Media/holyreport.png', offset_x=370, check=True),
+                        FindAndClickImageAction('Media/villagereport.png', offset_x=370,delay=.1),
+                        FindAndClickImageAction('Media/barbreport.png', offset_x=370,retard=3),
+                        FindAndClickImageAction('Media/barbreport2.png', offset_x=370,retard=3),
+                        FindAndClickImageAction('Media/passreport.png', offset_x=370,retard=3),
+                        FindAndClickImageAction('Media/holyreport.png', offset_x=370,retard=3),
                         
                     ],
                         primary_subsequent_actions=
                         [
-                            ManualClickAction(),
+                            ManualClickAction(delay=1),
                         ],
                         alternative_subsequent_actions=
                         [
-                            FindAndClickImageAction('Media/reportbanner.png'),
+                            FindAndClickImageAction('Media/reportbanner.png', check=False),
                             ManualScrollAction(15)
                         ],
-                        retry_times=15  # retry up to 5 times
+                    retry_times=15  # retry up to 5 times
                 ),
             ],
             alternative_subsequent_actions=
@@ -212,19 +217,20 @@ if __name__ == "__main__":
 
     captcha = [
         FindImageAction('Media/captcha.png'),
-    ]
-
-    send_email = [
-        FindAndClickImageAction('Media/captcha.png'),
         EmailAction(email_handler, "100cabessa@gmail.com", "Rise of Kingdoms Captcha", " ")
     ]
 
+    test = [
+        ScreenshotAction(40,55,15,18,'test.png'),
+        ExtractTextAction('test.png'),
+    ]
 
 
-    actions_groups = [send_email,scout_explore,pick_rss]
+
+    #actions_groups = [scout_explore,pick_rss]
     #actions_groups = [reconnect,explore_villages]
     #actions_groups = [farm_barb] 
-    #actions_groups = [send_email] 
+    actions_groups = [test] 
 
     game_automator = GameAutomator('Rise of Kingdoms')
     game_automator.start(actions_groups)

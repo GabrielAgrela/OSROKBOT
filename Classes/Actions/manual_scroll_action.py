@@ -15,6 +15,5 @@ class ManualScrollAction(Action):
 
 
     def execute(self):
-        time.sleep(2)
-        self.manual_scroll.scroll(self.window_handler.get_window(self.window_title),self.y_scroll,self.x_pos,self.y_pos)
+        self.manual_scroll.scroll(self.y_scroll)
         return True

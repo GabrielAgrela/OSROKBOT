@@ -38,7 +38,9 @@ class ImageFinder:
             cv2.rectangle(screenshot_cv, pt, (int(pt[0] + w), int(pt[1] + h)), (0,0,255), 2)
             center_x = int(pt[0] + w // 2 + win.left)
             center_y = int(pt[1] + h // 2 + win.top)
+
             pyautogui.click(center_x+x_offset_scaled, center_y+y_offset_scaled)
+            print(f"found {target_image_path} {best_max_val}%")
             return True
         else:
             print(f"No matches for {target_image_path} found in screenshot.")
@@ -49,6 +51,7 @@ class ImageFinder:
         best_scale, best_loc, best_max_val, target_image, screenshot_cv = self._match_image(target_image_path, screenshot)
 
         if best_max_val >= self.threshold:
+            print(f"found {target_image_path} {best_max_val}%")
             return True
         else:
             print(f"No matches for {target_image_path} found in screenshot.")

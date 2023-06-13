@@ -1,16 +1,11 @@
-import cv2
-import numpy as np
-import pyautogui
+from pynput.mouse import Button, Controller
 
 class ManualScroll:
-    def __init__(self, threshold=0.65):
-        self.threshold = threshold
+    def __init__(self):
+        self.mouse = Controller()
 
-    def scroll(self, win, y_scroll, x_pos, y_pos):
+    def scroll(self, y_scroll):
         print("scrolling")
-        #click middle of the screen with pyautogui
-        center_x = x_pos
-        center_y = y_pos
-        #pyautogui.moveTo(center_x,center_y)
+
         for i in range(y_scroll):
-            pyautogui.scroll(-1)
+            self.mouse.scroll(0, -1)  # Scroll down
