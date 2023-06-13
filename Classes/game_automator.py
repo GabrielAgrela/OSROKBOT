@@ -61,28 +61,11 @@ if __name__ == "__main__":
     email_handler = EmailHandler("fdsfsdfsrfwefes@proton.me", "fdsfsADDA1235+")
 
     scout_explore = [
-        
-       
-        ConditionalAction
-                (
-                    primary_actions=
-                    [
-                        FindAndClickImageAction('Media/explorenight.png', offset_y=25, check=True),
-                    ],
-                        primary_subsequent_actions=
-                        [
-                        ],
-                        alternative_subsequent_actions=
-                        [
-                            FindAndClickImageAction('Media/explore.png', offset_y=25, check=False),
-                        ],
-                        retry_times=0  # retry up to 5 times
-                ),
-        
-        FindAndClickImageAction('Media/exploreicon.png'),
-        FindAndClickImageAction('Media/exploreaction.png'),
-        FindAndClickImageAction('Media/exploreaction.png'),
-        FindAndClickImageAction('Media/sendaction.png'),
+        FindAndClickImageAction('Media/explorenight.png', offset_y=25) or FindAndClickImageAction('Media/explore.png', offset_y=25),
+        FindAndClickImageAction('Media/exploreicon.png',delay=.2),
+        FindAndClickImageAction('Media/exploreaction.png',delay=.1),
+        FindAndClickImageAction('Media/exploreaction.png',delay=1),
+        FindAndClickImageAction('Media/sendaction.png',delay=.5),
         PressKeyAction('space')
     ]
 
@@ -221,7 +204,7 @@ if __name__ == "__main__":
         EmailAction(email_handler, "100cabessa@gmail.com", "Rise of Kingdoms Captcha", " ")
     ]
 
-    test = [
+    lyceum = [
         ScreenshotAction(40,55,15,19),
         ExtractTextAction(description= " Question:"),
         ScreenshotAction(40,55,15,19),
@@ -237,10 +220,10 @@ if __name__ == "__main__":
 
 
 
-    #actions_groups = [scout_explore,pick_rss]
+    actions_groups = [scout_explore,pick_rss, help_alliance]
     #actions_groups = [reconnect,explore_villages]
     #actions_groups = [farm_barb] 
-    actions_groups = [test] 
+    #actions_groups = [lyceum] 
 
     game_automator = GameAutomator('Rise of Kingdoms')
     game_automator.start(actions_groups)

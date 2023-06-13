@@ -5,7 +5,7 @@ import time
 class FindAndClickImageAction(Action):
     def __init__(self, image: str, offset_x= 0, offset_y= 0, skip_check_first_time=False, check=True, dont_find=False, delay=0, retard=0):
         super().__init__(skip_check_first_time)
-        self.delay = delay
+        self.delay = delay * self.performance_multiplier
         self.image_finder = ImageFinder()
         self.image = image
         self.offset_x = offset_x
