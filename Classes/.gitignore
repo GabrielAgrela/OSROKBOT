@@ -2,3 +2,4 @@
 
 # Ignore Python compiled files
 Classes/__pycache__/
+.env

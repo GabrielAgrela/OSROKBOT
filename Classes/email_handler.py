@@ -10,7 +10,7 @@ class EmailHandler:
     def send_email(self,recipient_email, subject, message, ):
         response = requests.post(
             "https://api.mailgun.net/v3/sandboxa6abf275944d4d81871900ed51fba9b2.mailgun.org/messages",
-            auth=("api", "b9f802810eaace9fdc117b3bc69cad9f-468bde97-d38c07a7"),
+            auth=("api", ""),
             data={"from": "Mailgun Sandbox <postmaster@sandboxa6abf275944d4d81871900ed51fba9b2.mailgun.org>",
                 "to": recipient_email,
                 "subject": subject,

@@ -2,7 +2,7 @@ from Actions.action import Action
 from window_handler import WindowHandler
 
 class ScreenshotAction(Action):
-    def __init__(self, x_begin, x_end, y_begin, y_end, output_path, skip_check_first_time=False):
+    def __init__(self, x_begin, x_end, y_begin, y_end, output_path="test.png", skip_check_first_time=False):
         super().__init__(skip_check_first_time)
         self.x_begin = x_begin
         self.x_end = x_end

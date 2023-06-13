@@ -16,6 +16,7 @@ from Actions.manual_sleep_action import ManualSleepAction
 from Actions.email_action import EmailAction
 from Actions.extract_text_action import ExtractTextAction
 from Actions.screenshot_action import ScreenshotAction
+from Actions.chatgpt_action import ChatGPTAction
 import keyboard
 
 class GameAutomator:
@@ -221,8 +222,17 @@ if __name__ == "__main__":
     ]
 
     test = [
-        ScreenshotAction(40,55,15,18,'test.png'),
-        ExtractTextAction('test.png'),
+        ScreenshotAction(40,55,15,19),
+        ExtractTextAction(description= " Question:"),
+        ScreenshotAction(40,55,15,19),
+        ExtractTextAction(description= " A: ", aggregate=True),
+        ScreenshotAction(40,55,15,19),
+        ExtractTextAction(description= " B: ", aggregate=True),
+        ScreenshotAction(40,55,15,19),
+        ExtractTextAction(description= " C: ", aggregate=True),
+        ScreenshotAction(40,55,15,19),
+        ExtractTextAction(description= " D: ", aggregate=True),
+        ChatGPTAction(),
     ]
 
 
