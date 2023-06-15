@@ -3,11 +3,12 @@ from image_finder import ImageFinder
 from window_handler import WindowHandler
 import time
 class FindAndClickImageAction(Action):
-    def __init__(self, image: str, offset_x= 0, offset_y= 0, skip_check_first_time=False, check=True, dont_find=False, delay=0, retard=0):
+    def __init__(self, image: str,offset_x= 0, offset_y= 0, skip_check_first_time=False, check=True, dont_find=False, delay=0, retard=0, max_matches=0 ):
         super().__init__(skip_check_first_time)
         self.delay = delay * self.performance_multiplier
         self.image_finder = ImageFinder()
         self.image = image
+        self.max_matches = max_matches
         self.offset_x = offset_x
         self.offset_y = offset_y
         self.window_handler = WindowHandler()
@@ -19,7 +20,7 @@ class FindAndClickImageAction(Action):
     def execute(self):
         time.sleep(self.delay)
         screenshot, win = self.window_handler.screenshot_window(self.window_title)
-        break_action_group = self.image_finder.find_and_click_image(self.image, screenshot, win, self.offset_x, self.offset_y)
+        break_action_group = self.image_finder.find_and_click_image(self.image, screenshot, win, self.offset_x, self.offset_y, self.max_matches)
         if (break_action_group == True):
             time.sleep(self.retard)
         if not self.check:  # if check is True, no need for checks

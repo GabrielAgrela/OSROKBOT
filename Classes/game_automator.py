@@ -31,6 +31,7 @@ class GameAutomator:
 
     def run(self, actions_groups):
         while not self.stop_event.wait(.5):  # Run every 10 seconds
+            print("\n")
             if self.pause_event.is_set():
                 continue
             for action_group in actions_groups:
@@ -61,18 +62,18 @@ if __name__ == "__main__":
     email_handler = EmailHandler("fdsfsdfsrfwefes@proton.me", "fdsfsADDA1235+")
 
     scout_explore = [
-        FindAndClickImageAction('Media/explorenight.png', offset_y=25) or FindAndClickImageAction('Media/explore.png', offset_y=25),
-        FindAndClickImageAction('Media/exploreicon.png',delay=.2),
-        FindAndClickImageAction('Media/exploreaction.png',delay=.1),
-        FindAndClickImageAction('Media/exploreaction.png',delay=1),
-        FindAndClickImageAction('Media/sendaction.png',delay=.5),
+        FindAndClickImageAction('Media/explorenight.png', offset_y=25, check=False) or FindAndClickImageAction('Media/explore.png', offset_y=25),
+        FindAndClickImageAction('Media/exploreicon.png',delay=.2,check=False),
+        FindAndClickImageAction('Media/exploreaction.png',delay=.1,check=False),
+        FindAndClickImageAction('Media/exploreaction.png',delay=1.5,check=False),
+        FindAndClickImageAction('Media/sendaction.png',delay=.5, retard=1),
         PressKeyAction('space')
     ]
 
     pick_rss = [
-        FindAndClickImageAction('Media/wood.png', check=False),
-        FindAndClickImageAction('Media/corn.png', check=False),
-        FindAndClickImageAction('Media/rock.png', check=False),
+        FindAndClickImageAction('Media/wood.png'),
+        FindAndClickImageAction('Media/corn.png'),
+        FindAndClickImageAction('Media/rock.png'),
     ]
 
     help_alliance = [
@@ -180,7 +181,7 @@ if __name__ == "__main__":
                     ],
                         primary_subsequent_actions=
                         [
-                            ManualClickAction(delay=1),
+                            ManualClickAction(50,54,delay=2),
                         ],
                         alternative_subsequent_actions=
                         [
@@ -197,6 +198,7 @@ if __name__ == "__main__":
             ],
             retry_times=15  # retry up to 5 times
     ),
+    PressKeyAction('space',delay=.1,retard=2),
     ]
 
     captcha = [
@@ -205,23 +207,63 @@ if __name__ == "__main__":
     ]
 
     lyceum = [
-        ScreenshotAction(40,55,15,19),
+        ScreenshotAction(34,85,35,43),
         ExtractTextAction(description= " Question:"),
-        ScreenshotAction(40,55,15,19),
+        ScreenshotAction(33,52,45,51),
         ExtractTextAction(description= " A: ", aggregate=True),
-        ScreenshotAction(40,55,15,19),
+        ScreenshotAction(57,74,45,51),
         ExtractTextAction(description= " B: ", aggregate=True),
-        ScreenshotAction(40,55,15,19),
+        ScreenshotAction(33,52,54,60),
         ExtractTextAction(description= " C: ", aggregate=True),
-        ScreenshotAction(40,55,15,19),
+        ScreenshotAction(57,74,54,60),
         ExtractTextAction(description= " D: ", aggregate=True),
         ChatGPTAction(),
     ]
 
+    explore_caves=[
+    PressKeyAction('z'),
+    ManualClickAction(26,5,delay=1),
+    ConditionalAction(
+        primary_actions=
+        [
+            FindAndClickImageAction('Media/explorationreport.png', check=True,delay=.1),
+            FindAndClickImageAction('Media/explorationreportactive.png', check=True),
+        ],
+            primary_subsequent_actions=
+            [
+                ConditionalAction
+                (
+                    primary_actions=
+                    [
+                        FindAndClickImageAction('Media/caveexploring.png',delay=.2, max_matches=3), 
+                    ],
+                        primary_subsequent_actions=
+                        [
+                            FindAndClickImageAction('Media/cavereport.png', offset_x=300, offset_y=20, delay=.2),
+                            ManualClickAction(50,54,delay=2),
+                            FindAndClickImageAction('Media/investigateaction.png',delay=1),
+                            FindAndClickImageAction('Media/sendaction.png',delay=1),
+                        ],
+                        alternative_subsequent_actions=
+                        [
+                            PressKeyAction('esc'),
+                        ],
+                    retry_times=0  # retry up to 5 times
+                ),
+            ],
+            alternative_subsequent_actions=
+            [
+                FindAndClickImageAction('Media/reportside.png'),
+                ManualScrollAction(y_scroll=15)
+            ],
+            retry_times=15  # retry up to 5 times
+    ),
+    ]
 
 
-    actions_groups = [scout_explore,pick_rss, help_alliance]
-    #actions_groups = [reconnect,explore_villages]
+
+    #actions_groups = [lyceum]
+    actions_groups = [explore_caves ]
     #actions_groups = [farm_barb] 
     #actions_groups = [lyceum] 
 
