@@ -1,5 +1,6 @@
 from Actions.action import Action
 import pytesseract
+import time
 from PIL import Image
 pytesseract.pytesseract.tesseract_cmd = r"D:\eu\apps\tess\tesseract.exe"  # Windows
 

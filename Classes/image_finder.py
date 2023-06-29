@@ -5,7 +5,7 @@ from termcolor import colored
 
 
 class ImageFinder:
-    def __init__(self, threshold=0.8):
+    def __init__(self, threshold=0.7):
         self.threshold = threshold
         self.template_resolution = (1086, 637)  # original resolution at which the template was taken
 
@@ -30,18 +30,20 @@ class ImageFinder:
         # draw rectangles on all matched locations
         w, h = (resized_img.shape[1], resized_img.shape[0])
         for pt in matches:
-            cv2.rectangle(screenshot_cv, pt, (int(pt[0] + w), int(pt[1] + h)), (0,0,255), 2)
+            cv2.rectangle(screenshot_cv, pt, (int(pt[0] + w), int(pt[1] + h)), (255,0,255), 4)
 
-            
+        # save screenshot with rectangles
+        cv2.imwrite("screenshot.png", screenshot_cv)
         # return the number of matches, screenshot with rectangles, and the highest matching value
         return scaling_factor, matches, len(matches), max(result.ravel()), target_image, screenshot_cv
 
 
 
     def find_and_click_image(self, target_image_path, screenshot, win, x_offset, y_offset, max_matches):
-        best_scale, best_loc, best_max_val, num_matches, target_image, screenshot_cv = self._match_image(target_image_path, screenshot)
+        best_scale, best_loc, num_matches, best_max_val, target_image, screenshot_cv = self._match_image(target_image_path, screenshot)
         
         if best_max_val >= self.threshold:
+            
             # Create an array of rectangles with format [[x1, y1, x2, y2], ...]
             rects = np.array([(pt[0], pt[1], pt[0] + target_image.shape[1] * best_scale[0], pt[1] + target_image.shape[0] * best_scale[1]) for pt in best_loc])
 
@@ -50,7 +52,10 @@ class ImageFinder:
 
             for (startX, startY, endX, endY) in pick:
                 # Draw the final bounding boxes
-                cv2.rectangle(screenshot_cv, (int(startX), int(startY)), (int(endX), int(endY)), (0,0,255), 2)
+
+                # rbg value
+
+                cv2.rectangle(screenshot_cv, (int(startX), int(startY)), (int(endX), int(endY)), (255,0,255), 2)
 
                 center_x = int(startX + (endX - startX) // 2 + win.left)
                 center_y = int(startY + (endY - startY) // 2 + win.top)
@@ -60,8 +65,8 @@ class ImageFinder:
                 y_offset_scaled = int(y_offset * best_scale[1])
 
             
-            
-            print(colored(f"found {target_image_path} {len(pick)} matches with {best_max_val}% {best_max_val}", "green"))
+
+            print(colored(f"found {target_image_path} {len(pick)}x at {best_max_val}%", "green"))
             if (len(pick) >= max_matches and max_matches != 0):
                 return False
             if (len(pick) < max_matches and max_matches != 0):
@@ -117,8 +122,9 @@ class ImageFinder:
 
         
     def find_image(self, target_image_path, screenshot):
-        best_scale, best_loc, best_max_val, target_image, screenshot_cv = self._match_image(target_image_path, screenshot)
+        best_scale, best_loc, num_matches, best_max_val, target_image, screenshot_cv = self._match_image(target_image_path, screenshot)
 
+        
         if best_max_val >= self.threshold:
             print(colored(f"found {target_image_path} {best_max_val}%", "green"))
             return True

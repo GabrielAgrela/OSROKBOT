@@ -17,29 +17,24 @@ from Actions.email_action import EmailAction
 from Actions.extract_text_action import ExtractTextAction
 from Actions.screenshot_action import ScreenshotAction
 from Actions.chatgpt_action import ChatGPTAction
+from action_sets import ActionSets
 import keyboard
 
 class GameAutomator:
     def __init__(self, window_title, delay=0):
         self.window_title = window_title
-        self.image_finder = image_finder
-        self.window_handler = window_handler
-        self.keyboard_handler = keyboard_handler
         self.delay = delay
         self.stop_event = threading.Event()
         self.pause_event = threading.Event()
 
-    def run(self, actions_groups):
+    def run(self, state_machines):
         while not self.stop_event.wait(.5):  # Run every 10 seconds
             print("\n")
             if self.pause_event.is_set():
                 continue
-            for action_group in actions_groups:
-                for action in action_group:
-                    if not action.execute():
-                        break  # If action fails, stop the loop and try again after 10 seconds
-                    else:
-                        time.sleep(self.delay)
+            for state_machine in state_machines:
+                while not state_machine.execute():
+                    time.sleep(self.delay)
 
     def start(self, steps):
         threading.Thread(target=self.run, args=(steps,)).start()
@@ -55,217 +50,9 @@ class GameAutomator:
             self.pause_event.set()  # Pause
 
 if __name__ == "__main__":
-    image_finder = ImageFinder()
-    window_handler = WindowHandler()
-    keyboard_handler = KeyboardHandler()
-    manual_click = ManualClick()
-    email_handler = EmailHandler("fdsfsdfsrfwefes@proton.me", "fdsfsADDA1235+")
+    action_sets = ActionSets()
 
-    scout_explore = [
-        FindAndClickImageAction('Media/explorenight.png', offset_y=25, check=False) or FindAndClickImageAction('Media/explore.png', offset_y=25),
-        FindAndClickImageAction('Media/exploreicon.png',delay=.2,check=False),
-        FindAndClickImageAction('Media/exploreaction.png',delay=.1,check=False),
-        FindAndClickImageAction('Media/exploreaction.png',delay=1.5,check=False),
-        FindAndClickImageAction('Media/sendaction.png',delay=.5, retard=1),
-        PressKeyAction('space')
-    ]
-
-    pick_rss = [
-        FindAndClickImageAction('Media/wood.png'),
-        FindAndClickImageAction('Media/corn.png'),
-        FindAndClickImageAction('Media/rock.png'),
-    ]
-
-    help_alliance = [
-        FindAndClickImageAction('Media/alliancehelp.png', offset_y=10),
-    ]
-
-    cure_troops = [
-        FindAndClickImageAction('Media/curetroops.png'),
-        FindAndClickImageAction('Media/healaction.png'),
-    ]
-
-    pickup_cured_troops = [
-        FindAndClickImageAction('Media/pickuptroopscured.png'),
-    ]
-
-    farm_crop = [
-        FindImageAction('Media/isgathering.png',check=False, dont_find=True),
-        FindImageAction('Media/isreturning.png',check=False, dont_find=True),
-        FindImageAction('Media/isgoing.png',check=False, dont_find=True),
-        PressKeyAction('space'),
-        PressKeyAction('f'),
-        FindAndClickImageAction('Media/cropland.png'),
-        FindAndClickImageAction('Media/searchaction.png'),
-        ManualClickAction(),
-        FindAndClickImageAction('Media/gatheraction.png'),
-        FindAndClickImageAction('Media/newtroopaction.png'),
-        FindAndClickImageAction('Media/marchaction.png'),
-        PressKeyAction('space'), 
-    ] 
-
-    farm_wood = [
-        FindImageAction('Media/isgathering.png', dont_find=True),
-        FindImageAction('Media/isreturning.png', dont_find=True),
-        FindImageAction('Media/isgoing.png', dont_find=True),
-        PressKeyAction('space'),
-        PressKeyAction('f'),
-        FindAndClickImageAction('Media/woodland.png'),
-        FindAndClickImageAction('Media/searchaction.png'),
-        ManualClickAction(),
-        FindAndClickImageAction('Media/gatheraction.png'),
-        FindAndClickImageAction('Media/newtroopaction.png'),
-        FindAndClickImageAction('Media/marchaction.png'),
-        PressKeyAction('space'), 
-    ] 
-
-    farm_barb = [
-        FindImageAction('Media/victory.png', skip_check_first_time=True),
-        #SoftFindAndClickImageAction('Media/curetroops.png'),
-        #SoftFindAndClickImageAction('Media/healaction.png'),
-        #FindAndClickImageAction('Media/pickuptroopscured.png', skip_check_first_time=True),
-        #PressKeyAction('space'),
-        PressKeyAction('f'),
-        FindAndClickImageAction('Media/barbland.png'),
-        FindAndClickImageAction('Media/searchaction.png'),
-        FindAndClickImageAction('Media/arrow.png', offset_y=80),
-        FindAndClickImageAction('Media/attackaction.png'),
-        FindAndClickImageAction('Media/minamoto.png'),
-        #FindAndClickImageAction('Media/newtroopaction.png'),
-        FindAndClickImageAction('Media/smallmarchaction.png'),
-        #PressKeyAction('space'),
-    ]
-
-    train_inf = [
-        FindAndClickImageAction('Media/infantryhouse.png'),
-        FindAndClickImageAction('Media/traininfantry.png'),
-        FindAndClickImageAction('Media/t1.png'),
-        FindAndClickImageAction('Media/upgrade.png'),
-        FindAndClickImageAction('Media/upgradeaction.png'),
-        FindAndClickImageAction('Media/infantryhouse.png'),
-        FindAndClickImageAction('Media/traininfantry.png'),
-        FindAndClickImageAction('Media/speedupaction.png'),
-        FindAndClickImageAction('Media/useaction.png'),
-        FindAndClickImageAction('Media/spam.png'),
-        FindAndClickImageAction('Media/useaction.png'),
-        FindAndClickImageAction('Media/infantryhouse.png'),
-    ]
-
-
-    reconnect = [
-        FindAndClickImageAction('Media/confirm.png'),
-    ]
-
-    explore_villages=[
-    PressKeyAction('z'),
-    FindAndClickImageAction('Media/reportactive.png', check=False,delay=.2),
-    FindAndClickImageAction('Media/report.png', check=False, offset_y=-10),
-    ConditionalAction(
-        primary_actions=
-        [
-            FindAndClickImageAction('Media/explorationreport.png', check=True,delay=.2),
-            FindAndClickImageAction('Media/explorationreportactive.png', check=True),
-        ],
-            primary_subsequent_actions=
-            [
-                ConditionalAction
-                (
-                    primary_actions=
-                    [
-                        FindAndClickImageAction('Media/villagereport.png', offset_x=370,delay=.1),
-                        FindAndClickImageAction('Media/barbreport.png', offset_x=370,retard=3),
-                        FindAndClickImageAction('Media/barbreport2.png', offset_x=370,retard=3),
-                        FindAndClickImageAction('Media/passreport.png', offset_x=370,retard=3),
-                        FindAndClickImageAction('Media/holyreport.png', offset_x=370,retard=3),
-                        
-                    ],
-                        primary_subsequent_actions=
-                        [
-                            ManualClickAction(50,54,delay=2),
-                        ],
-                        alternative_subsequent_actions=
-                        [
-                            FindAndClickImageAction('Media/reportbanner.png', check=False),
-                            ManualScrollAction(15)
-                        ],
-                    retry_times=15  # retry up to 5 times
-                ),
-            ],
-            alternative_subsequent_actions=
-            [
-                FindAndClickImageAction('Media/reportside.png'),
-                ManualScrollAction(y_scroll=15)
-            ],
-            retry_times=15  # retry up to 5 times
-    ),
-    PressKeyAction('space',delay=.1,retard=2),
-    ]
-
-    captcha = [
-        FindImageAction('Media/captcha.png'),
-        EmailAction(email_handler, "100cabessa@gmail.com", "Rise of Kingdoms Captcha", " ")
-    ]
-
-    lyceum = [
-        ScreenshotAction(34,85,35,43),
-        ExtractTextAction(description= " Question:"),
-        ScreenshotAction(33,52,45,51),
-        ExtractTextAction(description= " A: ", aggregate=True),
-        ScreenshotAction(57,74,45,51),
-        ExtractTextAction(description= " B: ", aggregate=True),
-        ScreenshotAction(33,52,54,60),
-        ExtractTextAction(description= " C: ", aggregate=True),
-        ScreenshotAction(57,74,54,60),
-        ExtractTextAction(description= " D: ", aggregate=True),
-        ChatGPTAction(),
-    ]
-
-    explore_caves=[
-    PressKeyAction('z'),
-    ManualClickAction(26,5,delay=1),
-    ConditionalAction(
-        primary_actions=
-        [
-            FindAndClickImageAction('Media/explorationreport.png', check=True,delay=.1),
-            FindAndClickImageAction('Media/explorationreportactive.png', check=True),
-        ],
-            primary_subsequent_actions=
-            [
-                ConditionalAction
-                (
-                    primary_actions=
-                    [
-                        FindAndClickImageAction('Media/caveexploring.png',delay=.2, max_matches=3), 
-                    ],
-                        primary_subsequent_actions=
-                        [
-                            FindAndClickImageAction('Media/cavereport.png', offset_x=300, offset_y=20, delay=.2),
-                            ManualClickAction(50,54,delay=2),
-                            FindAndClickImageAction('Media/investigateaction.png',delay=1),
-                            FindAndClickImageAction('Media/sendaction.png',delay=1),
-                        ],
-                        alternative_subsequent_actions=
-                        [
-                            PressKeyAction('esc'),
-                        ],
-                    retry_times=0  # retry up to 5 times
-                ),
-            ],
-            alternative_subsequent_actions=
-            [
-                FindAndClickImageAction('Media/reportside.png'),
-                ManualScrollAction(y_scroll=15)
-            ],
-            retry_times=15  # retry up to 5 times
-    ),
-    ]
-
-
-
-    #actions_groups = [lyceum]
-    actions_groups = [explore_caves ]
-    #actions_groups = [farm_barb] 
-    #actions_groups = [lyceum] 
+    actions_groups = [action_sets.farm_barb()] 
 
     game_automator = GameAutomator('Rise of Kingdoms')
     game_automator.start(actions_groups)

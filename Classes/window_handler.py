@@ -16,9 +16,14 @@ class WindowHandler:
         if not win:
             return None, None
 
-        #win.activate()
         sct = mss()
         monitor = {"top": win.top, "left": win.left, "width": win.width, "height": win.height}
         img = sct.grab(monitor)
         screenshot = Image.frombytes("RGB", img.size, img.rgb, "raw")
+
         return screenshot, win
+    
+    def activate_window(self, title="Rise of Kingdoms"):
+        win = self.get_window(title)
+        win.activate()
+        return 

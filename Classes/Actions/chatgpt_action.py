@@ -12,7 +12,7 @@ class ChatGPTAction:
         self.message = ""
         self.prefix = prefix
         self.filepath = filepath
-        self.messages = [{"role": "system", "content": "You are a quizz assistant in the game Rise of Kingdoms. You respond only with A, B, C or D. Nothing else, ever. Literally only one of those 4 letters"}]
+        self.messages = [{"role": "system", "content": "You are a quizz assistant in the game Rise of Kingdoms. You respond only with A, B, C, D or E. Nothing else, ever. Literally only one of those 5 letters. Respond E if you are not sure."}]
 
     def execute(self):
         with open(self.filepath, 'r') as file:
@@ -26,7 +26,7 @@ class ChatGPTAction:
         
         print(f"ChatGPT: {reply} \n")
         self.messages.clear()
-        time.sleep(10)
+        time.sleep(2)
         # switch case for reply a b c d
         if reply == "A":
             ManualClickAction(40,48).execute()
@@ -36,6 +36,7 @@ class ChatGPTAction:
             ManualClickAction(40,58).execute()
         if reply == "D":
             ManualClickAction(60,58).execute()
-
-        time.sleep(3)
+        if reply == "E":
+            print("Not Sure")
+        time.sleep(2)
         return True

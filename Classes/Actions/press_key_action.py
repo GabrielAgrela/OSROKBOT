@@ -1,5 +1,6 @@
 from Actions.action import Action
 from keyboard_handler import KeyboardHandler
+from window_handler import WindowHandler
 import time
 
 class PressKeyAction(Action):
@@ -8,9 +9,11 @@ class PressKeyAction(Action):
         self.key = key
         self.delay = delay
         self.retard = retard
+        self.window_handler = WindowHandler()
 
     def execute(self):
         time.sleep(self.delay)
+        self.window_handler.activate_window()
         self.keyboard_handler.press_key(self.key)
         time.sleep(self.retard)
         return True  # Always return True since pressing a key will not fail
