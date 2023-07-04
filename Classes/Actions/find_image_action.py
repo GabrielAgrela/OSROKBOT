@@ -3,7 +3,7 @@ from image_finder import ImageFinder
 from window_handler import WindowHandler
 
 class FindImageAction(Action):
-    def __init__(self, image: str, skip_check_first_time=False, check=True, dont_find=False):
+    def __init__(self, image: str, skip_check_first_time=False, check=True, dont_find=False, delay=0.1):
         super().__init__(skip_check_first_time)
         self.image_finder = ImageFinder()
         self.image = image
@@ -11,6 +11,7 @@ class FindImageAction(Action):
         self.window_title = 'Rise of Kingdoms'
         self.check = check 
         self.dont_find = dont_find 
+        self.delay = delay
 
 
     def execute(self):

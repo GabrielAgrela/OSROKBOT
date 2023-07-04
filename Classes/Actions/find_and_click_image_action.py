@@ -3,7 +3,7 @@ from image_finder import ImageFinder
 from window_handler import WindowHandler
 import time
 class FindAndClickImageAction(Action):
-    def __init__(self, image: str,offset_x= 0, offset_y= 0, skip_check_first_time=False, check=True, dont_find=False, delay=0.5, retard=0, max_matches=0 ):
+    def __init__(self, image: str,offset_x= 0, offset_y= 0, skip_check_first_time=False, check=True, dont_find=False, delay=0.2, retard=0, max_matches=0 ):
         super().__init__(skip_check_first_time)
         self.delay = delay * self.performance_multiplier
         self.image_finder = ImageFinder()

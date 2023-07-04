@@ -18,7 +18,11 @@ class WindowHandler:
 
         sct = mss()
         monitor = {"top": win.top, "left": win.left, "width": win.width, "height": win.height}
-        img = sct.grab(monitor)
+        try:
+            img = sct.grab(monitor)
+        except:
+            self.screenshot_window(title)
+            return
         screenshot = Image.frombytes("RGB", img.size, img.rgb, "raw")
 
         return screenshot, win

@@ -40,10 +40,13 @@ class ImageFinder:
 
 
     def find_and_click_image(self, target_image_path, screenshot, win, x_offset, y_offset, max_matches):
+        
         best_scale, best_loc, num_matches, best_max_val, target_image, screenshot_cv = self._match_image(target_image_path, screenshot)
         
         if best_max_val >= self.threshold:
-            
+            # Store the current active window and mouse position
+            prev_active_window = pyautogui.getActiveWindow()
+            prev_mouse_x, prev_mouse_y = pyautogui.position()
             # Create an array of rectangles with format [[x1, y1, x2, y2], ...]
             rects = np.array([(pt[0], pt[1], pt[0] + target_image.shape[1] * best_scale[0], pt[1] + target_image.shape[0] * best_scale[1]) for pt in best_loc])
 
@@ -73,6 +76,8 @@ class ImageFinder:
                 return True
 
             pyautogui.click(center_x + x_offset_scaled, center_y + y_offset_scaled)
+            prev_active_window.activate()
+            pyautogui.moveTo(prev_mouse_x, prev_mouse_y)
 
             return True
         else:

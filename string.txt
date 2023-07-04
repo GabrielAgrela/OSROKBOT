@@ -1,3 +1,5 @@
- Question:CONGRATULATIONS
- A:  B:  C: ‘You earned the following rewards fr
- D: xd of questions
+ Question: In rise of kingdoms, In RoK, which commander is nicknamed "Father of Conquest"?
+ A: Pelagius
+ B: Hermann
+ C: Belisarius
+ D: Baibars

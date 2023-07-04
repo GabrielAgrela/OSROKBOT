@@ -36,24 +36,20 @@ class ActionSets:
     
     def farm_barb (self):
 
-        self.machine.add_state("cityview", PressKeyAction('space'), "birdview")
-        self.machine.add_state("birdview", PressKeyAction('f'), "barbland")
-        self.machine.add_state("barbland", FindAndClickImageAction('Media/barbland.png'), "searchaction","barbland")
-        self.machine.add_state("searchaction", FindAndClickImageAction('Media/searchaction.png'), "arrow","searchaction")
-        self.machine.add_state("arrow", FindAndClickImageAction('Media/arrow.png', offset_y=80), "attackaction","arrow")
+        self.machine.add_state("cityview", PressKeyAction('space'), "birdview","cityview")
+        self.machine.add_state("birdview", PressKeyAction('f'), "barbland","cityview")
+        self.machine.add_state("barbland", FindAndClickImageAction('Media/barbland.png'), "searchaction","birdview")
+        self.machine.add_state("searchaction", FindAndClickImageAction('Media/searchaction.png'), "arrow","barbland")
+        self.machine.add_state("arrow", FindAndClickImageAction('Media/arrow.png', offset_y=80), "attackaction","searchaction")
         self.machine.add_state("attackaction", FindAndClickImageAction('Media/attackaction.png'), "lohar","attackaction")
         self.machine.add_state("lohar", FindAndClickImageAction('Media/lohar.png'), "smallmarchaction","newtroopaction")
         self.machine.add_state("newtroopaction", FindAndClickImageAction('Media/newtroopaction.png'), "marchaction","newtroopaction")
         self.machine.add_state("marchaction", FindAndClickImageAction('Media/marchaction.png'), "victory","marchaction")
         self.machine.add_state("smallmarchaction", FindAndClickImageAction('Media/smallmarchaction.png'), "victory","smallmarchaction")
-        self.machine.add_state("victory", FindAndClickImageAction('Media/victory.png'), "birdview","victory")
+        self.machine.add_state("victory", FindImageAction('Media/victory.png'), "birdview","victory")
         self.machine.set_initial_state("cityview")
         return self.machine
 
-
-    # Add rest of the action sets in similar way as methods of this class
-
-    # e.g. pick_rss action set
     def pick_rss():
         return [
             FindAndClickImageAction('Media/wood.png'),
@@ -200,20 +196,20 @@ class ActionSets:
         ChatGPTAction(),
     ]
 
-    def lyceum ():
-        return [
-        ScreenshotAction(34,85,35,43),
-        ExtractTextAction(description= " Question: In rise of kingdoms, "),
-        ScreenshotAction(33,52,45,51,),
-        ExtractTextAction(description= " A: ", aggregate=True),
-        ScreenshotAction(57,74,45,51),
-        ExtractTextAction(description= " B: ", aggregate=True),
-        ScreenshotAction(33,52,54,60),
-        ExtractTextAction(description= " C: ", aggregate=True),
-        ScreenshotAction(57,74,54,60),
-        ExtractTextAction(description= " D: ", aggregate=True),
-        ChatGPTAction(),
-    ]
+    def lyceum (self):
+        self.machine.add_state("sstittle",  ScreenshotAction(33.5,85,35,43), "ettitle")
+        self.machine.add_state("ettitle", ExtractTextAction(description= " Question: In rise of kingdoms, "), "ssq1")
+        self.machine.add_state("ssq1", ScreenshotAction(33,52,45,51,), "eq1")
+        self.machine.add_state("eq1",ExtractTextAction(description= " A: ", aggregate=True), "ssq2")
+        self.machine.add_state("ssq2", ScreenshotAction(57,74,45,51), "eq2")
+        self.machine.add_state("eq2", ExtractTextAction(description= " B: ", aggregate=True), "ssq3")
+        self.machine.add_state("ssq3",  ScreenshotAction(33,52,54,60), "eq3")
+        self.machine.add_state("eq3", ExtractTextAction(description= " C: ", aggregate=True), "ssq4")
+        self.machine.add_state("ssq4", ScreenshotAction(57,74,54,60), "eq4")
+        self.machine.add_state("eq4", ExtractTextAction(description= " D: ", aggregate=True), "cgpt")
+        self.machine.add_state("cgpt", ChatGPTAction(),"sstittle")
+        self.machine.set_initial_state("sstittle")
+        return self.machine
 
     def explore_caves():
         return[
