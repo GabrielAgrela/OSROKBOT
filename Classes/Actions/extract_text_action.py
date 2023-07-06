@@ -22,21 +22,27 @@ class ExtractTextAction(Action):
         # Open the image file
         img = Image.open(image_path)
 
+        # Convert to grayscale
         img = img.convert('L')
 
-  
-
-        #if description has "title" in it, then we need to crop the image
+        width, height = img.size
+        img = img.resize((width*5, height*5), Image.ANTIALIAS)
+        # Binarization
         if "Question" in self.description:
             img = img.point(lambda x: 0 if x < 140 else 255, '1')
         else:
-            img = img.point(lambda x: 0 if x < 200 else 255, '1')
-            # reverse colors
+            img = img.point(lambda x: 0 if x < 195 else 255, '1')
             img = ImageOps.invert(img)
+
+        # Invert colors
         
 
+        # Scale the image
         
+
+        # Save the processed image
         img.save("testprocessed.png")
+        
         return img
 
     def execute(self):
@@ -46,7 +52,8 @@ class ExtractTextAction(Action):
                     f.write("")
                 
             img = self.preprocess_image(self.image_path)
-            text = pytesseract.image_to_string(img,lang='eng', config='--oem 1')
+            text = pytesseract.image_to_string(img, lang='eng', config='--oem 3 --psm 10')
+
             text = self.description + text
             print("OCR : ", text) 
             with open('string.txt', 'a') as f:

@@ -1,5 +1,3 @@
- Question: In rise of kingdoms, In RoK, which commander is nicknamed "Father of Conquest"?
- A: Pelagius
- B: Hermann
- C: Belisarius
- D: Baibars
+ Question: In rise of kingdoms, pe
+ A: Fo
+ B: | foo oe

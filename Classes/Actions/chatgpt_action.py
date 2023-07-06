@@ -21,7 +21,7 @@ class ChatGPTAction:
         #concatenate prefix and message
         self.message = self.prefix + self.message
         self.messages.append({"role": "user", "content": (self.message)},)
-        chat = openai.ChatCompletion.create(model="gpt-4",max_tokens=1, messages=self.messages)
+        chat = openai.ChatCompletion.create(model="gpt-4",temperature=0.1,max_tokens=1, messages=self.messages)
         reply = chat.choices[0].message.content
         
         print(f"ChatGPT: {reply} \n")
