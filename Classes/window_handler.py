@@ -5,7 +5,7 @@ import pygetwindow as gw
 class WindowHandler:
     def get_window(self, title):
         windows = gw.getWindowsWithTitle(title)
-
+        
         if not windows:
             print(f"No window found with title: {title}")
             return None
@@ -18,11 +18,7 @@ class WindowHandler:
 
         sct = mss()
         monitor = {"top": win.top, "left": win.left, "width": win.width, "height": win.height}
-        try:
-            img = sct.grab(monitor)
-        except:
-            self.screenshot_window(title)
-            return
+        img = sct.grab(monitor)
         screenshot = Image.frombytes("RGB", img.size, img.rgb, "raw")
 
         return screenshot, win

@@ -1,22 +1,5 @@
 import time
-from image_finder import ImageFinder
-from window_handler import WindowHandler
-from keyboard_handler import KeyboardHandler
-from manual_click import ManualClick
-from email_handler import EmailHandler
 import threading
-from Actions.find_and_click_image_action import FindAndClickImageAction
-from Actions.soft_find_and_click_image_action import SoftFindAndClickImageAction
-from Actions.press_key_action import PressKeyAction
-from Actions.find_image_action import FindImageAction
-from Actions.manual_click_action import ManualClickAction
-from Actions.manual_scroll_action import ManualScrollAction
-from Actions.conditional_action import ConditionalAction
-from Actions.manual_sleep_action import ManualSleepAction
-from Actions.email_action import EmailAction
-from Actions.extract_text_action import ExtractTextAction
-from Actions.screenshot_action import ScreenshotAction
-from Actions.chatgpt_action import ChatGPTAction
 from action_sets import ActionSets
 import keyboard
 
@@ -28,7 +11,7 @@ class GameAutomator:
         self.pause_event = threading.Event()
 
     def run(self, state_machines):
-        while not self.stop_event.wait(.5):  # Run every 10 seconds
+        while not self.stop_event.wait(0):  # Run every 10 seconds
             print("\n")
             if self.pause_event.is_set():
                 continue
@@ -52,7 +35,7 @@ class GameAutomator:
 if __name__ == "__main__":
     action_sets = ActionSets()
 
-    actions_groups = [action_sets.lyceum()] 
+    actions_groups = [action_sets.lyceumMid()] 
 
     game_automator = GameAutomator('Rise of Kingdoms')
     game_automator.start(actions_groups)

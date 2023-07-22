@@ -1,3 +1,4 @@
+import os
 import cv2
 import numpy as np
 import pyautogui
@@ -5,7 +6,7 @@ from termcolor import colored
 
 
 class ImageFinder:
-    def __init__(self, threshold=0.7):
+    def __init__(self, threshold=0.8):
         self.threshold = threshold
         self.template_resolution = (1086, 637)  # original resolution at which the template was taken
 
@@ -32,6 +33,11 @@ class ImageFinder:
         for pt in matches:
             cv2.rectangle(screenshot_cv, pt, (int(pt[0] + w), int(pt[1] + h)), (255,0,255), 4)
 
+        #delet screenshot.png
+        try:
+            os.remove("screenshot.png")
+        except:
+            pass
         # save screenshot with rectangles
         cv2.imwrite("screenshot.png", screenshot_cv)
         # return the number of matches, screenshot with rectangles, and the highest matching value

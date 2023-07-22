@@ -10,6 +10,7 @@ from Actions.email_action import EmailAction
 from Actions.extract_text_action import ExtractTextAction
 from Actions.screenshot_action import ScreenshotAction
 from Actions.chatgpt_action import ChatGPTAction
+from Actions.wait_for_keypress_action import WaitForKeyPressAction
 from manual_click import ManualClick
 from email_handler import EmailHandler
 from state_machine import StateMachine
@@ -21,32 +22,79 @@ class ActionSets:
         self.machine = StateMachine()
     
     def scout_explore(self):
-        
-        
-        self.machine.add_state("state1", FindAndClickImageAction('Media/explorenight.png', offset_y=25, check=False), "state2", "failure_state")
-        self.machine.add_state("state2", FindAndClickImageAction('Media/explore.png', offset_y=25), "state3", "failure_state")
-        self.machine.add_state("state3", FindAndClickImageAction('Media/exploreicon.png',delay=.2,check=False), "state4", "failure_state")
-        self.machine.add_state("state4", FindAndClickImageAction('Media/exploreaction.png',delay=.1,check=False), "state5", "failure_state")
-        self.machine.add_state("state5", FindAndClickImageAction('Media/exploreaction.png',delay=1.5,check=False), "state6", "failure_state")
-        self.machine.add_state("state6", FindAndClickImageAction('Media/sendaction.png',delay=.5, retard=1), "state7", "failure_state")
-        self.machine.add_state("state7", PressKeyAction('space'), None, "failure_state")
-        self.machine.set_initial_state("state1")
+        self.machine.add_state("explorenight", FindAndClickImageAction('Media/explorenight.png', offset_y=25), "openmsgs", "exploreday")
+        self.machine.add_state("exploreday", FindAndClickImageAction('Media/explore.png', delay=1, offset_y=25), "openmsgs", "explorenight")
 
+        self.machine.add_state("openmsgs", PressKeyAction('z'), "reportactive")
+        self.machine.add_state("reportactive", ManualClickAction(27,8,delay=.2), "explorationreport")
+        self.machine.add_state("explorationreport", FindAndClickImageAction('Media/explorationreport.png',delay=.2), "villagereport", "explorationreportactive")
+        self.machine.add_state("explorationreportactive", FindAndClickImageAction('Media/explorationreportactive.png',delay=.2), "villagereport", "explorationreport")
+
+        self.machine.add_state("villagereport", FindAndClickImageAction('Media/villagereport.png', offset_x=370,delay=0), "checkexploredvillage", "barbreport")
+        self.machine.add_state("checkexploredvillage", FindAndClickImageAction('Media/reportbanner.png', delay=0), "barbreport", "clickmonument")
+
+        self.machine.add_state("barbreport", FindAndClickImageAction('Media/barbreport.png', offset_x=370,delay=0), "checkexploredbarb", "barbreport2")
+        self.machine.add_state("checkexploredbarb", FindAndClickImageAction('Media/reportbanner.png', delay=0), "barbreport2", "clickmonument")
+
+        self.machine.add_state("barbreport2", FindAndClickImageAction('Media/barbreport2.png', offset_x=370,delay=0), "checkexploredbarb2", "passreport")
+        self.machine.add_state("checkexploredbarb2", FindAndClickImageAction('Media/reportbanner.png', delay=0), "passreport", "clickmonument")
+        
+        self.machine.add_state("passreport", FindAndClickImageAction('Media/passreport.png', offset_x=370,delay=0), "checkexploredpass", "holyreport")
+        self.machine.add_state("checkexploredpass", FindAndClickImageAction('Media/reportbanner.png', delay=0), "holyreport", "clickmonument")
+
+        self.machine.add_state("holyreport", FindAndClickImageAction('Media/holyreport.png', offset_x=370,delay=0), "checkexploredholy", "cavereport")
+        self.machine.add_state("checkexploredholy", FindAndClickImageAction('Media/reportbanner.png', delay=0), "cavereport", "clickmonument")
+
+        self.machine.add_state("cavereport", FindAndClickImageAction('Media/cavereport.png', offset_x=300, offset_y=20,delay=.1), "checkexploredcave", "emptyreport")
+        self.machine.add_state("checkexploredcave", FindAndClickImageAction('Media/reportbanner.png', delay=.1), "emptyreport", "clickcave")
+        self.machine.add_state("clickcave", ManualClickAction(50,54,delay=2), "investigateaction")
+        self.machine.add_state("investigateaction", FindAndClickImageAction('Media/investigateaction.png',delay=.2), "sendactioncave","investigateaction")
+        self.machine.add_state("sendactioncave", FindAndClickImageAction('Media/sendaction.png',delay=.2), "backtocity","sendactioncave")
+
+
+
+        self.machine.add_state("checkexplored", FindAndClickImageAction('Media/reportbanner.png', delay=.1), "scouticon", "clickmonument")
+        self.machine.add_state("scouticon", FindAndClickImageAction('Media/scoutticon.png', offset_x=30,delay=.1), "barbreport", "failexplorenight")
+        self.machine.add_state("clickmonument", ManualClickAction(50,54,delay=2), "backtocitylong", "clickmonument")
+        self.machine.add_state("backtocitylong", PressKeyAction('space',delay=4), "explorenight")
+        # same but press esc
+
+        self.machine.add_state("emptyreport", PressKeyAction('escape'), "failexplorenight")
+        self.machine.add_state("failexplorenight", FindAndClickImageAction('Media/explorenight.png', offset_y=25), "exploreicon", "failexploreday")
+        self.machine.add_state("failexploreday", FindAndClickImageAction('Media/explore.png', offset_y=25), "exploreicon", "failexplorenight")
+
+        self.machine.add_state("exploreicon", FindAndClickImageAction('Media/exploreicon.png',delay=.4), "exploreaction", "failexplorenight")
+        self.machine.add_state("exploreaction", FindAndClickImageAction('Media/exploreaction.png',delay=1), "exploreactionfog", "exploreaction")
+
+        self.machine.add_state("exploreactionfog", FindAndClickImageAction('Media/exploreaction.png',delay=2), "exploreactionfogcheck", "exploreactionfogcheck")
+        self.machine.add_state("exploreactionfogcheck", FindAndClickImageAction('Media/exploreaction.png',delay=.1), "exploreactionfog", "sendaction")
+
+        self.machine.add_state("sendaction", FindAndClickImageAction('Media/sendaction.png',delay=1.2, retard=1), "sendactioncheck", "sendactioncheck")
+        self.machine.add_state("sendactioncheck", FindAndClickImageAction('Media/sendaction.png',delay=1.2, retard=1), "sendaction", "backtocity")
+
+        self.machine.add_state("backtocity", PressKeyAction('space'),"explorenight")
+        self.machine.set_initial_state("explorenight")
+        return self.machine
+    
+    def scout (self):
+        FindAndClickImageAction('Media/reportactive.png', check=False,delay=.2),
+        self.machine.set_initial_state("scoutbox")
         return self.machine
     
     def farm_barb (self):
-
+        
         self.machine.add_state("cityview", PressKeyAction('space'), "birdview","cityview")
         self.machine.add_state("birdview", PressKeyAction('f'), "barbland","cityview")
         self.machine.add_state("barbland", FindAndClickImageAction('Media/barbland.png'), "searchaction","birdview")
         self.machine.add_state("searchaction", FindAndClickImageAction('Media/searchaction.png'), "arrow","barbland")
-        self.machine.add_state("arrow", FindAndClickImageAction('Media/arrow.png', offset_y=80), "attackaction","searchaction")
+        self.machine.add_state("arrow", FindAndClickImageAction('Media/arrow.png',delay=2, offset_y=90), "attackaction","searchaction")
         self.machine.add_state("attackaction", FindAndClickImageAction('Media/attackaction.png'), "lohar","attackaction")
-        self.machine.add_state("lohar", FindAndClickImageAction('Media/lohar.png'), "smallmarchaction","newtroopaction")
+        self.machine.add_state("lohar", ManualClickAction(96,80), "smallmarchaction","newtroopaction")
+        #self.machine.add_state("lohar", FindAndClickImageAction('Media/lohar.png'), "smallmarchaction","newtroopaction")
         self.machine.add_state("newtroopaction", FindAndClickImageAction('Media/newtroopaction.png'), "marchaction","newtroopaction")
         self.machine.add_state("marchaction", FindAndClickImageAction('Media/marchaction.png'), "victory","marchaction")
         self.machine.add_state("smallmarchaction", FindAndClickImageAction('Media/smallmarchaction.png'), "victory","smallmarchaction")
-        self.machine.add_state("victory", FindImageAction('Media/victory.png'), "birdview","victory")
+        self.machine.add_state("victory", FindImageAction('Media/victory.png', delay=0.2), "birdview","victory")
         self.machine.set_initial_state("cityview")
         return self.machine
 
@@ -197,8 +245,8 @@ class ActionSets:
     ]
 
     def lyceum (self):
-        self.machine.add_state("sstittle",  ScreenshotAction(33.5,85,35,43), "ettitle")
-        self.machine.add_state("ettitle", ExtractTextAction(description= " Question: In rise of kingdoms, "), "ssq1")
+        self.machine.add_state("sstittle",  ScreenshotAction(33.7,77,33.5,43), "ettitle")
+        self.machine.add_state("ettitle", ExtractTextAction(description= " Question: "), "ssq1")
         self.machine.add_state("ssq1", ScreenshotAction(33,52,45,51,), "eq1")
         self.machine.add_state("eq1",ExtractTextAction(description= " A: ", aggregate=True), "ssq2")
         self.machine.add_state("ssq2", ScreenshotAction(57,74,45,51), "eq2")
@@ -210,6 +258,24 @@ class ActionSets:
         self.machine.add_state("cgpt", ChatGPTAction(),"sstittle")
         self.machine.set_initial_state("sstittle")
         return self.machine
+    
+    def lyceumMid (self):
+        self.machine.add_state("keypress", WaitForKeyPressAction('k'), "sstittle","keypress")
+        self.machine.add_state("sstittle",  ScreenshotAction(33.7,80,39.5,49), "ettitle")
+        self.machine.add_state("ettitle", ExtractTextAction(description= " Question: In rise of kingdoms, "), "ssq1")
+        self.machine.add_state("ssq1", ScreenshotAction(33,52,49.5,57), "eq1")
+        self.machine.add_state("eq1",ExtractTextAction(description= " A: ", aggregate=True), "ssq2")
+        self.machine.add_state("ssq2", ScreenshotAction(57,74,49.5,57), "eq2")
+        self.machine.add_state("eq2", ExtractTextAction(description= " B: ", aggregate=True), "ssq3")
+        self.machine.add_state("ssq3",  ScreenshotAction(33,52,58,66), "eq3")
+        self.machine.add_state("eq3", ExtractTextAction(description= " C: ", aggregate=True), "ssq4")
+        self.machine.add_state("ssq4", ScreenshotAction(57,74,58,66), "eq4")
+        self.machine.add_state("eq4", ExtractTextAction(description= " D: ", aggregate=True), "cgpt")
+        self.machine.add_state("cgpt", ChatGPTAction(midterm=True),"keypress")
+        self.machine.set_initial_state("keypress")
+        return self.machine
+    
+    
 
     def explore_caves():
         return[

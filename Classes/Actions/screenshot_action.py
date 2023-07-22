@@ -1,5 +1,6 @@
 from Actions.action import Action
 from window_handler import WindowHandler
+import os
 
 class ScreenshotAction(Action):
     def __init__(self, x_begin, x_end, y_begin, y_end, output_path="test.png", skip_check_first_time=False):
@@ -13,6 +14,7 @@ class ScreenshotAction(Action):
         self.window_handler = WindowHandler()
 
     def execute(self):
+        #print exact time of execution
         screenshot, win = self.window_handler.screenshot_window(self.window_title)
         
         # Crop screenshot
@@ -24,5 +26,10 @@ class ScreenshotAction(Action):
         
         cropped_screenshot = screenshot.crop((left, upper, right, lower))
 
+        #delete self.output_path if it exists
+        try:
+            os.remove(self.output_path)
+        except OSError:
+            pass
         cropped_screenshot.save(self.output_path)
         return True

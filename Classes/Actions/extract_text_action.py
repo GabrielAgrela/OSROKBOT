@@ -34,12 +34,6 @@ class ExtractTextAction(Action):
             img = img.point(lambda x: 0 if x < 195 else 255, '1')
             img = ImageOps.invert(img)
 
-        # Invert colors
-        
-
-        # Scale the image
-        
-
         # Save the processed image
         img.save("testprocessed.png")
         
@@ -52,9 +46,12 @@ class ExtractTextAction(Action):
                     f.write("")
                 
             img = self.preprocess_image(self.image_path)
-            text = pytesseract.image_to_string(img, lang='eng', config='--oem 3 --psm 10')
+            text = pytesseract.image_to_string(img, lang='eng', config='--oem 3 --psm 6')
 
             text = self.description + text
+            #make text be all in same line
+            text = text.replace("\n", " ")
+
             print("OCR : ", text) 
             with open('string.txt', 'a') as f:
                 f.write(text)
