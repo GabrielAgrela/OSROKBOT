@@ -28,7 +28,7 @@ class ExtractTextAction(Action):
         width, height = img.size
         img = img.resize((width*5, height*5), Image.ANTIALIAS)
         # Binarization
-        if "Question" in self.description:
+        if "Give me the" in self.description:
             img = img.point(lambda x: 0 if x < 140 else 255, '1')
         else:
             img = img.point(lambda x: 0 if x < 195 else 255, '1')
@@ -47,14 +47,15 @@ class ExtractTextAction(Action):
                 
             img = self.preprocess_image(self.image_path)
             text = pytesseract.image_to_string(img, lang='eng', config='--oem 3 --psm 6')
-
+            text = text.replace("\n", "")
+            #remove first space from text
             text = self.description + text
             #make text be all in same line
-            text = text.replace("\n", " ")
+            print(text)
 
-            print("OCR : ", text) 
+            #print("OCR : ", text) 
             with open('string.txt', 'a') as f:
-                f.write(text)
+                f.write("\n"+text)
             return True
         except Exception as e:
             print(f"Failed to extract text from image: {e}")

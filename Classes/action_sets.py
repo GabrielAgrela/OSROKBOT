@@ -87,14 +87,39 @@ class ActionSets:
         self.machine.add_state("birdview", PressKeyAction('f'), "barbland","cityview")
         self.machine.add_state("barbland", FindAndClickImageAction('Media/barbland.png'), "searchaction","birdview")
         self.machine.add_state("searchaction", FindAndClickImageAction('Media/searchaction.png'), "arrow","barbland")
-        self.machine.add_state("arrow", FindAndClickImageAction('Media/arrow.png',delay=2, offset_y=90), "attackaction","searchaction")
+        self.machine.add_state("arrow", FindAndClickImageAction('Media/arrow.png',delay=2, offset_y=90), "attackaction","birdview")
         self.machine.add_state("attackaction", FindAndClickImageAction('Media/attackaction.png'), "lohar","attackaction")
-        self.machine.add_state("lohar", ManualClickAction(96,80), "smallmarchaction","newtroopaction")
+        #self.machine.add_state("lohar", ManualClickAction(96,80), "smallmarchaction","newtroopaction")
+        self.machine.add_state("lohar", FindAndClickImageAction('Media/lohar.png'), "smallmarchaction","smallmarchaction")
         #self.machine.add_state("lohar", FindAndClickImageAction('Media/lohar.png'), "smallmarchaction","newtroopaction")
-        self.machine.add_state("newtroopaction", FindAndClickImageAction('Media/newtroopaction.png'), "marchaction","newtroopaction")
-        self.machine.add_state("marchaction", FindAndClickImageAction('Media/marchaction.png'), "victory","marchaction")
-        self.machine.add_state("smallmarchaction", FindAndClickImageAction('Media/smallmarchaction.png'), "victory","smallmarchaction")
+        #self.machine.add_state("newtroopaction", FindAndClickImageAction('Media/newtroopaction.png'), "marchaction","newtroopaction")
+        #self.machine.add_state("marchaction", FindAndClickImageAction('Media/marchaction.png'), "victory","marchaction")
+        self.machine.add_state("smallmarchaction", FindAndClickImageAction('Media/smallmarchaction.png'), "victory","birdview")
         self.machine.add_state("victory", FindImageAction('Media/victory.png', delay=0.2), "birdview","victory")
+        self.machine.set_initial_state("cityview")
+        return self.machine
+    
+    def farm_rss (self):
+        
+        self.machine.add_state("cityview", PressKeyAction('space'), "birdview")
+        self.machine.add_state("birdview", PressKeyAction('f'), "logicon")
+        self.machine.add_state("logicon", FindAndClickImageAction('Media/logicon.png'), "searchaction","cityview")
+        self.machine.add_state("searchaction", FindAndClickImageAction('Media/searchaction.png'), "arrow","logicon")
+        self.machine.add_state("arrow", FindAndClickImageAction('Media/arrow.png',delay=2, offset_y=70), "gatheraction","birdview")
+        self.machine.add_state("gatheraction", FindAndClickImageAction('Media/gatheraction.png'), "newtroopaction","cityview")
+
+        self.machine.add_state("newtroopaction", FindAndClickImageAction('Media/newtroopaction.png', delay=1), "marchaction","smallmarchaction")
+        self.machine.add_state("smallmarchaction", FindAndClickImageAction('Media/smallmarchaction.png', offset_x=300), "escape2","cityview")
+        self.machine.add_state("escape2", PressKeyAction('escape'), "openmsgs","cityview")
+
+        self.machine.add_state("marchaction", FindAndClickImageAction('Media/marchaction.png'), "birdview","marchaction")
+
+        self.machine.add_state("openmsgs", PressKeyAction('z', delay=1), "reportactive")
+        self.machine.add_state("reportactive", ManualClickAction(27,8,delay=.2), "gatheringicon")
+        self.machine.add_state("gatheringicon", FindAndClickImageAction('Media/gatheringicon.png'), "newicon","gatheringicon")
+        self.machine.add_state("newicon", FindAndClickImageAction('Media/newicon.png', delay=60), "escape","reportactive")
+        self.machine.add_state("escape", PressKeyAction('escape'), "birdview")
+
         self.machine.set_initial_state("cityview")
         return self.machine
 
@@ -246,15 +271,15 @@ class ActionSets:
 
     def lyceum (self):
         self.machine.add_state("sstittle",  ScreenshotAction(33.7,77,33.5,43), "ettitle")
-        self.machine.add_state("ettitle", ExtractTextAction(description= " Question: "), "ssq1")
+        self.machine.add_state("ettitle", ExtractTextAction(description= "Give me the answer after thinking step by step:\n "), "ssq1")
         self.machine.add_state("ssq1", ScreenshotAction(33,52,45,51,), "eq1")
-        self.machine.add_state("eq1",ExtractTextAction(description= " A: ", aggregate=True), "ssq2")
+        self.machine.add_state("eq1",ExtractTextAction(description= "\n\n which of these is the most similar to your answer?: \nA: ", aggregate=True), "ssq2")
         self.machine.add_state("ssq2", ScreenshotAction(57,74,45,51), "eq2")
-        self.machine.add_state("eq2", ExtractTextAction(description= " B: ", aggregate=True), "ssq3")
+        self.machine.add_state("eq2", ExtractTextAction(description= "B: ", aggregate=True), "ssq3")
         self.machine.add_state("ssq3",  ScreenshotAction(33,52,54,60), "eq3")
-        self.machine.add_state("eq3", ExtractTextAction(description= " C: ", aggregate=True), "ssq4")
+        self.machine.add_state("eq3", ExtractTextAction(description= "C: ", aggregate=True), "ssq4")
         self.machine.add_state("ssq4", ScreenshotAction(57,74,54,60), "eq4")
-        self.machine.add_state("eq4", ExtractTextAction(description= " D: ", aggregate=True), "cgpt")
+        self.machine.add_state("eq4", ExtractTextAction(description= "D: ", aggregate=True), "cgpt")
         self.machine.add_state("cgpt", ChatGPTAction(),"sstittle")
         self.machine.set_initial_state("sstittle")
         return self.machine
@@ -262,9 +287,9 @@ class ActionSets:
     def lyceumMid (self):
         self.machine.add_state("keypress", WaitForKeyPressAction('k'), "sstittle","keypress")
         self.machine.add_state("sstittle",  ScreenshotAction(33.7,80,39.5,49), "ettitle")
-        self.machine.add_state("ettitle", ExtractTextAction(description= " Question: In rise of kingdoms, "), "ssq1")
+        self.machine.add_state("ettitle", ExtractTextAction(description= "Give me the answer after thinking step by step:\n "), "ssq1")
         self.machine.add_state("ssq1", ScreenshotAction(33,52,49.5,57), "eq1")
-        self.machine.add_state("eq1",ExtractTextAction(description= " A: ", aggregate=True), "ssq2")
+        self.machine.add_state("eq1",ExtractTextAction(description= "\n\n which of these is the most similar to your answer?: \nA: ", aggregate=True), "ssq2")
         self.machine.add_state("ssq2", ScreenshotAction(57,74,49.5,57), "eq2")
         self.machine.add_state("eq2", ExtractTextAction(description= " B: ", aggregate=True), "ssq3")
         self.machine.add_state("ssq3",  ScreenshotAction(33,52,58,66), "eq3")
