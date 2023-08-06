@@ -116,7 +116,9 @@ class ActionSets:
 
         self.machine.add_state("openmsgs", PressKeyAction('z', delay=1), "reportactive")
         self.machine.add_state("reportactive", ManualClickAction(27,8,delay=.2), "gatheringicon")
-        self.machine.add_state("gatheringicon", FindAndClickImageAction('Media/gatheringicon.png'), "newicon","gatheringicon")
+        self.machine.add_state("gatheringicon", FindAndClickImageAction('Media/gatheringicon.png'), "newicon","clickleftcollumn")
+        self.machine.add_state("clickleftcollumn", ManualClickAction(27,20,delay=.2), "scroll")
+        self.machine.add_state("scroll", ManualScrollAction(y_scroll=10), "gatheringicon")
         self.machine.add_state("newicon", FindAndClickImageAction('Media/newicon.png', delay=60), "escape","reportactive")
         self.machine.add_state("escape", PressKeyAction('escape'), "birdview")
 
