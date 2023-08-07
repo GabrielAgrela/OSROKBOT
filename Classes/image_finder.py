@@ -82,9 +82,7 @@ class ImageFinder:
                 return True
 
             pyautogui.click(center_x + x_offset_scaled, center_y + y_offset_scaled)
-            print("pos ", center_x + x_offset_scaled, center_y + y_offset_scaled)
             prev_active_window.activate()
-            print("pos antigo", prev_mouse_x, prev_mouse_y)
             pyautogui.moveTo(prev_mouse_x, prev_mouse_y)
 
             return True
