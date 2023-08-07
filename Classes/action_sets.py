@@ -14,12 +14,16 @@ from Actions.wait_for_keypress_action import WaitForKeyPressAction
 from manual_click import ManualClick
 from email_handler import EmailHandler
 from state_machine import StateMachine
+import random
 
 class ActionSets:
     def __init__(self):
         self.manual_click = ManualClick()
         self.email_handler = EmailHandler("fdsfsdfsrfwefes@proton.me", "fdsfsADDA1235+")
         self.machine = StateMachine()
+
+    def choose_icon(self):
+        return random.choice(["logicon", "cornicon", "goldicon", "stoneicon"])
     
     def scout_explore(self):
         self.machine.add_state("explorenight", FindAndClickImageAction('Media/explorenight.png', offset_y=25), "openmsgs", "exploreday")
@@ -82,19 +86,19 @@ class ActionSets:
         return self.machine
     
     def farm_barb (self):
-        
+        self.machine.add_state("restart", PressKeyAction('escape'), "cityview")
         self.machine.add_state("cityview", PressKeyAction('space'), "birdview","cityview")
         self.machine.add_state("birdview", PressKeyAction('f'), "barbland","cityview")
-        self.machine.add_state("barbland", FindAndClickImageAction('Media/barbland.png'), "searchaction","birdview")
-        self.machine.add_state("searchaction", FindAndClickImageAction('Media/searchaction.png'), "arrow","barbland")
-        self.machine.add_state("arrow", FindAndClickImageAction('Media/arrow.png',delay=2, offset_y=90), "attackaction","birdview")
-        self.machine.add_state("attackaction", FindAndClickImageAction('Media/attackaction.png'), "lohar","attackaction")
+        self.machine.add_state("barbland", FindAndClickImageAction('Media/barbland.png'), "searchaction","cityview")
+        self.machine.add_state("searchaction", FindAndClickImageAction('Media/searchaction.png'), "arrow","restart")
+        self.machine.add_state("arrow", FindAndClickImageAction('Media/arrow.png',delay=2, offset_y=80), "attackaction","restart")
+        self.machine.add_state("attackaction", FindAndClickImageAction('Media/attackaction.png'), "lohar","restart")
         #self.machine.add_state("lohar", ManualClickAction(96,80), "smallmarchaction","newtroopaction")
-        self.machine.add_state("lohar", FindAndClickImageAction('Media/lohar.png'), "smallmarchaction","smallmarchaction")
+        self.machine.add_state("lohar", FindAndClickImageAction('Media/lohar.png'), "smallmarchaction","restart")
         #self.machine.add_state("lohar", FindAndClickImageAction('Media/lohar.png'), "smallmarchaction","newtroopaction")
         #self.machine.add_state("newtroopaction", FindAndClickImageAction('Media/newtroopaction.png'), "marchaction","newtroopaction")
         #self.machine.add_state("marchaction", FindAndClickImageAction('Media/marchaction.png'), "victory","marchaction")
-        self.machine.add_state("smallmarchaction", FindAndClickImageAction('Media/smallmarchaction.png'), "victory","birdview")
+        self.machine.add_state("smallmarchaction", FindAndClickImageAction('Media/smallmarchaction.png'), "victory","restart")
         self.machine.add_state("victory", FindImageAction('Media/victory.png', delay=0.2), "birdview","victory")
         self.machine.set_initial_state("cityview")
         return self.machine
@@ -102,8 +106,11 @@ class ActionSets:
     def farm_rss (self):
         
         self.machine.add_state("cityview", PressKeyAction('space'), "birdview")
-        self.machine.add_state("birdview", PressKeyAction('f'), "logicon")
+        self.machine.add_state("birdview", PressKeyAction('f', retard=1), self.choose_icon())
         self.machine.add_state("logicon", FindAndClickImageAction('Media/logicon.png'), "searchaction","cityview")
+        self.machine.add_state("cornicon", FindAndClickImageAction('Media/cornicon.png'), "searchaction","cityview")
+        self.machine.add_state("goldicon", FindAndClickImageAction('Media/goldicon.png'), "searchaction","cityview")
+        self.machine.add_state("stoneicon", FindAndClickImageAction('Media/stoneicon.png'), "searchaction","cityview")
         self.machine.add_state("searchaction", FindAndClickImageAction('Media/searchaction.png'), "arrow","logicon")
         self.machine.add_state("arrow", FindAndClickImageAction('Media/arrow.png',delay=2, offset_y=70), "gatheraction","birdview")
         self.machine.add_state("gatheraction", FindAndClickImageAction('Media/gatheraction.png'), "newtroopaction","cityview")
@@ -112,11 +119,11 @@ class ActionSets:
         self.machine.add_state("smallmarchaction", FindAndClickImageAction('Media/smallmarchaction.png', offset_x=300), "escape2","cityview")
         self.machine.add_state("escape2", PressKeyAction('escape'), "openmsgs","cityview")
 
-        self.machine.add_state("marchaction", FindAndClickImageAction('Media/marchaction.png'), "birdview","marchaction")
+        self.machine.add_state("marchaction", FindAndClickImageAction('Media/marchaction.png'), "birdview","birdview")
 
         self.machine.add_state("openmsgs", PressKeyAction('z', delay=1), "reportactive")
         self.machine.add_state("reportactive", ManualClickAction(27,8,delay=.2), "gatheringicon")
-        self.machine.add_state("gatheringicon", FindAndClickImageAction('Media/gatheringicon.png'), "newicon","clickleftcollumn")
+        self.machine.add_state("gatheringicon", FindAndClickImageAction('Media/gatheringicon.png', delay=0.5), "newicon","clickleftcollumn")
         self.machine.add_state("clickleftcollumn", ManualClickAction(27,20,delay=.2, remember_position=False), "scroll")
         self.machine.add_state("scroll", ManualScrollAction(y_scroll=10), "gatheringicon")
         self.machine.add_state("newicon", FindAndClickImageAction('Media/newicon.png', delay=60), "escape","reportactive")

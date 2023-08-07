@@ -20,7 +20,7 @@ class GameAutomator:
 
     def start(self, steps):
         threading.Thread(target=self.run, args=(steps,)).start()
-        keyboard.add_hotkey('l', self.toggle_pause)  # Set up 'esc' as a hotkey to toggle pause/resume
+        #keyboard.add_hotkey('l', self.toggle_pause)  # Set up 'esc' as a hotkey to toggle pause/resume
 
     def stop(self):
         self.stop_event.set()
