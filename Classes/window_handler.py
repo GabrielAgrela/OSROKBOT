@@ -19,14 +19,19 @@ class WindowHandler:
         sct = mss()
         monitor = {"top": win.top, "left": win.left, "width": win.width, "height": win.height}
         try:
+            print("apanhou o monitor")
             img = sct.grab(monitor)
         finally:
+            print("erro ao apanhar o monitor")
             sct.close()
         screenshot = Image.frombytes("RGB", img.size, img.rgb, "raw")
+        print("tirou screenshot")
         return screenshot, win
 
     
     def activate_window(self, title="Rise of Kingdoms"):
+        print("tentou ativar window")
         win = self.get_window(title)
         win.activate()
+        print("ativou window")
         return 
