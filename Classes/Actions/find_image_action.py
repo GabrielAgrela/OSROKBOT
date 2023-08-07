@@ -1,6 +1,7 @@
 from Actions.action import Action
 from image_finder import ImageFinder
 from window_handler import WindowHandler
+import time
 
 class FindImageAction(Action):
     def __init__(self, image: str, skip_check_first_time=False, check=True, dont_find=False, delay=0.1):
@@ -15,6 +16,7 @@ class FindImageAction(Action):
 
 
     def execute(self):
+        time.sleep(self.delay)
         screenshot, win = self.window_handler.screenshot_window(self.window_title)
         break_action_group = self.image_finder.find_image(self.image, screenshot)
         if not self.check:  # if check is false, no need for checks
