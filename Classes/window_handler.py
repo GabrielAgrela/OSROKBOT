@@ -19,10 +19,10 @@ class WindowHandler:
         sct = mss()
         monitor = {"top": win.top, "left": win.left, "width": win.width, "height": win.height}
         try:
-            print("apanhou o monitor")
             img = sct.grab(monitor)
+            print("apanhou o monitor")
         finally:
-            print("erro ao apanhar o monitor")
+            print("erro ao apanhar o monitor",)
             sct.close()
         screenshot = Image.frombytes("RGB", img.size, img.rgb, "raw")
         print("tirou screenshot")
