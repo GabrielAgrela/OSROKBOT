@@ -34,7 +34,7 @@ class GameAutomator:
 if __name__ == "__main__":
     action_sets = ActionSets()
 
-    actions_groups = [action_sets.farm_barb()] 
+    actions_groups = [action_sets.farm_rss()] 
 
     game_automator = GameAutomator('Rise of Kingdoms')
     game_automator.start(actions_groups) 

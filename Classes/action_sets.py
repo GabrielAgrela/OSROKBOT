@@ -121,12 +121,14 @@ class ActionSets:
 
         self.machine.add_state("marchaction", FindAndClickImageAction('Media/marchaction.png'), "birdview","restart")
 
-        self.machine.add_state("openmsgs", PressKeyAction('z', delay=1), "reportactive")
+        self.machine.add_state("openmsgs", PressKeyAction('z', delay=60), "mailicon")
+        self.machine.add_state("mailicon", FindImageAction('Media/mailicon.png', delay=.5), "reportactive","openmsgs")
         self.machine.add_state("reportactive", ManualClickAction(27,8,delay=.2), "gatheringicon")
         self.machine.add_state("gatheringicon", FindAndClickImageAction('Media/gatheringicon.png', delay=0.5), "newicon","clickleftcollumn")
         self.machine.add_state("clickleftcollumn", ManualClickAction(27,20,delay=.2, remember_position=False), "scroll")
         self.machine.add_state("scroll", ManualScrollAction(y_scroll=10), "gatheringicon")
-        self.machine.add_state("newicon", FindAndClickImageAction('Media/newicon.png', delay=60), "escape","reportactive")
+        self.machine.add_state("newicon", FindAndClickImageAction('Media/newicon.png'), "escape","escaperetry")
+        self.machine.add_state("escaperetry", PressKeyAction('escape'), "openmsgs")
         self.machine.add_state("escape", PressKeyAction('escape'), "birdview")
 
         self.machine.set_initial_state("cityview")
