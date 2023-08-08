@@ -23,7 +23,7 @@ class ActionSets:
         self.machine = StateMachine()
 
     def choose_icon(self):
-        return random.choice(["logicon", "cornicon", "goldicon", "stoneicon"])
+        return random.choice(["logicon", "cornicon", "stoneicon"])
     
     def scout_explore(self):
         self.machine.add_state("explorenight", FindAndClickImageAction('Media/explorenight.png', offset_y=25), "openmsgs", "exploreday")
@@ -283,7 +283,7 @@ class ActionSets:
         self.machine.add_state("ettitle", ExtractTextAction(description= "Give me the answer after thinking step by step:\n "), "ssq1")
         self.machine.add_state("ssq1", ScreenshotAction(33,52,45,51,), "eq1")
         self.machine.add_state("eq1",ExtractTextAction(description= "\n\n which of these is the most similar to your answer?: \nA: ", aggregate=True), "ssq2")
-        self.machine.add_state("ssq2", ScreenshotAction(57,74,45,51), "eq2")
+        self.machine.add_state("ssq2", ScreenshotAction(57,76,45,51), "eq2")
         self.machine.add_state("eq2", ExtractTextAction(description= "B: ", aggregate=True), "ssq3")
         self.machine.add_state("ssq3",  ScreenshotAction(33,52,54,60), "eq3")
         self.machine.add_state("eq3", ExtractTextAction(description= "C: ", aggregate=True), "ssq4")

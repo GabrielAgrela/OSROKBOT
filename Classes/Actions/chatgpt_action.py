@@ -20,13 +20,13 @@ class ChatGPTAction:
         self.functions = [
         {
             "name": "return_option_based_on_prompt",
-            "description": "Returns the response to the question in the prompt, ignoring the answer options, returns the chosen answer option (A, B, C or D) based on the prompt, and returns the percentage of how certain it is of that answer option.",
+            "description": "Returns the response to the question in the prompt, thinking step by step, ignoring the answer options, returns the chosen answer option (A, B, C or D) based on the prompt, and returns the percentage of how certain it is of that answer option, will return 0 if unsure.",
             "parameters": {
                 "type": "object",
                 "properties": {
                     "answerComplete": {
                         "type": "string",
-                        "description": "Quick response to the question in the prompt, step by step chain of thought, ignoring the answer options.",
+                        "description": "AFTER THINKING STEP BY STEP, provide response STEP BY STEP  to the question in the prompt",
                     },
                     "answer": {
                         "type": "string",
@@ -36,7 +36,7 @@ class ChatGPTAction:
                     
                     "certainty": {
                         "type": "integer",
-                        "description": "The certainty percentage of the chosen answer option to the question in the prompt.",
+                        "description": "0 if it is unsure of the response, 100 if it is sure of the response.",
                     },
                 },
                 "required": ["answer,certainty,answerComplete"],
@@ -63,7 +63,7 @@ class ChatGPTAction:
         self.messages.append({"role": "user", "content": (self.message)},)
         chat = openai.ChatCompletion.create(
             model="gpt-4-0613",
-            temperature=0.1,
+            temperature=0.0,
             messages=self.messages,
             functions=self.functions,
             function_call={"name": "return_option_based_on_prompt"}
