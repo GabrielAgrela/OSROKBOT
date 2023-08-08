@@ -123,7 +123,8 @@ class ActionSets:
 
         self.machine.add_state("openmsgs", PressKeyAction('z', delay=60), "mailicon")
         self.machine.add_state("mailicon", FindImageAction('Media/mailicon.png', delay=.5), "reportactive","openmsgs")
-        self.machine.add_state("reportactive", ManualClickAction(27,8,delay=.2), "gatheringicon")
+        self.machine.add_state("reportactive", ManualClickAction(27,8,delay=.2), "gatheropen")
+        self.machine.add_state("gatheropen", FindImageAction('Media/gatheropen.png'), "newicon","gatheringicon")
         self.machine.add_state("gatheringicon", FindAndClickImageAction('Media/gatheringicon.png', delay=0.5), "newicon","clickleftcollumn")
         self.machine.add_state("clickleftcollumn", ManualClickAction(27,20,delay=.2, remember_position=False), "scroll")
         self.machine.add_state("scroll", ManualScrollAction(y_scroll=10), "gatheringicon")
