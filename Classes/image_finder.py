@@ -14,7 +14,6 @@ class ImageFinder:
         screen_resolution = (screenshot.shape[1]-8, screenshot.shape[0]-31)  # (width, height)
         
         scaling_factor = (screen_resolution[0] / self.template_resolution[0], screen_resolution[1] / self.template_resolution[1])  # (scale_x, scale_y)
-        print(screen_resolution[0], self.template_resolution[0], screen_resolution[1], self.template_resolution[1])
         return scaling_factor
 
     def _match_image(self, target_image_path, screenshot):

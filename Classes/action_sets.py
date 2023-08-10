@@ -107,7 +107,7 @@ class ActionSets:
     
     def farm_rss (self):
         machine = self.create_machine()
-        machine.add_state("pause", PressKeyAction('escape', retard=10), "restart")
+        machine.add_state("pause", PressKeyAction('escape', retard=65), "restart")
         machine.add_state("restart", PressKeyAction('escape'), "cityview")
         machine.add_state("cityview", PressKeyAction('space'), "birdview")
         machine.add_state("birdview", PressKeyAction('f', retard=1), Helpers.getRandomRss())
@@ -117,7 +117,7 @@ class ActionSets:
         machine.add_state("goldicon", FindAndClickImageAction('Media/goldicon.png'), "searchaction","restart")
         machine.add_state("stoneicon", FindAndClickImageAction('Media/stoneicon.png'), "searchaction","restart")
         machine.add_state("searchaction", FindAndClickImageAction('Media/searchaction.png'), "arrow","logicon")
-        machine.add_state("arrow", FindAndClickImageAction('Media/arrow.png',delay=2, offset_y=70), "gatheraction","restart")
+        machine.add_state("arrow", FindAndClickImageAction('Media/arrow.png',delay=2, offset_y=80), "gatheraction","restart")
         machine.add_state("gatheraction", FindAndClickImageAction('Media/gatheraction.png'), "newtroopaction","restart")
 
         machine.add_state("newtroopaction", FindAndClickImageAction('Media/newtroopaction.png', delay=1), "marchaction","smallmarchaction")
@@ -126,23 +126,12 @@ class ActionSets:
 
         machine.add_state("marchaction", FindAndClickImageAction('Media/marchaction.png'), "birdview","restart")
 
-        machine.add_state("openmsgs", PressKeyAction('z', delay=60), "mailicon")
-        machine.add_state("mailicon", FindImageAction('Media/mailicon.png', delay=.5), "reportactive","openmsgs")
-        machine.add_state("reportactive", ManualClickAction(27,8,delay=.2), "gatheropen")
-        machine.add_state("gatheropen", FindImageAction('Media/gatheropen.png'), "newicon","gatheringicon")
-        machine.add_state("gatheringicon", FindAndClickImageAction('Media/gatheringicon.png', delay=0.5), "newicon","clickleftcollumn")
-        machine.add_state("clickleftcollumn", ManualClickAction(27,20,delay=.2, remember_position=False), "scroll")
-        machine.add_state("scroll", ManualScrollAction(y_scroll=10), "gatheringicon")
-        machine.add_state("newicon", FindAndClickImageAction('Media/newicon.png'), "escape","escaperetry")
-        machine.add_state("escaperetry", PressKeyAction('escape'), "openmsgs")
-        machine.add_state("escape", PressKeyAction('escape'), "birdview")
-
         machine.set_initial_state("cityview")
         return machine
 
     def emailtest (self):
         machine = self.create_machine()
-        machine.add_state("findcaptcha",  FindAndClickImageAction('Media/captchachest.png',delay=1), "notify","findcaptcha")
+        machine.add_state("findcaptcha",  FindAndClickImageAction('Media/captchachest.png',delay=29), "notify","findcaptcha")
         machine.add_state("notify",  SendEmailAction(), "quit")
         machine.add_state("quit",  QuitAction(game_automator=self.game_automator), "findcaptcha")
         machine.set_initial_state("findcaptcha")
