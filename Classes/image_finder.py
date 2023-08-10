@@ -8,11 +8,13 @@ from termcolor import colored
 class ImageFinder:
     def __init__(self, threshold=0.8):
         self.threshold = threshold
-        self.template_resolution = (1086, 637)  # original resolution at which the template was taken
+        self.template_resolution = (1280, 720)  # original resolution at which the template was taken
 
     def _get_scaling_factor(self, screenshot):
-        screen_resolution = (screenshot.shape[1], screenshot.shape[0])  # (width, height)
+        screen_resolution = (screenshot.shape[1]-8, screenshot.shape[0]-31)  # (width, height)
+        
         scaling_factor = (screen_resolution[0] / self.template_resolution[0], screen_resolution[1] / self.template_resolution[1])  # (scale_x, scale_y)
+        print(screen_resolution[0], self.template_resolution[0], screen_resolution[1], self.template_resolution[1])
         return scaling_factor
 
     def _match_image(self, target_image_path, screenshot):

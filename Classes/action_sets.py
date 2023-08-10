@@ -107,6 +107,7 @@ class ActionSets:
     
     def farm_rss (self):
         machine = self.create_machine()
+        machine.add_state("pause", PressKeyAction('escape', retard=10), "restart")
         machine.add_state("restart", PressKeyAction('escape'), "cityview")
         machine.add_state("cityview", PressKeyAction('space'), "birdview")
         machine.add_state("birdview", PressKeyAction('f', retard=1), Helpers.getRandomRss())
@@ -120,8 +121,8 @@ class ActionSets:
         machine.add_state("gatheraction", FindAndClickImageAction('Media/gatheraction.png'), "newtroopaction","restart")
 
         machine.add_state("newtroopaction", FindAndClickImageAction('Media/newtroopaction.png', delay=1), "marchaction","smallmarchaction")
-        machine.add_state("smallmarchaction", FindAndClickImageAction('Media/smallmarchaction.png', offset_x=300), "escape2","restart")
-        machine.add_state("escape2", PressKeyAction('escape'), "openmsgs","restart")
+        machine.add_state("smallmarchaction", FindAndClickImageAction('Media/smallmarchaction.png', offset_x=300), "pause","restart")
+        machine.add_state("escape2", PressKeyAction('escape', retard=1), "openmsgs","restart")
 
         machine.add_state("marchaction", FindAndClickImageAction('Media/marchaction.png'), "birdview","restart")
 
@@ -141,7 +142,7 @@ class ActionSets:
 
     def emailtest (self):
         machine = self.create_machine()
-        machine.add_state("findcaptcha",  FindAndClickImageAction('Media/captchachest.png',delay=59), "notify","findcaptcha")
+        machine.add_state("findcaptcha",  FindAndClickImageAction('Media/captchachest.png',delay=1), "notify","findcaptcha")
         machine.add_state("notify",  SendEmailAction(), "quit")
         machine.add_state("quit",  QuitAction(game_automator=self.game_automator), "findcaptcha")
         machine.set_initial_state("findcaptcha")

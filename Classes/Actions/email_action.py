@@ -10,9 +10,10 @@ import os
 
 class SendEmailAction(Action):
     def __init__(self,delay=0.1, subject="Captcha detected", body=" ", to_email="", from_email="rokemailsendertest@gmail.com", from_password="prtnezkgfevwihok", smtp_server='smtp.gmail.com', smtp_port=587):
+        load_dotenv()
         self.subject = subject
         self.body = body
-        self.to_email = to_email
+        self.to_email = os.getenv('EMAIL')
         self.from_email = from_email
         self.from_password = from_password
         self.smtp_server = smtp_server
@@ -20,7 +21,7 @@ class SendEmailAction(Action):
         self.delay = delay
 
     def execute(self):
-        load_dotenv()
+        
         time.sleep(self.delay)
         msg = MIMEMultipart()
         msg['From'] = self.from_email
