@@ -87,7 +87,10 @@ class ImageFinder:
 
             return True
         else:
-            print(colored(f"No matches for {target_image_path} found in screenshot.", "red"))
+            if target_image_path != "Media/captchachest.png":
+                print(colored(f"No matches for {target_image_path} found in screenshot.", "red"))
+            else:
+                print(colored(f"No matches for {target_image_path} found in screenshot.", "light_magenta"))
             if max_matches != 0:
                 return True
             return False

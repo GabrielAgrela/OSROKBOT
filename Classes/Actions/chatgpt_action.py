@@ -26,7 +26,7 @@ class ChatGPTAction:
                 "properties": {
                     "answerComplete": {
                         "type": "string",
-                        "description": "AFTER THINKING STEP BY STEP, provide response STEP BY STEP  to the question in the prompt",
+                        "description": "very short answer to the question in the prompt.",
                     },
                     "answer": {
                         "type": "string",
@@ -98,8 +98,10 @@ class ChatGPTAction:
             try:
                 print("\n\n I think it's " , colored(tempOption.replace("\n",""),"red"), " with " , colored(function_arguments["certainty"],"green"), "%"," certainty because: \n", function_arguments["answerComplete"])
             except:
-                print("\n\n I think it's " , colored(function_response,"red"), " with " , colored(function_arguments["certainty"],"green"), "%"," certainty because: \n", function_arguments["answerComplete"])
-
+                try:
+                    print("\n\n I think it's " , colored(function_response,"red"), " with " , colored(function_arguments["certainty"],"green"), "%"," certainty because: \n", function_arguments["answerComplete"])
+                except:
+                    print("fucked up")
             
 
             self.messages.clear()

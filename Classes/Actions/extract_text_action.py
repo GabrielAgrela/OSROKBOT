@@ -4,8 +4,13 @@ import time
 from PIL import Image, ImageFilter, ImageEnhance,ImageOps
 import cv2
 import numpy as np
+from dotenv import load_dotenv
+import os
 
-pytesseract.pytesseract.tesseract_cmd = r"D:\eu\apps\tess\tesseract.exe"  # Windows
+# Load the .env file
+load_dotenv()
+pytesseract.pytesseract.tesseract_cmd = os.getenv('TESSERACT_PATH')
+ANTIALIAS_METHOD = getattr(Image, os.getenv('ANTIALIAS_METHOD'))
 
 
 
@@ -26,7 +31,7 @@ class ExtractTextAction(Action):
         img = img.convert('L')
 
         width, height = img.size
-        img = img.resize((width*5, height*5), Image.ANTIALIAS)
+        img = img.resize((width*5, height*5), ANTIALIAS_METHOD)
         # Binarization
         if "Give me the" in self.description:
             img = img.point(lambda x: 0 if x < 140 else 255, '1')

@@ -12,17 +12,23 @@ class StateMachine:
     def execute(self):
         if self.current_state is None:
             raise Exception("Initial state is not set")
-            
+
         current_state_info = self.states[self.current_state]
-        
+
         # Try to execute the current state
         state = current_state_info[0]
         result = state.execute()
-        
+
         # If the action executes successfully, move to the next state
         if result:
-            self.current_state = current_state_info[1]
+            next_state_on_success = current_state_info[1]
+            # Check if next_state_on_success is a function, and call it if it is
+            if callable(next_state_on_success):
+                self.current_state = next_state_on_success()
+            else:
+                self.current_state = next_state_on_success
         else:
             self.current_state = current_state_info[2]
-                
+
         return result
+

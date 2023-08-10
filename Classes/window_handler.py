@@ -27,6 +27,9 @@ class WindowHandler:
 
     
     def activate_window(self, title="Rise of Kingdoms"):
-        win = self.get_window(title)
-        win.activate()
+        try:
+            win = self.get_window(title)
+            win.activate()
+        except:
+            print("Window not found")
         return 
