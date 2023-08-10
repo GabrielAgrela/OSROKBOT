@@ -93,7 +93,7 @@ class ActionSets:
         machine.add_state("birdview", PressKeyAction('f'), "barbland","cityview")
         machine.add_state("barbland", FindAndClickImageAction('Media/barbland.png'), "searchaction","restart")
         machine.add_state("searchaction", FindAndClickImageAction('Media/searchaction.png'), "arrow","restart")
-        machine.add_state("arrow", FindAndClickImageAction('Media/arrow.png',delay=2, offset_y=80), "attackaction","restart")
+        machine.add_state("arrow", FindAndClickImageAction('Media/arrow.png',delay=1.5, offset_y=105), "attackaction","restart")
         machine.add_state("attackaction", FindAndClickImageAction('Media/attackaction.png'), "lohar","restart")
         #machine.add_state("lohar", ManualClickAction(96,80), "smallmarchaction","newtroopaction")
         machine.add_state("lohar", FindAndClickImageAction('Media/lohar.png'), "smallmarchaction","restart")
@@ -117,7 +117,7 @@ class ActionSets:
         machine.add_state("goldicon", FindAndClickImageAction('Media/goldicon.png'), "searchaction","restart")
         machine.add_state("stoneicon", FindAndClickImageAction('Media/stoneicon.png'), "searchaction","restart")
         machine.add_state("searchaction", FindAndClickImageAction('Media/searchaction.png'), "arrow","logicon")
-        machine.add_state("arrow", FindAndClickImageAction('Media/arrow.png',delay=2, offset_y=80), "gatheraction","restart")
+        machine.add_state("arrow", FindAndClickImageAction('Media/arrow.png',delay=1.5, offset_y=105), "gatheraction","restart")
         machine.add_state("gatheraction", FindAndClickImageAction('Media/gatheraction.png'), "newtroopaction","restart")
 
         machine.add_state("newtroopaction", FindAndClickImageAction('Media/newtroopaction.png', delay=1), "marchaction","smallmarchaction")
