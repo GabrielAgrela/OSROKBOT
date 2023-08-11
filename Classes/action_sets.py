@@ -131,7 +131,7 @@ class ActionSets:
 
     def emailtest (self):
         machine = self.create_machine()
-        machine.add_state("findcaptcha",  FindAndClickImageAction('Media/captchachest.png',delay=29), "notify","findcaptcha")
+        machine.add_state("findcaptcha",  FindAndClickImageAction('Media/captchachest.png',delay=1), "notify","findcaptcha")
         machine.add_state("notify",  SendEmailAction(), "quit")
         machine.add_state("quit",  QuitAction(game_automator=self.game_automator), "findcaptcha")
         machine.set_initial_state("findcaptcha")

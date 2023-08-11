@@ -28,8 +28,11 @@ class WindowHandler:
     
     def activate_window(self, title="Rise of Kingdoms"):
         try:
+            win = self.get_window("OSROKBOT")
+            win.activate()
             win = self.get_window(title)
             win.activate()
+            
         except:
             print("Window not found")
         return 

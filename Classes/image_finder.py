@@ -82,16 +82,16 @@ class ImageFinder:
             if (len(pick) < max_matches and max_matches != 0):
                 return True
 
-            pyautogui.click(center_x + x_offset_scaled, center_y + y_offset_scaled)
-            prev_active_window.activate()
-            pyautogui.moveTo(prev_mouse_x, prev_mouse_y)
-
+            try:
+                pyautogui.click(center_x + x_offset_scaled, center_y + y_offset_scaled)
+                prev_active_window.activate()
+                pyautogui.moveTo(prev_mouse_x, prev_mouse_y)
+            except:
+                print("woops")
             return True
         else:
             if target_image_path != "Media/captchachest.png":
                 print(colored(f"No matches for {target_image_path} found in screenshot.", "red"))
-            else:
-                print(colored(f"No matches for {target_image_path} found in screenshot.", "light_magenta"))
             if max_matches != 0:
                 return True
             return False
