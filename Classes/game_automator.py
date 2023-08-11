@@ -41,6 +41,9 @@ class GameAutomator:
         else:
             self.pause_event.set()  # Pause
 
+    def is_paused(self):
+        return self.pause_event.is_set()
+
 
 if __name__ == "__main__":
     
