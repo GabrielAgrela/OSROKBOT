@@ -121,7 +121,7 @@ class ActionSets:
         machine.add_state("gatheraction", FindAndClickImageAction('Media/gatheraction.png'), "newtroopaction","restart")
 
         machine.add_state("newtroopaction", FindAndClickImageAction('Media/newtroopaction.png', delay=1), "marchaction","smallmarchaction")
-        machine.add_state("smallmarchaction", FindAndClickImageAction('Media/smallmarchaction.png', offset_x=300), "pause","restart")
+        machine.add_state("smallmarchaction", FindImageAction('Media/smallmarchaction.png'), "pause","restart")
         machine.add_state("escape2", PressKeyAction('escape', retard=1), "openmsgs","restart")
 
         machine.add_state("marchaction", FindAndClickImageAction('Media/marchaction.png'), "birdview","restart")
