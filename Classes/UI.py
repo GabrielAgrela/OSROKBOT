@@ -122,7 +122,7 @@ class UI(QtWidgets.QWidget):
 
         # Action sets dropdown
         self.action_set_combo_box = QtWidgets.QComboBox()
-        self.action_set_names = ["farm_rss", "farm_barb", "lyceum", "lyceumMid"]
+        self.action_set_names = ["farm_rss","farm_food","farm_wood","farm_stone","farm_gold", "farm_barb", "lyceum", "lyceumMid", "train_troops"]
         self.action_set_combo_box.addItems(self.action_set_names)
 
         # Checkbutton for captcha

@@ -4,7 +4,7 @@ from action_sets import ActionSets
 import keyboard
 import pygetwindow as gw
 class GameAutomator:
-    def __init__(self, window_title, delay=0):
+    def __init__(self, window_title, delay=0.5):
         self.window_title = window_title
         self.delay = delay
         self.stop_event = threading.Event()
@@ -16,7 +16,7 @@ class GameAutomator:
         def run_single_machine(machine):
             while not self.stop_event.is_set():
                 if self.pause_event.is_set():
-                    time.sleep(0.1) # sleep a little to reduce CPU usage
+                    time.sleep(0.3) # sleep a little to reduce CPU usage
                     continue
                 if machine.execute():
                     time.sleep(self.delay)

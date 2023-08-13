@@ -102,6 +102,21 @@ class ActionSets:
         machine.set_initial_state("cityview")
         return machine
     
+    def train_troops (self):
+        machine = self.create_machine()
+        machine.add_state("restart", PressKeyAction('escape'), "stable")
+        machine.add_state("stable", FindAndClickImageAction('Media/stable.png', offset_x=10), "speedupicon","restart")
+        machine.add_state("speedupicon", FindAndClickImageAction('Media/speedupicon.png'), "use","trainhorse")
+        machine.add_state("use", ManualClickAction(65,40), "mult","stable")
+        machine.add_state("mult", FindAndClickImageAction('Media/mult.png'), "use2","stable")
+        machine.add_state("use2", ManualClickAction(65,40), "leavemult","stable")
+        machine.add_state("leavemult", PressKeyAction('escape'), "stable","stable")
+
+        machine.add_state("trainhorse", FindAndClickImageAction('Media/trainhorse.png'), "trainbutton","stable")
+        machine.add_state("trainbutton", FindAndClickImageAction('Media/trainbutton.png'), "stable","stable")
+        machine.set_initial_state("stable")
+        return machine
+    
     def farm_rss (self):
         machine = self.create_machine()
         machine.add_state("pause", PressKeyAction('escape', retard=65), "restart")
@@ -114,6 +129,90 @@ class ActionSets:
         machine.add_state("goldicon", FindAndClickImageAction('Media/goldicon.png'), "searchaction","restart")
         machine.add_state("stoneicon", FindAndClickImageAction('Media/stoneicon.png'), "searchaction","restart")
         machine.add_state("searchaction", FindAndClickImageAction('Media/searchaction.png'), "arrow","logicon")
+        machine.add_state("arrow", FindAndClickImageAction('Media/arrow.png',delay=1.5, offset_y=105), "gatheraction","restart")
+        machine.add_state("gatheraction", FindAndClickImageAction('Media/gatheraction.png'), "newtroopaction","restart")
+
+        machine.add_state("newtroopaction", FindAndClickImageAction('Media/newtroopaction.png', delay=1), "marchaction","smallmarchaction")
+        machine.add_state("smallmarchaction", FindImageAction('Media/smallmarchaction.png'), "pause","restart")
+        machine.add_state("escape2", PressKeyAction('escape', retard=1), "openmsgs","restart")
+
+        machine.add_state("marchaction", FindAndClickImageAction('Media/marchaction.png'), "birdview","restart")
+
+        machine.set_initial_state("cityview")
+        return machine
+    
+    def farm_wood (self):
+        machine = self.create_machine()
+        machine.add_state("pause", PressKeyAction('escape', retard=65), "restart")
+        machine.add_state("restart", PressKeyAction('escape'), "cityview")
+        machine.add_state("cityview", PressKeyAction('space'), "birdview")
+        machine.add_state("birdview", PressKeyAction('f', retard=1), "logicon")
+
+        machine.add_state("logicon", FindAndClickImageAction('Media/logicon.png'), "searchaction","restart")
+        machine.add_state("searchaction", FindAndClickImageAction('Media/searchaction.png'), "arrow","logicon")
+        machine.add_state("arrow", FindAndClickImageAction('Media/arrow.png',delay=1.5, offset_y=105), "gatheraction","restart")
+        machine.add_state("gatheraction", FindAndClickImageAction('Media/gatheraction.png'), "newtroopaction","restart")
+
+        machine.add_state("newtroopaction", FindAndClickImageAction('Media/newtroopaction.png', delay=1), "marchaction","smallmarchaction")
+        machine.add_state("smallmarchaction", FindImageAction('Media/smallmarchaction.png'), "pause","restart")
+        machine.add_state("escape2", PressKeyAction('escape', retard=1), "openmsgs","restart")
+
+        machine.add_state("marchaction", FindAndClickImageAction('Media/marchaction.png'), "birdview","restart")
+
+        machine.set_initial_state("cityview")
+        return machine
+    
+    def farm_food (self):
+        machine = self.create_machine()
+        machine.add_state("pause", PressKeyAction('escape', retard=65), "restart")
+        machine.add_state("restart", PressKeyAction('escape'), "cityview")
+        machine.add_state("cityview", PressKeyAction('space'), "birdview")
+        machine.add_state("birdview", PressKeyAction('f', retard=1), "cornicon")
+
+        machine.add_state("cornicon", FindAndClickImageAction('Media/cornicon.png'), "searchaction","restart")
+        machine.add_state("searchaction", FindAndClickImageAction('Media/searchaction.png'), "arrow","cornicon")
+        machine.add_state("arrow", FindAndClickImageAction('Media/arrow.png',delay=1.5, offset_y=105), "gatheraction","restart")
+        machine.add_state("gatheraction", FindAndClickImageAction('Media/gatheraction.png'), "newtroopaction","restart")
+
+        machine.add_state("newtroopaction", FindAndClickImageAction('Media/newtroopaction.png', delay=1), "marchaction","smallmarchaction")
+        machine.add_state("smallmarchaction", FindImageAction('Media/smallmarchaction.png'), "pause","restart")
+        machine.add_state("escape2", PressKeyAction('escape', retard=1), "openmsgs","restart")
+
+        machine.add_state("marchaction", FindAndClickImageAction('Media/marchaction.png'), "birdview","restart")
+
+        machine.set_initial_state("cityview")
+        return machine
+    
+    def farm_stone (self):
+        machine = self.create_machine()
+        machine.add_state("pause", PressKeyAction('escape', retard=65), "restart")
+        machine.add_state("restart", PressKeyAction('escape'), "cityview")
+        machine.add_state("cityview", PressKeyAction('space'), "birdview")
+        machine.add_state("birdview", PressKeyAction('f', retard=1), "stoneicon")
+
+        machine.add_state("stoneicon", FindAndClickImageAction('Media/stoneicon.png'), "searchaction","restart")
+        machine.add_state("searchaction", FindAndClickImageAction('Media/searchaction.png'), "arrow","stoneicon")
+        machine.add_state("arrow", FindAndClickImageAction('Media/arrow.png',delay=1.5, offset_y=105), "gatheraction","restart")
+        machine.add_state("gatheraction", FindAndClickImageAction('Media/gatheraction.png'), "newtroopaction","restart")
+
+        machine.add_state("newtroopaction", FindAndClickImageAction('Media/newtroopaction.png', delay=1), "marchaction","smallmarchaction")
+        machine.add_state("smallmarchaction", FindImageAction('Media/smallmarchaction.png'), "pause","restart")
+        machine.add_state("escape2", PressKeyAction('escape', retard=1), "openmsgs","restart")
+
+        machine.add_state("marchaction", FindAndClickImageAction('Media/marchaction.png'), "birdview","restart")
+
+        machine.set_initial_state("cityview")
+        return machine
+    
+    def farm_gold (self):
+        machine = self.create_machine()
+        machine.add_state("pause", PressKeyAction('escape', retard=65), "restart")
+        machine.add_state("restart", PressKeyAction('escape'), "cityview")
+        machine.add_state("cityview", PressKeyAction('space'), "birdview")
+        machine.add_state("birdview", PressKeyAction('f', retard=1), "goldicon")
+
+        machine.add_state("goldicon", FindAndClickImageAction('Media/goldicon.png'), "searchaction","restart")
+        machine.add_state("searchaction", FindAndClickImageAction('Media/searchaction.png'), "arrow","goldicon")
         machine.add_state("arrow", FindAndClickImageAction('Media/arrow.png',delay=1.5, offset_y=105), "gatheraction","restart")
         machine.add_state("gatheraction", FindAndClickImageAction('Media/gatheraction.png'), "newtroopaction","restart")
 
