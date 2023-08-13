@@ -22,9 +22,6 @@ class ActionSets:
     def __init__(self, game_automator):
         self.manual_click = ManualClick()
         self.game_automator = game_automator
-
-    def choose_icon(self):
-        return random.choice(["logicon", "cornicon", "stoneicon"])
     
     def create_machine(self):
         return StateMachine()

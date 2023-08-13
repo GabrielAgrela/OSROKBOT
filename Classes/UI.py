@@ -156,7 +156,9 @@ class UI(QtWidgets.QWidget):
         self.stop_button.hide()
         self.pause_button.hide()
         self.setFixedSize(300, 300)
-        
+
+
+
         self.show()
         WindowHandler().activate_window()
 
