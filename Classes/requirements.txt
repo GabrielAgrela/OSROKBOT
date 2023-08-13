@@ -1,0 +1,14 @@
+openai
+python-dotenv
+termcolor
+pytesseract
+pillow
+opencv-python-headless
+numpy
+keyboard
+sendgrid
+pygetwindow
+pyautogui
+pynput
+pyqt5
+mss

@@ -1,11 +1,9 @@
 from Actions.action import Action
 from email_handler import EmailHandler
-import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from Actions.action import Action
 import time
-import sys
 
 class QuitAction(Action):
     def __init__(self,game_automator, delay=0.1):
