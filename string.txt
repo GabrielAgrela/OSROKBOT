@@ -1,10 +1,10 @@
 
 Give me the answer after thinking step by step:
- What causes lunar eclipses?
+ Which two oceans does the Panama Canal connect?
 
 
  which of these is the most similar to your answer?: 
-A: The earth moves directlybetween the sun and the moon
- B: A meteor moves between the suiand the earth
- C: None of these answers arecorrect
- D: The moon moves directlybetween the sun and the earth
+A: The Pacific and Arctic Oceans
+B: The Pacific and Indian Oceans
+C: The Pacific and Atlantic Oceans
+D: The Atlantic and Arctic Oceans

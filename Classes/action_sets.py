@@ -92,8 +92,13 @@ class ActionSets:
         machine.add_state("searchaction", FindAndClickImageAction('Media/searchaction.png'), "arrow","restart")
         machine.add_state("arrow", FindAndClickImageAction('Media/arrow.png',delay=1.5, offset_y=105), "attackaction","restart")
         machine.add_state("attackaction", FindAndClickImageAction('Media/attackaction.png'), "lohar","restart")
+        machine.add_state("lohar", FindAndClickImageAction('Media/lohar.png'), "smallmarchaction","newtroopaction")
+        
+        machine.add_state("newtroopaction", FindAndClickImageAction('Media/newtroopaction.png'), "marchaction","restart")
+        machine.add_state("marchaction", FindAndClickImageAction('Media/marchaction.png'), "victory","restart")
+
         #machine.add_state("lohar", ManualClickAction(96,80), "smallmarchaction","newtroopaction")
-        machine.add_state("lohar", FindAndClickImageAction('Media/lohar.png'), "smallmarchaction","restart")
+        
         #machine.add_state("lohar", FindAndClickImageAction('Media/lohar.png'), "smallmarchaction","newtroopaction")
         #machine.add_state("newtroopaction", FindAndClickImageAction('Media/newtroopaction.png'), "marchaction","newtroopaction")
         #machine.add_state("marchaction", FindAndClickImageAction('Media/marchaction.png'), "victory","marchaction")
