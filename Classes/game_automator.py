@@ -13,6 +13,7 @@ class GameAutomator:
         self.stop_event = threading.Event()
         self.pause_event = threading.Event()
         self.signal_emitter = SignalEmitter()
+        self.is_running = False
 
     def run(self, state_machines):
         self.stop_event.clear() # Clear the stop event here
@@ -31,13 +32,18 @@ class GameAutomator:
 
         for t in threads:
             t.join()
+        self.is_running = False
 
 
     def start(self, steps):
+        if self.is_running: # Check if it is already running
+            return
+        self.is_running = True # Set to True when starting
         threading.Thread(target=self.run, args=(steps,)).start()
 
     def stop(self):
         self.stop_event.set()
+        self.is_running = False # Set to False when stopping
 
     def toggle_pause(self):
         if self.pause_event.is_set():
