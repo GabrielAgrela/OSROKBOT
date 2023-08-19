@@ -17,7 +17,7 @@ class StateMachine:
 
         # Try to execute the current state
         state = current_state_info[0]
-        result = state.execute()
+        result = state.perform()
 
         # If the action executes successfully, move to the next state
         if result:

@@ -2,6 +2,7 @@ import time
 import cv2
 import numpy as np
 import pyautogui
+from window_handler import WindowHandler
 
 class ManualClick:
     def __init__(self, threshold=0.65):
@@ -16,7 +17,7 @@ class ManualClick:
         click_x = int(win.left + win.width * x_percentage / 100)
         click_y = int(win.top + win.height * y_percentage / 100)
         pyautogui.click(click_x, click_y)
-        prev_active_window.activate()
+        WindowHandler().activate_window_with_memory()
         if remember_position:
             pyautogui.moveTo(prev_mouse_x, prev_mouse_y)
 

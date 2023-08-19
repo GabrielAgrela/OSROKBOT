@@ -64,6 +64,6 @@ if __name__ == "__main__":
 
     action_sets = ActionSets(game_automator=game_automator)
 
-    actions_groups = [action_sets.farm_rss(), action_sets.emailtest()]
+    actions_groups = [action_sets.farm_rss()]
 
     game_automator.start(actions_groups) 

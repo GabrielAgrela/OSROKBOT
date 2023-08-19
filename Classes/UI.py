@@ -28,40 +28,41 @@ class UI(QtWidgets.QWidget):
         border: 2px solid #4a90e2;  
         border-radius: 8px;
         padding: 5px;
-        margin-left: 5px;
-        margin-right: 5px;
-        font-size: auto;
-        font-weight: bold;
-        min-width: 50px;
-        min-height: 50px;
+        width: 20px;
+        height: 20px;
     }
     QPushButton:hover {
         background-color: #4a4a4a;  
         border: 2px solid #357ab2;  
     }
     QLabel {
-        font-size: 18px;
+        font-size: 16px;
         color: #f5f5f5;
+        background-color: transparent;
+        text-align: left !important;;                   
+        
+        
     }
     QComboBox {
-        font-size: 16px;
+        
         border: 1px solid #4a4a4a !important;
         border-radius: 8px;
-        padding: 5px;
+        padding: 3px;
+        font-size: Auto;
         background-color: #3a3a3a !important;
         color: white !important; /* This sets the text color of non-selected items to white */
     }
     QComboBox::drop-down {
         background-color: #2a2a2a !important;
         border: 2px solid #4a90e2 !important;
-        min-width: 22px;
+        min-width: 18px;
         border-radius: 8px;
     }
     QComboBox::down-arrow {
         image: url(Media/UI/down_arrow.svg);
         padding-top: 2px;
-        width: 13px;
-        height: 13px;           
+        width: 12px;
+        height: 12px;           
     }
                            
 
@@ -103,8 +104,7 @@ class UI(QtWidgets.QWidget):
             font-size: 24px;
             min-width: 5px !important;
             min-height: 5px !important;
-            padding: 0px !important;
-            padding-right: 10px !important;                            
+            padding: 0px !important;                       
             margin: 0px !important;
         """)
         #make title_bar_layout height 30
@@ -113,11 +113,17 @@ class UI(QtWidgets.QWidget):
 
         # Status label
         self.status_label = QtWidgets.QLabel(' Ready')
-        self.status_label.setStyleSheet("color: #4a90e2; font-weight: bold; text-align: center;")
-        self.status_label.setAlignment(QtCore.Qt.AlignCenter)
+        shadow_effect = QtWidgets.QGraphicsDropShadowEffect()
+        shadow_effect.setColor(QtGui.QColor("#000000")) # Shadow color
+        shadow_effect.setOffset(0, 0) # Position of the shadow
+        shadow_effect.setBlurRadius(3) # Blur radius
+
+        self.status_label.setGraphicsEffect(shadow_effect)
+        self.status_label.setStyleSheet("color: #4a90e2; font-weight: bold; text-align: left !important;")
+        self.status_label.setAlignment(QtCore.Qt.AlignLeft)
         # Button Layout
         button_layout = QtWidgets.QHBoxLayout()
-        button_layout.setAlignment(QtCore.Qt.AlignCenter)
+        button_layout.setAlignment(QtCore.Qt.AlignLeft)
         # Create the Play Button
         self.play_button = QtWidgets.QPushButton()
         self.play_icon = QtGui.QIcon("Media/UI/play_icon.svg")
@@ -144,16 +150,6 @@ class UI(QtWidgets.QWidget):
         button_layout.addWidget(self.pause_button)
 
 
-        # Title for Action Sets
-        action_set_title = QtWidgets.QLabel("Action Sets:")
-        action_set_title.setStyleSheet("""
-            color: #4a90e2;
-            font-size: 16px;    
-            font-weight: bold;                                                                              
-            margin-top: 10px;
-            margin-bottom: 0px !important;
-        """)
-
         # Action sets dropdown
         self.action_set_combo_box = QtWidgets.QComboBox()
         self.action_set_combo_box.setStyleSheet("""
@@ -163,28 +159,34 @@ class UI(QtWidgets.QWidget):
         self.action_set_combo_box.addItems(self.action_set_names)
 
         # Checkbutton for captcha
-        self.check_captcha_checkbutton = QtWidgets.QCheckBox("Check for Captcha")
+        self.check_captcha_checkbutton = QtWidgets.QCheckBox("CAPTCHA?")
+
+        shadow_effect = QtWidgets.QGraphicsDropShadowEffect()
+        shadow_effect.setColor(QtGui.QColor("#000000")) # Shadow color
+        shadow_effect.setOffset(0, 0) # Position of the shadow
+        shadow_effect.setBlurRadius(6) # Blur radius
+
+        self.check_captcha_checkbutton.setGraphicsEffect(shadow_effect)
         self.check_captcha_checkbutton.setStyleSheet("""
-            font-size: 14px;
-            margin-top: 10px;
+            font-size: 11px;
+            background-color: transparent;
         """)
         self.check_captcha_checkbutton.setChecked(True)
 
         # Content Layout
         content_layout = QtWidgets.QVBoxLayout()
-        content_layout.setContentsMargins(20, 20, 20, 20)
+        content_layout.setContentsMargins(0, 0, 0, 0)
         
-        content_layout.addWidget(self.status_label)
+        #content_layout.addWidget(self.status_label)
         content_layout.addLayout(button_layout)
-        content_layout.addWidget(action_set_title)
         content_layout.addWidget(self.action_set_combo_box)
         content_layout.addWidget(self.check_captcha_checkbutton)
 
         # Main Layout
         layout = QtWidgets.QVBoxLayout()
-        layout.setContentsMargins(0, 0, 0, 0)
-        layout.setSpacing(0)
-        layout.addWidget(self.title_bar)
+        layout.setContentsMargins(3, 0, 0, 0)
+        layout.setSpacing(5)
+        #layout.addWidget(self.title_bar)
         layout.addLayout(content_layout)
 
         # Set main layout
@@ -196,19 +198,24 @@ class UI(QtWidgets.QWidget):
         self.play_button.show()
         self.stop_button.hide()
         self.pause_button.hide()
-        self.setFixedSize(180, 300)
+        #self.setFixedSize(100, 150)
+        #fix horizontal size
+        self.setFixedWidth(80)
 
+        #transparent backgourd
+        self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+        
 
-
+        self.setWindowFlags(self.windowFlags() | QtCore.Qt.WindowStaysOnTopHint)
         self.show()
-        WindowHandler().activate_window()
+        WindowHandler().activate_window("OSROKBOT")
 
     def update_position(self):
         target_window = gw.getWindowsWithTitle(self.target_title)
         #check if target window is active
         if target_window:
             target_window = target_window[0]
-            self.move(target_window.left - self.width(), target_window.top)
+            self.move(target_window.left +5, target_window.top+((int)(target_window.height/3.5)))
 
     def on_pause_toggled(self, is_paused): # This is the slot
         if is_paused:
@@ -247,7 +254,7 @@ class UI(QtWidgets.QWidget):
     def stop_automation(self):
         self.game_automator.stop()
         self.status_label.setText(' Ready')
-        self.status_label.setStyleSheet("color: red;font-weight: bold;")
+        self.status_label.setStyleSheet("color: #4a90e2; font-weight: bold; text-align: left;")
         self.play_button.show()
         self.stop_button.hide()
         self.pause_button.hide()
