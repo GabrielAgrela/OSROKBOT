@@ -216,13 +216,15 @@ class UI(QtWidgets.QWidget):
 
         if target_windows:
             target_window = target_windows[0]
-            self.move(target_window.left + 10, target_window.top + int(target_window.height / 3.5))
             
-            if active_window and active_window == target_window:
+            
+            if active_window == target_window:
+                self.move(target_window.left + 10, target_window.top + int(target_window.height / 3.5))
                 self.setWindowFlags(self.windowFlags() | QtCore.Qt.WindowStaysOnTopHint)
+                self.show()
             else:
                 self.setWindowFlags(self.windowFlags() & ~QtCore.Qt.WindowStaysOnTopHint)
-            self.show()  # You need to call show() again after changing window flags
+                self.hide()  # You need to call show() again after changing window flags
 
 
     def on_pause_toggled(self, is_paused): # This is the slot
