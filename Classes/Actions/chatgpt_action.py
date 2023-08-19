@@ -63,7 +63,7 @@ class ChatGPTAction:
         self.messages.append({"role": "user", "content": (self.message)},)
         chat = openai.ChatCompletion.create(
             model="gpt-4-0613",
-            temperature=0.0,
+            temperature=0.5,
             messages=self.messages,
             functions=self.functions,
             function_call={"name": "return_option_based_on_prompt"}
@@ -139,6 +139,4 @@ class ChatGPTAction:
                 
 
         
-        time.sleep(2)
-        os.system('cls')
         return True

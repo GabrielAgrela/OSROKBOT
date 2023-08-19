@@ -8,6 +8,7 @@ from Actions.conditional_action import ConditionalAction
 from Actions.manual_sleep_action import ManualSleepAction
 from Actions.email_action import SendEmailAction
 from Actions.quit_action import QuitAction
+from Actions.pause_action import PauseAction
 from Actions.extract_text_action import ExtractTextAction
 from Actions.screenshot_action import ScreenshotAction
 from Actions.chatgpt_action import ChatGPTAction
@@ -233,8 +234,8 @@ class ActionSets:
     def emailtest (self):
         machine = self.create_machine()
         machine.add_state("findcaptcha",  FindAndClickImageAction('Media/captchachest.png',delay=1), "notify","findcaptcha")
-        machine.add_state("notify",  SendEmailAction(), "quit")
-        machine.add_state("quit",  QuitAction(game_automator=self.game_automator), "findcaptcha")
+        machine.add_state("notify",  SendEmailAction(), "pause")
+        machine.add_state("pause",  PauseAction(game_automator=self.game_automator), "findcaptcha")
         machine.set_initial_state("findcaptcha")
         return machine
 
@@ -257,7 +258,7 @@ class ActionSets:
     
     def lyceumMid (self):
         machine = self.create_machine()
-        machine.add_state("keypress", WaitForKeyPressAction('k'), "sstittle","keypress")
+        machine.add_state("keypress", WaitForKeyPressAction('k', "for the next question"), "sstittle","keypress")
         machine.add_state("sstittle",  ScreenshotAction(33.7,80,39.5,49), "ettitle")
         machine.add_state("ettitle", ExtractTextAction(description= "Give me the answer after thinking step by step:\n "), "ssq1")
         machine.add_state("ssq1", ScreenshotAction(33,52,49.5,57), "eq1")
