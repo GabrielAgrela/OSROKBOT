@@ -4,7 +4,7 @@ from PyQt5 import QtWidgets, QtGui, QtCore
 from action_sets import ActionSets
 from game_automator import GameAutomator
 import pygetwindow as gw
-
+import time
 from window_handler import WindowHandler
 
 class UI(QtWidgets.QWidget):
@@ -210,20 +210,21 @@ class UI(QtWidgets.QWidget):
         self.show()
         WindowHandler().activate_window("OSROKBOT")
 
+
     def update_position(self):
         target_windows = gw.getWindowsWithTitle(self.target_title)
         active_window = gw.getActiveWindow()
 
-        if target_windows and target_windows[0].title == self.target_title:
+        if target_windows and (target_windows[0].title == self.target_title or target_windows[0].title == "OSROKBOT"):
             target_window = target_windows[0]
             self.move(target_window.left + 10, target_window.top + int(target_window.height / 3.5))
-            
-            if active_window == target_window:
-                
+            if active_window and (active_window.title == self.target_title or active_window.title == "OSROKBOT" or active_window.title == "python3"):
                 self.setWindowFlags(self.windowFlags() | QtCore.Qt.WindowStaysOnTopHint)
             else:
                 self.setWindowFlags(self.windowFlags() & ~QtCore.Qt.WindowStaysOnTopHint)
-            self.show()  # You need to call show() again after changing window flags
+            if not self.isVisible():
+                self.show()
+
 
 
     def on_pause_toggled(self, is_paused): # This is the slot
