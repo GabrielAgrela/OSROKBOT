@@ -211,11 +211,19 @@ class UI(QtWidgets.QWidget):
         WindowHandler().activate_window("OSROKBOT")
 
     def update_position(self):
-        target_window = gw.getWindowsWithTitle(self.target_title)
-        #check if target window is active
-        if target_window:
-            target_window = target_window[0]
-            self.move(target_window.left +5, target_window.top+((int)(target_window.height/3.5)))
+        target_windows = gw.getWindowsWithTitle(self.target_title)
+        active_window = gw.getActiveWindow()
+
+        if target_windows:
+            target_window = target_windows[0]
+            self.move(target_window.left + 10, target_window.top + int(target_window.height / 3.5))
+            
+            if active_window and active_window == target_window:
+                self.setWindowFlags(self.windowFlags() | QtCore.Qt.WindowStaysOnTopHint)
+            else:
+                self.setWindowFlags(self.windowFlags() & ~QtCore.Qt.WindowStaysOnTopHint)
+            self.show()  # You need to call show() again after changing window flags
+
 
     def on_pause_toggled(self, is_paused): # This is the slot
         if is_paused:
