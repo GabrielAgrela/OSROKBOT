@@ -6,10 +6,13 @@ from game_automator import GameAutomator
 import pygetwindow as gw
 import time
 from window_handler import WindowHandler
+from global_vars import GlobalVars, GLOBAL_VARS
 
 class UI(QtWidgets.QWidget):
     def __init__(self, window_title, delay=0.2):
         super().__init__()
+        
+
         self.game_automator = GameAutomator(window_title, delay)
         self.game_automator.signal_emitter.pause_toggled.connect(self.on_pause_toggled) # Connect the signal to the slot
         self.action_sets = ActionSets(game_automator=self.game_automator)
@@ -39,14 +42,15 @@ class UI(QtWidgets.QWidget):
         font-size: 16px;
         color: #f5f5f5;
         background-color: transparent;
-        text-align: left !important;;                   
+        text-align: left !important;                
         
         
     }
     QComboBox {
         
-        border: 1px solid #4a4a4a !important;
+        border: 2px solid #4a90e2; 
         border-radius: 8px;
+        
         padding: 3px;
         font-size: Auto;
         background-color: #3a3a3a !important;
@@ -56,7 +60,7 @@ class UI(QtWidgets.QWidget):
         background-color: #2a2a2a !important;
         border: 2px solid #4a90e2 !important;
         min-width: 18px;
-        border-radius: 8px;
+        border-radius: 5px;
     }
     QComboBox::down-arrow {
         image: url(Media/UI/down_arrow.svg);
@@ -113,12 +117,6 @@ class UI(QtWidgets.QWidget):
 
         # Status label
         self.status_label = QtWidgets.QLabel(' Ready')
-        shadow_effect = QtWidgets.QGraphicsDropShadowEffect()
-        shadow_effect.setColor(QtGui.QColor("#000000")) # Shadow color
-        shadow_effect.setOffset(0, 0) # Position of the shadow
-        shadow_effect.setBlurRadius(3) # Blur radius
-
-        self.status_label.setGraphicsEffect(shadow_effect)
         self.status_label.setStyleSheet("color: #4a90e2; font-weight: bold; text-align: left !important;")
         self.status_label.setAlignment(QtCore.Qt.AlignLeft)
         # Button Layout
@@ -159,28 +157,82 @@ class UI(QtWidgets.QWidget):
         self.action_set_combo_box.addItems(self.action_set_names)
 
         # Checkbutton for captcha
-        self.check_captcha_checkbutton = QtWidgets.QCheckBox("CAPTCHA?")
-
-        shadow_effect = QtWidgets.QGraphicsDropShadowEffect()
-        shadow_effect.setColor(QtGui.QColor("#000000")) # Shadow color
-        shadow_effect.setOffset(0, 0) # Position of the shadow
-        shadow_effect.setBlurRadius(6) # Blur radius
-
-        self.check_captcha_checkbutton.setGraphicsEffect(shadow_effect)
+        self.check_captcha_checkbutton = QtWidgets.QCheckBox("CAPTCHA")
         self.check_captcha_checkbutton.setStyleSheet("""
-            font-size: 11px;
-            background-color: transparent;
+            font-size: 9px;
+            background-color: #3a3a3a; 
+            color: #f5f5f5;             
+            border: 2px solid #4a90e2;  
+            border-radius: 8px;
+            padding: 2px;
         """)
         self.check_captcha_checkbutton.setChecked(True)
 
+        
+
         # Content Layout
+        debug_layout = QtWidgets.QVBoxLayout()
+        debug_layout.setContentsMargins(0, 0, 0, 0)
+
+        # Background label
+        self.current_state_label_BG = QtWidgets.QLabel() 
+        self.current_state_label_BG.setFixedWidth(77)
+        self.current_state_label_BG.setFixedHeight(80)
+        self.current_state_label_BG.setStyleSheet("""
+            text-align: center;
+            font-size: 10px;
+            border: 2px solid #4a90e2; 
+            border-radius: 8px;
+            padding: 0px;
+            background-color: #3a3a3a;
+        """)
+        self.current_state_label_BG.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignHCenter)
+        debug_layout.addWidget(self.current_state_label_BG)
+        debug_layout.setSpacing(0)
+        # Text label
+        self.current_state_label_title = QtWidgets.QLabel('Debug')
+        self.current_state_label_title.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignHCenter)
+        self.current_state_label_title.setStyleSheet("""
+            text-align: center;
+            font-size: 12px;
+            font-weight: bold;
+            border: 2px solid #4a90e2; 
+            border-radius: 6px;
+            margin: 0px !important;                                         
+            padding: 0px !important;
+            background-color: transparent;
+        """)
+        self.current_state_label = QtWidgets.QLabel()
+        self.current_state_label.setFixedWidth(77)
+        self.current_state_label.setFixedHeight(70)
+        self.current_state_label.setStyleSheet("""
+            text-align: center;
+            font-size: 10px;
+            border: 0px solid #4a90e2; 
+            margin: 0px !important;
+            padding: 0px !important;
+            border-radius: 2px;
+            background-color: transparent;
+        """)
+        self.current_state_label.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignHCenter)
+        self.current_state_label.setContentsMargins(0, 0, 0, 0)
+        
+
+        # Create a layout for the text label and add it to the background label
+        text_layout = QtWidgets.QVBoxLayout(self.current_state_label_BG)
+        text_layout.setSpacing(2)
+
+        text_layout.addWidget(self.current_state_label_title)
+        text_layout.addWidget(self.current_state_label)
+        text_layout.setContentsMargins(0, 0, 0, 0) # Adjust margins as needed
+
         content_layout = QtWidgets.QVBoxLayout()
         content_layout.setContentsMargins(0, 0, 0, 0)
-        
         #content_layout.addWidget(self.status_label)
         content_layout.addLayout(button_layout)
         content_layout.addWidget(self.action_set_combo_box)
         content_layout.addWidget(self.check_captcha_checkbutton)
+        content_layout.addLayout(debug_layout) # Add it to the layout
 
         # Main Layout
         layout = QtWidgets.QVBoxLayout()
@@ -207,8 +259,15 @@ class UI(QtWidgets.QWidget):
         
 
         self.setWindowFlags(self.windowFlags() | QtCore.Qt.WindowStaysOnTopHint)
+        self.setWindowOpacity(0.75)
         self.show()
         WindowHandler().activate_window("OSROKBOT")
+        GLOBAL_VARS.UI = self
+
+    def currentState(self, state_text):
+        self.current_state_label.setText(state_text)
+        self.current_state_label.adjustSize() # Optional, to adjust the size of the label to fit the new text
+
 
 
     def update_position(self):
@@ -217,7 +276,7 @@ class UI(QtWidgets.QWidget):
 
         if target_windows and (target_windows[0].title == self.target_title or target_windows[0].title == "OSROKBOT"):
             target_window = target_windows[0]
-            self.move(target_window.left + 10, target_window.top + int(target_window.height / 3.5))
+            self.move(target_window.left + 5, target_window.top + int(target_window.height / 1.85))
             if active_window and (active_window.title == self.target_title or active_window.title == "OSROKBOT" or active_window.title == "python3"):
                 self.setWindowFlags(self.windowFlags() | QtCore.Qt.WindowStaysOnTopHint)
             else:
@@ -275,8 +334,9 @@ class UI(QtWidgets.QWidget):
     def closeEvent(self, event):
         self.stop_automation()
         event.accept()
-
+        
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     gui = UI('Rise of Kingdoms')
+    
     sys.exit(app.exec_())

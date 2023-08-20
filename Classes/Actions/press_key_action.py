@@ -15,5 +15,4 @@ class PressKeyAction(Action):
         time.sleep(self.delay)
         self.window_handler.activate_window()
         self.keyboard_handler.press_key(self.key)
-        time.sleep(self.retard)
         return True  # Always return True since pressing a key will not fail

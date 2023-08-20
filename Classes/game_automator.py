@@ -17,7 +17,6 @@ class GameAutomator:
 
     def run(self, state_machines):
         self.stop_event.clear() # Clear the stop event here
-        
         def run_single_machine(machine):
             while not self.stop_event.is_set():
                 if self.pause_event.is_set():
@@ -64,6 +63,6 @@ if __name__ == "__main__":
 
     action_sets = ActionSets(game_automator=game_automator)
 
-    actions_groups = [action_sets.farm_rss()]
+    actions_groups = [action_sets.farm_rss(), action_sets.emailtest()]
 
     game_automator.start(actions_groups) 

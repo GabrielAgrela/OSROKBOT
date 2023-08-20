@@ -4,7 +4,7 @@ from window_handler import WindowHandler
 import time
 
 class FindImageAction(Action):
-    def __init__(self, image: str, skip_check_first_time=False, check=True, dont_find=False, delay=0.1):
+    def __init__(self, image: str, skip_check_first_time=False, check=True, dont_find=False, delay=0.1, retard=0):
         super().__init__(skip_check_first_time)
         self.image_finder = ImageFinder()
         self.image = image
@@ -13,6 +13,7 @@ class FindImageAction(Action):
         self.check = check 
         self.dont_find = dont_find 
         self.delay = delay
+        self.retard = retard
 
 
     def execute(self):
