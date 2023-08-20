@@ -31,8 +31,8 @@ class UI(QtWidgets.QWidget):
         border: 2px solid #4a90e2;  
         border-radius: 8px;
         padding: 5px;
-        width: 20px;
-        height: 20px;
+        width: 22px;
+        height: 22px;
     }
     QPushButton:hover {
         background-color: #4a4a4a;  
@@ -59,14 +59,14 @@ class UI(QtWidgets.QWidget):
     QComboBox::drop-down {
         background-color: #2a2a2a !important;
         border: 2px solid #4a90e2 !important;
-        min-width: 18px;
+        width: 10px;
         border-radius: 5px;
     }
     QComboBox::down-arrow {
         image: url(Media/UI/down_arrow.svg);
         padding-top: 2px;
-        width: 12px;
-        height: 12px;           
+        width: 10px;
+        height: 10px;           
     }
                            
 
@@ -75,6 +75,7 @@ class UI(QtWidgets.QWidget):
         font-size: 16px;
         color: #f5f5f5;
     }
+    
 """)
 
         # Title Bar
@@ -157,11 +158,11 @@ class UI(QtWidgets.QWidget):
         self.action_set_combo_box.addItems(self.action_set_names)
 
         # Checkbutton for captcha
-        self.check_captcha_checkbutton = QtWidgets.QCheckBox("CAPTCHA")
+        self.check_captcha_checkbutton = QtWidgets.QCheckBox("captcha")
         self.check_captcha_checkbutton.setStyleSheet("""
-            font-size: 9px;
+            font-size: 11px;
             background-color: #3a3a3a; 
-            color: #f5f5f5;             
+            color: #fff;             
             border: 2px solid #4a90e2;  
             border-radius: 8px;
             padding: 2px;
@@ -227,8 +228,10 @@ class UI(QtWidgets.QWidget):
         text_layout.setContentsMargins(0, 0, 0, 0) # Adjust margins as needed
 
         content_layout = QtWidgets.QVBoxLayout()
+        content_layout.setSpacing(2)
         content_layout.setContentsMargins(0, 0, 0, 0)
         #content_layout.addWidget(self.status_label)
+        button_layout.setSpacing(2)
         content_layout.addLayout(button_layout)
         content_layout.addWidget(self.action_set_combo_box)
         content_layout.addWidget(self.check_captcha_checkbutton)
