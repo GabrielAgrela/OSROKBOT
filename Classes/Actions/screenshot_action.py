@@ -3,7 +3,7 @@ from window_handler import WindowHandler
 import os
 
 class ScreenshotAction(Action):
-    def __init__(self, x_begin, x_end, y_begin, y_end, output_path="test.png", skip_check_first_time=False):
+    def __init__(self, x_begin, x_end, y_begin, y_end, output_path="test.png", skip_check_first_time=False, delay=0, retard =0):
         super().__init__(skip_check_first_time)
         self.x_begin = x_begin
         self.x_end = x_end
@@ -12,6 +12,8 @@ class ScreenshotAction(Action):
         self.output_path = output_path
         self.window_title = "Rise of Kingdoms"
         self.window_handler = WindowHandler()
+        self.delay = delay
+        self.retard = retard
 
     def execute(self):
         #print exact time of execution

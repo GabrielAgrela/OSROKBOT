@@ -20,9 +20,16 @@ class Action(ABC):
                 tempString+=str(self.delay)+ "s delay\n"
                 tempString+=str(self.retard)+ "s retard\n"
         except:
-            tempString = self.__class__.__name__+ "\n"
-            tempString+= str(self.delay)+ "s delay\n"
-            tempString+=str(self.retard)+ "s retard\n"
+            try:  
+                tempString = self.__class__.__name__+ "\n"
+                tempString+=str(self.key)+ "\n"
+                tempString+=str(self.delay)+ "s delay\n"
+                tempString+=str(self.retard)+ "s retard\n"
+            except:
+                tempString = self.__class__.__name__+ "\n"
+                tempString+="\n"
+                tempString+= str(self.delay)+ "s delay\n"
+                tempString+=str(self.retard)+ "s retard\n"
 
         
         if (tempString != ""):

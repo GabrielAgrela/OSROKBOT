@@ -17,11 +17,13 @@ ANTIALIAS_METHOD = getattr(Image, os.getenv('ANTIALIAS_METHOD'))
 # You can now use the preprocessed image in your existing code
 
 class ExtractTextAction(Action):
-    def __init__(self, image_path="test.png", skip_check_first_time=False, description="", aggregate=False):
+    def __init__(self, image_path="test.png", skip_check_first_time=False, description="", aggregate=False, delay=0, retard =0):
         super().__init__(skip_check_first_time)
         self.image_path = image_path
         self.description = description
         self.aggregate = aggregate
+        self.delay = delay
+        self.retard = retard
 
     def preprocess_image(self, image_path):
         # Open the image file

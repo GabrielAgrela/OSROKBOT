@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 import os
 
 class SendEmailAction(Action):
-    def __init__(self,delay=0.1, subject="Captcha detected", body=" ", to_email="", from_email="rokemailsendertest@gmail.com", from_password="prtnezkgfevwihok", smtp_server='smtp.gmail.com', smtp_port=587):
+    def __init__(self,delay=0.1, subject="Captcha detected", body=" ", to_email="", from_email="rokemailsendertest@gmail.com", from_password="prtnezkgfevwihok", smtp_server='smtp.gmail.com', smtp_port=587, retard =0):
         load_dotenv()
         self.subject = subject
         self.body = body
@@ -19,6 +19,7 @@ class SendEmailAction(Action):
         self.smtp_server = smtp_server
         self.smtp_port = smtp_port
         self.delay = delay
+        self.retard = retard
 
     def execute(self):
         

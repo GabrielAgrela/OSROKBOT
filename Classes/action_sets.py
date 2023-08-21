@@ -118,7 +118,10 @@ class ActionSets:
         machine.add_state("use2", ManualClickAction(65,40), "leavemult","stable")
         machine.add_state("leavemult", PressKeyAction('escape'), "stable","stable")
 
-        machine.add_state("trainhorse", FindAndClickImageAction('Media/trainhorse.png'), "trainbutton","stable")
+        machine.add_state("trainhorse", FindAndClickImageAction('Media/trainhorse.png'), "t1cav","stable")
+        machine.add_state("t1cav", FindAndClickImageAction('Media/t1cav.png'), "upgrade","stable")
+        machine.add_state("upgrade", FindAndClickImageAction('Media/upgrade.png'), "upgradeaction","stable")
+        machine.add_state("upgradeaction", FindAndClickImageAction('Media/upgradeaction.png'), "trainbutton","stable")
         machine.add_state("trainbutton", FindAndClickImageAction('Media/trainbutton.png'), "stable","stable")
         machine.set_initial_state("stable")
         return machine
@@ -252,7 +255,7 @@ class ActionSets:
         machine.add_state("eq3", ExtractTextAction(description= "C: ", aggregate=True), "ssq4")
         machine.add_state("ssq4", ScreenshotAction(57,76,54,60), "eq4")
         machine.add_state("eq4", ExtractTextAction(description= "D: ", aggregate=True), "cgpt")
-        machine.add_state("cgpt", ChatGPTAction(),"sstittle")
+        machine.add_state("cgpt", ChatGPTAction(retard=1.5),"sstittle")
         machine.set_initial_state("sstittle")
         return machine
     

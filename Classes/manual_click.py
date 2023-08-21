@@ -5,8 +5,9 @@ import pyautogui
 from window_handler import WindowHandler
 
 class ManualClick:
-    def __init__(self, threshold=0.65):
+    def __init__(self, threshold=0.65, retard=0.0):
         self.threshold = threshold
+        self.retard = retard
 
     def click(self, win, x_percentage, y_percentage, remember_position=True):
         # click at a specific percentage of the screen with pyautogui
@@ -17,7 +18,7 @@ class ManualClick:
         click_x = int(win.left + win.width * x_percentage / 100)
         click_y = int(win.top + win.height * y_percentage / 100)
         pyautogui.click(click_x, click_y)
-        WindowHandler().activate_window_with_memory()
+        prev_active_window.activate()
         if remember_position:
             pyautogui.moveTo(prev_mouse_x, prev_mouse_y)
 

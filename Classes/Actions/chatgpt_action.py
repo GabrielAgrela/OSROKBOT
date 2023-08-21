@@ -1,4 +1,5 @@
 import json
+from Actions.action import Action
 import openai
 import os
 from dotenv import load_dotenv
@@ -7,8 +8,8 @@ import time
 from termcolor import colored
 import os
 
-class ChatGPTAction:
-    def __init__(self,midterm=False, prefix= "", filepath="string.txt"):
+class ChatGPTAction(Action):
+    def __init__(self,midterm=False, prefix= "", filepath="string.txt", delay=0, retard =0):
         
         load_dotenv()
         openai.api_key = os.getenv('OPENAI_KEY')
@@ -16,6 +17,8 @@ class ChatGPTAction:
         self.prefix = prefix
         self.filepath = filepath
         self.midterm = midterm
+        self.delay = delay
+        self.retard = retard
         self.messages = [{"role": "system", "content": "You are a quizz assistant in the game Rise of Kingdoms."}]
         self.functions = [
         {
@@ -63,7 +66,7 @@ class ChatGPTAction:
         self.messages.append({"role": "user", "content": (self.message)},)
         chat = openai.ChatCompletion.create(
             model="gpt-4-0613",
-            temperature=0.5,
+            temperature=1,
             messages=self.messages,
             functions=self.functions,
             function_call={"name": "return_option_based_on_prompt"}

@@ -7,6 +7,7 @@ import pygetwindow as gw
 import time
 from window_handler import WindowHandler
 from global_vars import GlobalVars, GLOBAL_VARS
+import threading
 
 class UI(QtWidgets.QWidget):
     def __init__(self, window_title, delay=0.2):
@@ -203,7 +204,7 @@ class UI(QtWidgets.QWidget):
             padding: 0px !important;
             background-color: transparent;
         """)
-        self.current_state_label = QtWidgets.QLabel()
+        self.current_state_label = QtWidgets.QLabel("Ready")
         self.current_state_label.setFixedWidth(77)
         self.current_state_label.setFixedHeight(70)
         self.current_state_label.setStyleSheet("""
@@ -324,15 +325,24 @@ class UI(QtWidgets.QWidget):
         self.pause_button.show()
 
     def stop_automation(self):
+        
         self.game_automator.stop()
         self.status_label.setText(' Ready')
         self.status_label.setStyleSheet("color: #4a90e2; font-weight: bold; text-align: left;")
         self.play_button.show()
         self.stop_button.hide()
         self.pause_button.hide()
+        threading.Thread(target=self.call_current_state, args=("Ready",)).start()
 
     def toggle_pause(self):
         self.game_automator.toggle_pause()
+        if self.game_automator.is_paused():
+            threading.Thread(target=self.call_current_state, args=("Paused",)).start()
+        
+        
+    def call_current_state(self,info):
+        time.sleep(2)
+        self.currentState(info)
 
     def closeEvent(self, event):
         self.stop_automation()
