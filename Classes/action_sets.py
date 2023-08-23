@@ -9,6 +9,7 @@ from Actions.manual_sleep_action import ManualSleepAction
 from Actions.email_action import SendEmailAction
 from Actions.quit_action import QuitAction
 from Actions.pause_action import PauseAction
+from Actions.lyceum_action import LyceumAction
 from Actions.extract_text_action import ExtractTextAction
 from Actions.screenshot_action import ScreenshotAction
 from Actions.chatgpt_action import ChatGPTAction
@@ -131,7 +132,7 @@ class ActionSets:
         machine.add_state("pause", PressKeyAction('escape', retard=65), "restart")
         machine.add_state("restart", PressKeyAction('escape'), "cityview")
         machine.add_state("cityview", PressKeyAction('space'), "birdview")
-        machine.add_state("birdview", PressKeyAction('f', retard=1), Helpers.getRandomRss())
+        machine.add_state("birdview",FindAndClickImageAction('Media/ficon.png'), Helpers.getRandomRss(),"restart")
 
         machine.add_state("logicon", FindAndClickImageAction('Media/logicon.png'), "searchaction","restart")
         machine.add_state("cornicon", FindAndClickImageAction('Media/cornicon.png'), "searchaction","restart")
@@ -241,21 +242,22 @@ class ActionSets:
         machine.add_state("pause",  PauseAction(game_automator=self.game_automator), "findcaptcha")
         machine.set_initial_state("findcaptcha")
         return machine
-
+    
 
     def lyceum (self):
         machine = self.create_machine()
         machine.add_state("sstittle",  ScreenshotAction(33.7,77,33.5,43), "ettitle")
-        machine.add_state("ettitle", ExtractTextAction(description= "Give me the answer after thinking step by step:\n "), "ssq1")
+        machine.add_state("ettitle", ExtractTextAction(description= "Q"), "ssq1")
         machine.add_state("ssq1", ScreenshotAction(33,52,45,51,), "eq1")
-        machine.add_state("eq1",ExtractTextAction(description= "\n\n which of these is the most similar to your answer?: \nA: ", aggregate=True), "ssq2")
+        machine.add_state("eq1",ExtractTextAction(description= "A"), "ssq2")
         machine.add_state("ssq2", ScreenshotAction(57,76,45,51), "eq2")
-        machine.add_state("eq2", ExtractTextAction(description= "B: ", aggregate=True), "ssq3")
+        machine.add_state("eq2", ExtractTextAction(description= "B"), "ssq3")
         machine.add_state("ssq3",  ScreenshotAction(33,54,54,60), "eq3")
-        machine.add_state("eq3", ExtractTextAction(description= "C: ", aggregate=True), "ssq4")
+        machine.add_state("eq3", ExtractTextAction(description= "C"), "ssq4")
         machine.add_state("ssq4", ScreenshotAction(57,76,54,60), "eq4")
-        machine.add_state("eq4", ExtractTextAction(description= "D: ", aggregate=True), "cgpt")
-        machine.add_state("cgpt", ChatGPTAction(retard=1.5),"sstittle")
+        machine.add_state("eq4", ExtractTextAction(description= "D"), "lyceumManual")
+        machine.add_state("lyceumManual", LyceumAction(retard=1.5),"sstittle","lyceumGPT")
+        machine.add_state("lyceumGPT", ChatGPTAction(retard=1.5),"sstittle")
         machine.set_initial_state("sstittle")
         return machine
     
@@ -263,15 +265,16 @@ class ActionSets:
         machine = self.create_machine()
         machine.add_state("keypress", WaitForKeyPressAction('k', "for the next question"), "sstittle","keypress")
         machine.add_state("sstittle",  ScreenshotAction(33.7,80,39.5,49), "ettitle")
-        machine.add_state("ettitle", ExtractTextAction(description= "Give me the answer after thinking step by step:\n "), "ssq1")
+        machine.add_state("ettitle", ExtractTextAction(description= "Q"), "ssq1")
         machine.add_state("ssq1", ScreenshotAction(33,52,49.5,57), "eq1")
-        machine.add_state("eq1",ExtractTextAction(description= "\n\n which of these is the most similar to your answer?: \nA: ", aggregate=True), "ssq2")
+        machine.add_state("eq1",ExtractTextAction(description= "A"), "ssq2")
         machine.add_state("ssq2", ScreenshotAction(57,74,49.5,57), "eq2")
-        machine.add_state("eq2", ExtractTextAction(description= " B: ", aggregate=True), "ssq3")
+        machine.add_state("eq2", ExtractTextAction(description= "B"), "ssq3")
         machine.add_state("ssq3",  ScreenshotAction(33,54,58,66), "eq3")
-        machine.add_state("eq3", ExtractTextAction(description= " C: ", aggregate=True), "ssq4")
+        machine.add_state("eq3", ExtractTextAction(description= "C"), "ssq4")
         machine.add_state("ssq4", ScreenshotAction(57,76,58,66), "eq4")
-        machine.add_state("eq4", ExtractTextAction(description= " D: ", aggregate=True), "cgpt")
-        machine.add_state("cgpt", ChatGPTAction(midterm=True),"keypress")
+        machine.add_state("eq4", ExtractTextAction(description= "D"), "lyceumManual")
+        machine.add_state("lyceumManual", LyceumAction(retard=1.5),"keypress","lyceumGPT")
+        machine.add_state("lyceumGPT", ChatGPTAction(retard=1.5),"keypress")
         machine.set_initial_state("keypress")
         return machine

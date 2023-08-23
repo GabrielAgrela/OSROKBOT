@@ -1,6 +1,11 @@
 class GlobalVars:
     _instance = None
     UI=None
+    Q=None
+    A=None
+    B=None
+    C=None
+    D=None
     def __new__(cls, UI_INSTANCE=None):
         if cls._instance is None:
             cls._instance = super(GlobalVars, cls).__new__(cls)

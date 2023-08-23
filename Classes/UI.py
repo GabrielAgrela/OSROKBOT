@@ -10,7 +10,7 @@ from global_vars import GlobalVars, GLOBAL_VARS
 import threading
 
 class UI(QtWidgets.QWidget):
-    def __init__(self, window_title, delay=1):
+    def __init__(self, window_title, delay=0):
         super().__init__()
         
 
@@ -23,61 +23,61 @@ class UI(QtWidgets.QWidget):
         self.timer.start(10)
         # Colors and styles
         self.setStyleSheet("""
-    QWidget {
-        background-color: #2a2a2a;
-    }
-    QPushButton {
-        background-color: #3a3a3a; 
-        color: #f5f5f5;             
-        border: 2px solid #4a90e2;  
-        border-radius: 8px;
-        padding: 5px;
-        width: 22px;
-        height: 22px;
-    }
-    QPushButton:hover {
-        background-color: #4a4a4a;  
-        border: 2px solid #357ab2;  
-    }
-    QLabel {
-        font-size: 16px;
-        color: #f5f5f5;
-        background-color: transparent;
-        text-align: left !important;                
-        
-        
-    }
-    QComboBox {
-        
-        border: 2px solid #4a90e2; 
-        border-radius: 8px;
-        
-        padding: 3px;
-        font-size: Auto;
-        background-color: #3a3a3a !important;
-        color: white !important; /* This sets the text color of non-selected items to white */
-    }
-    QComboBox::drop-down {
-        background-color: #2a2a2a !important;
-        border: 2px solid #4a90e2 !important;
-        width: 10px;
-        border-radius: 5px;
-    }
-    QComboBox::down-arrow {
-        image: url(Media/UI/down_arrow.svg);
-        padding-top: 2px;
-        width: 10px;
-        height: 10px;           
-    }
-                           
+        QWidget {
+            background-color: #2a2a2a;
+        }
+        QPushButton {
+            background-color: #3a3a3a; 
+            color: #f5f5f5;             
+            border: 2px solid #4a90e2;  
+            border-radius: 8px;
+            padding: 5px;
+            width: 22px;
+            height: 22px;
+        }
+        QPushButton:hover {
+            background-color: #4a4a4a;  
+            border: 2px solid #357ab2;  
+        }
+        QLabel {
+            font-size: 16px;
+            color: #f5f5f5;
+            background-color: transparent;
+            text-align: left !important;                
+            
+            
+        }
+        QComboBox {
+            
+            border: 2px solid #4a90e2; 
+            border-radius: 8px;
+            
+            padding: 3px;
+            font-size: Auto;
+            background-color: #3a3a3a !important;
+            color: white !important; /* This sets the text color of non-selected items to white */
+        }
+        QComboBox::drop-down {
+            background-color: #2a2a2a !important;
+            border: 2px solid #4a90e2 !important;
+            width: 10px;
+            border-radius: 5px;
+        }
+        QComboBox::down-arrow {
+            image: url(Media/UI/down_arrow.svg);
+            padding-top: 2px;
+            width: 10px;
+            height: 10px;           
+        }
+                            
 
-                     
-    QCheckBox {
-        font-size: 16px;
-        color: #f5f5f5;
-    }
-    
-""")
+                        
+        QCheckBox {
+            font-size: 16px;
+            color: #f5f5f5;
+        }
+        
+    """)
 
         # Title Bar
         self.title_bar = QtWidgets.QWidget()

@@ -6,6 +6,7 @@ import cv2
 import numpy as np
 from dotenv import load_dotenv
 import os
+from global_vars import GlobalVars
 
 # Load the .env file
 load_dotenv()
@@ -35,7 +36,7 @@ class ExtractTextAction(Action):
         width, height = img.size
         img = img.resize((width*5, height*5), ANTIALIAS_METHOD)
         # Binarization
-        if "Give me the" in self.description:
+        if "Q" in self.description:
             img = img.point(lambda x: 0 if x < 140 else 255, '1')
         else:
             img = img.point(lambda x: 0 if x < 195 else 255, '1')
@@ -47,23 +48,21 @@ class ExtractTextAction(Action):
         return img
 
     def execute(self):
-        try:
-            if not self.aggregate:
-                with open('string.txt', 'w') as f:
-                    f.write("")
-                
-            img = self.preprocess_image(self.image_path)
-            text = pytesseract.image_to_string(img, lang='eng', config='--oem 3 --psm 6')
-            text = text.replace("\n", "")
-            #remove first space from text
-            text = self.description + text
-            #make text be all in same line
-            print(text)
+        img = self.preprocess_image(self.image_path)
+        text = pytesseract.image_to_string(img, lang='eng', config='--oem 3 --psm 6')
+        text = text.replace("\n", "")
 
-            #print("OCR : ", text) 
-            with open('string.txt', 'a') as f:
-                f.write("\n"+text)
-            return True
-        except Exception as e:
-            print(f"Failed to extract text from image: {e}")
-            return False
+        if(self.description == "Q"):
+            GlobalVars().Q=text
+            os.system('cls')
+        if(self.description == "A"):
+            GlobalVars().A=text
+        if(self.description == "B"):
+            GlobalVars().B=text
+        if(self.description == "C"):
+            GlobalVars().C=text
+        if(self.description == "D"):
+            GlobalVars().D=text
+
+        print(text)
+        return True

@@ -11,7 +11,7 @@ class Action(ABC):
 
 
     def perform(self):
-        result = self.execute()
+        
         tempString=""
         try:  
             if self.image != "Media/captchachest.png":
@@ -34,6 +34,6 @@ class Action(ABC):
         
         if (tempString != ""):
             global_vars.GlobalVars().UI.currentState(tempString.replace("action","").replace("FindAnd","").replace(".png","").replace("Media/","").replace("Action",""))     
-
+        result = self.execute()
         time.sleep(self.retard)
         return result
