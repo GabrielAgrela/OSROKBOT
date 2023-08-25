@@ -3,8 +3,8 @@ from window_handler import WindowHandler
 import os
 
 class ScreenshotAction(Action):
-    def __init__(self, x_begin, x_end, y_begin, y_end, output_path="test.png", skip_check_first_time=False, delay=0, retard =0):
-        super().__init__(skip_check_first_time)
+    def __init__(self, x_begin, x_end, y_begin, y_end, output_path="test.png", delay=0, retard =0):
+        
         self.x_begin = x_begin
         self.x_end = x_end
         self.y_begin = y_begin

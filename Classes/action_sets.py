@@ -1,5 +1,4 @@
 from Actions.find_and_click_image_action import FindAndClickImageAction
-from Actions.soft_find_and_click_image_action import SoftFindAndClickImageAction
 from Actions.press_key_action import PressKeyAction
 from Actions.find_image_action import FindImageAction
 from Actions.manual_click_action import ManualClickAction
@@ -15,7 +14,6 @@ from Actions.screenshot_action import ScreenshotAction
 from Actions.chatgpt_action import ChatGPTAction
 from Actions.wait_for_keypress_action import WaitForKeyPressAction
 from manual_click import ManualClick
-from email_handler import EmailHandler
 from state_machine import StateMachine
 from helpers import Helpers
 import random
@@ -31,6 +29,7 @@ class ActionSets:
     def scout_explore(self):
         machine = self.create_machine()
         machine.add_state("explorenight", FindAndClickImageAction('Media/explorenight.png', offset_y=25), "openmsgs", "exploreday")
+        
         machine.add_state("exploreday", FindAndClickImageAction('Media/explore.png', delay=1, offset_y=25), "openmsgs", "explorenight")
 
         machine.add_state("openmsgs", PressKeyAction('z'), "reportactive")
@@ -129,8 +128,10 @@ class ActionSets:
     
     def farm_rss (self):
         machine = self.create_machine()
+        
         machine.add_state("pause", PressKeyAction('escape', retard=65), "restart")
-        machine.add_state("restart", PressKeyAction('escape'), "cityview")
+        machine.add_state("restart", PressKeyAction('escape'), "checkesc")
+        machine.add_state("checkesc", FindAndClickImageAction('Media/escx.png'), "cityview","cityview",)
         machine.add_state("cityview", PressKeyAction('space'), "birdview")
         machine.add_state("birdview",FindAndClickImageAction('Media/ficon.png'), Helpers.getRandomRss(),"restart")
 
@@ -144,11 +145,38 @@ class ActionSets:
 
         machine.add_state("newtroopaction", FindAndClickImageAction('Media/newtroopaction.png', delay=1), "marchaction","smallmarchaction")
         machine.add_state("smallmarchaction", FindImageAction('Media/smallmarchaction.png'), "pause","restart")
-        machine.add_state("escape2", PressKeyAction('escape', retard=1), "openmsgs","restart")
+
 
         machine.add_state("marchaction", FindAndClickImageAction('Media/marchaction.png'), "birdview","restart")
 
         machine.set_initial_state("cityview")
+        return machine
+    
+    def farm_rss_new (self):
+        machine = self.create_machine()
+        machine.add_state("test",  ScreenshotAction(96,98,18.5,20.5), "test2")
+        machine.add_state("test2", ExtractTextAction(description= "marchcount"), "restart","test")
+        machine.add_state("pause", PressKeyAction('escape', retard=.5), "test")
+        machine.add_state("restart", PressKeyAction('escape'), "checkesc")
+        machine.add_state("checkesc", FindAndClickImageAction('Media/escx.png'), "cityview","cityview",)
+        machine.add_state("cityview", PressKeyAction('space'), "birdview")
+        machine.add_state("birdview",FindAndClickImageAction('Media/ficon.png'), Helpers.getRandomRss(),"restart")
+
+        machine.add_state("logicon", FindAndClickImageAction('Media/logicon.png'), "searchaction","restart")
+        machine.add_state("cornicon", FindAndClickImageAction('Media/cornicon.png'), "searchaction","restart")
+        machine.add_state("goldicon", FindAndClickImageAction('Media/goldicon.png'), "searchaction","restart")
+        machine.add_state("stoneicon", FindAndClickImageAction('Media/stoneicon.png'), "searchaction","restart")
+        machine.add_state("searchaction", FindAndClickImageAction('Media/searchaction.png'), "arrow","logicon")
+        machine.add_state("arrow", ManualClickAction(x=50, y=50, delay=1.5), "gatheraction","restart")
+        machine.add_state("gatheraction", FindAndClickImageAction('Media/gatheraction.png'), "newtroopaction","restart")
+
+        machine.add_state("newtroopaction", FindAndClickImageAction('Media/newtroopaction.png', delay=1), "marchaction","smallmarchaction")
+        machine.add_state("smallmarchaction", FindImageAction('Media/smallmarchaction.png'), "pause","restart")
+
+
+        machine.add_state("marchaction", FindAndClickImageAction('Media/marchaction.png'), "test","restart")
+
+        machine.set_initial_state("test")
         return machine
     
     def farm_wood (self):

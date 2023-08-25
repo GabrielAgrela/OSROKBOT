@@ -31,7 +31,7 @@ class LyceumAction(Action):
         max_similarity_index = cosine_similarities.argmax()
         
         # Print the highest similarity score
-        #print(f"Most similar entry '{text_list[max_similarity_index]}' has a similarity score of: {cosine_similarities[max_similarity_index]:.4f}")
+        print(f"Most similar entry '{text_list[max_similarity_index]}' has a similarity score of: {cosine_similarities[max_similarity_index]:.4f}")
         if (GlobalVars().Q == input_text):
             self.score = cosine_similarities[max_similarity_index]
         
@@ -67,8 +67,8 @@ class LyceumAction(Action):
         elif option_index == 3:
             print("\nD is the closest match")
 
-        #print(f"with : {self.score}")
-        if (self.score < 0.8):
+        print(f"with : {self.score}")
+        if (self.score < 0.96):
             print("\nI couldn't find the answer in the database, trying with CGPT")
             return False
         else:

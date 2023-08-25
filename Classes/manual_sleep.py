@@ -9,5 +9,6 @@ class ManualSleep:
     def click(self, win, y_offset):
         #click middle of the screen with pyautogui
         center_x = int(win.width // 2 + win.left)
+        
         center_y = int(win.height // 2 + win.top)
         pyautogui.click(center_x, center_y+y_offset)

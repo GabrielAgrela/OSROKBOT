@@ -10,7 +10,7 @@ from global_vars import GlobalVars, GLOBAL_VARS
 import threading
 
 class UI(QtWidgets.QWidget):
-    def __init__(self, window_title, delay=0):
+    def __init__(self, window_title, delay=1):
         super().__init__()
         
 
@@ -155,7 +155,7 @@ class UI(QtWidgets.QWidget):
         self.action_set_combo_box.setStyleSheet("""
             color: #fff;
         """)
-        self.action_set_names = ["farm_rss","farm_food","farm_wood","farm_stone","farm_gold", "farm_barb", "lyceum", "lyceumMid", "train_troops"]
+        self.action_set_names = ["farm_rss_new","farm_rss","farm_food","farm_wood","farm_stone","farm_gold", "farm_barb", "lyceum", "lyceumMid", "train_troops"]
         self.action_set_combo_box.addItems(self.action_set_names)
 
         # Checkbutton for captcha

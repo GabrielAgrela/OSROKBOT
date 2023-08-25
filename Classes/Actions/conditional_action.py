@@ -1,8 +1,8 @@
 from Actions.action import Action
 
 class ConditionalAction(Action):
-    def __init__(self, primary_actions, primary_subsequent_actions, alternative_subsequent_actions, retry_times=0, skip_check_first_time=False):
-        super().__init__(skip_check_first_time)
+    def __init__(self, primary_actions, primary_subsequent_actions, alternative_subsequent_actions, retry_times=0):
+        
         self.primary_actions = primary_actions
         self.primary_subsequent_actions = primary_subsequent_actions or []
         self.alternative_subsequent_actions = alternative_subsequent_actions or []
