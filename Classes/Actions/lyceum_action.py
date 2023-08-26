@@ -68,7 +68,7 @@ class LyceumAction(Action):
             print("\nD is the closest match")
 
         print(f"with : {self.score}")
-        if (self.score < 0.96):
+        if (self.score < 0.97):
             print("\nI couldn't find the answer in the database, trying with CGPT")
             return False
         else:
