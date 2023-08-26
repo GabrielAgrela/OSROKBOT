@@ -154,7 +154,7 @@ class ActionSets:
     
     def farm_rss_new (self):
         machine = self.create_machine()
-        machine.add_state("test",  ScreenshotAction(96,98,18.5,20.5), "test2")
+        machine.add_state("test",  ScreenshotAction(96,98,18.5,20.5, delay=10), "test2")
         machine.add_state("test2", ExtractTextAction(description= "marchcount"), "restart","test")
         machine.add_state("pause", PressKeyAction('escape', retard=.5), "test")
         machine.add_state("restart", PressKeyAction('escape'), "checkesc")

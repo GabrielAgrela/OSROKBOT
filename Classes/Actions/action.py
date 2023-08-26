@@ -34,6 +34,7 @@ class Action(ABC):
         
         if (tempString != ""):
             global_vars.GlobalVars().UI.currentState(tempString.replace("action","").replace("FindAnd","").replace(".png","").replace("Media/","").replace("Action",""))     
+        time.sleep(self.delay)
         result = self.execute()
         time.sleep(self.retard)
         return result

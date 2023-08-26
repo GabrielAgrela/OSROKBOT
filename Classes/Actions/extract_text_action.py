@@ -56,14 +56,14 @@ class ExtractTextAction(Action):
         img = self.preprocess_image(self.image_path)
         try:
             text = pytesseract.image_to_string(img, lang='eng', config="--oem 3 --psm 6 -c tessedit_char_whitelist=0123456789//")
-            print(text)
+            #print(text)
             if (self.description == "marchcount"):
                 #first char from text to int
                 if (int(text[0])<int(text[2])):
-                    print("true")
+                    print("March not full")
                     return True
                 else:
-                    print("false")
+                    print("March full")
                     return False
         except:
             return True

@@ -10,7 +10,7 @@ from global_vars import GlobalVars, GLOBAL_VARS
 import threading
 
 class UI(QtWidgets.QWidget):
-    def __init__(self, window_title, delay=1):
+    def __init__(self, window_title, delay=0):
         super().__init__()
         
 
