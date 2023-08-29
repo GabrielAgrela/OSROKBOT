@@ -118,7 +118,7 @@ class UI(QtWidgets.QWidget):
         title_bar_layout.addWidget(self.close_button)
 
         # Status label
-        self.status_label = QtWidgets.QLabel(' Ready')
+        self.status_label = QtWidgets.QLabel(' Ready!')
         self.status_label.setStyleSheet("color: #4a90e2; font-weight: bold; text-align: left !important;")
         self.status_label.setAlignment(QtCore.Qt.AlignLeft)
         # Button Layout
@@ -204,7 +204,7 @@ class UI(QtWidgets.QWidget):
             padding: 0px !important;
             background-color: transparent;
         """)
-        self.current_state_label = QtWidgets.QLabel("Ready")
+        self.current_state_label = QtWidgets.QLabel("Ready!")
         self.current_state_label.setFixedWidth(77)
         self.current_state_label.setFixedHeight(70)
         self.current_state_label.setStyleSheet("""
@@ -309,20 +309,24 @@ class UI(QtWidgets.QWidget):
 
 
     def start_automation(self):
-        if self.game_automator.is_paused():
-            self.toggle_pause()
-        selected_index = self.action_set_combo_box.currentIndex()
-        if selected_index != -1:
-            action_group = getattr(self.action_sets, self.action_set_names[selected_index])()
-            actions_groups = [action_group]
-            if self.check_captcha_checkbutton.isChecked():
-                actions_groups.append(self.action_sets.emailtest())
-            self.game_automator.start(actions_groups)
-            self.status_label.setText(' Running')
-            self.status_label.setStyleSheet("color: green;font-weight: bold;")
-        self.play_button.hide()
-        self.stop_button.show()
-        self.pause_button.show()
+        if self.game_automator.is_running or not self.game_automator.all_threads_joined:
+            self.current_state_label.setText('Finishing last job\nwait 2s')
+            return
+        else:
+            if self.game_automator.is_paused():
+                self.toggle_pause()
+            selected_index = self.action_set_combo_box.currentIndex()
+            if selected_index != -1:
+                action_group = getattr(self.action_sets, self.action_set_names[selected_index])()
+                actions_groups = [action_group]
+                if self.check_captcha_checkbutton.isChecked():
+                    actions_groups.append(self.action_sets.emailtest())
+                self.game_automator.start(actions_groups)
+                self.status_label.setText(' Running')
+                self.status_label.setStyleSheet("color: green;font-weight: bold;")
+            self.play_button.hide()
+            self.stop_button.show()
+            self.pause_button.show()
 
     def stop_automation(self):
         
