@@ -10,6 +10,7 @@ from Actions.quit_action import QuitAction
 from Actions.pause_action import PauseAction
 from Actions.lyceum_action import LyceumAction
 from Actions.extract_text_action import ExtractTextAction
+from Actions.find_marauder_action import FindMarauderAction
 from Actions.screenshot_action import ScreenshotAction
 from Actions.chatgpt_action import ChatGPTAction
 from Actions.wait_for_keypress_action import WaitForKeyPressAction
@@ -154,9 +155,10 @@ class ActionSets:
     
     def farm_rss_new (self):
         machine = self.create_machine()
-        machine.add_state("test",  ScreenshotAction(96,98,18.5,20.5, delay=10), "test2")
-        machine.add_state("test2", ExtractTextAction(description= "marchcount"), "restart","test")
-        machine.add_state("pause", PressKeyAction('escape', retard=.5), "test")
+        machine.add_state("pause1",  ManualSleepAction(delay=10), "test")
+        machine.add_state("test",  ScreenshotAction(96,98,18.6,20.4), "test2")
+        machine.add_state("test2", ExtractTextAction(description= "marchcount"), "restart","pause1")
+        machine.add_state("pause", PressKeyAction('escape', retard=.5), "pause1")
         machine.add_state("restart", PressKeyAction('escape'), "checkesc")
         machine.add_state("checkesc", FindAndClickImageAction('Media/escx.png'), "cityview","cityview",)
         machine.add_state("cityview", PressKeyAction('space'), "birdview")
@@ -177,6 +179,55 @@ class ActionSets:
         machine.add_state("marchaction", FindAndClickImageAction('Media/marchaction.png'), "test","restart")
 
         machine.set_initial_state("test")
+        return machine
+    
+    def loharjr (self):
+        machine = self.create_machine()
+        machine.add_state("0", PressKeyAction('space',retard=4), "1")
+        machine.add_state("1", PressKeyAction('space'), "2")
+        machine.add_state("2",FindMarauderAction(),"3")
+        machine.add_state("3", FindAndClickImageAction('Media/attackaction.png',delay=.3), "4","0")
+        machine.add_state("4", FindAndClickImageAction('Media/newtroopaction.png',delay=.3), "5","5f")
+        machine.add_state("5f", ManualClickAction(96,80), "6f")
+        machine.add_state("6f", FindAndClickImageAction('Media/smallmarchaction.png'), "7","0")
+        machine.add_state("5", ManualClickAction(75,78), "6")
+        machine.add_state("6", FindAndClickImageAction('Media/marchaction.png'), "7","0")
+
+        machine.add_state("7", PressKeyAction('escape'), "8")
+        machine.add_state("8", FindAndClickImageAction('Media/applus.png'), "9","0")
+        machine.add_state("9", FindAndClickImageAction('Media/apuse.png'), "10","0")
+        machine.add_state("10", ManualClickAction(60,40), "11","11")
+        machine.add_state("11", PressKeyAction('escape'), "12")
+        machine.add_state("12", PressKeyAction('escape'), "13")
+        machine.add_state("13", FindImageAction('Media/victory.png', delay=2), "14","13")
+        machine.add_state("14", FindImageAction('Media/defeat.png', delay=0), "15","2")
+        machine.add_state("15", FindImageAction('Media/armyc.png', delay=5), "15","0")
+        #machine.add_state("14", ExtractTextAction(description= "marchcount"), "0","2")
+        #machine.add_state("13", FindImageAction('Media/armyc.png', delay=5), "13","2")
+        #
+        #machine.add_state("other", PressKeyAction('left'), "marchaction")
+       # machine.add_state("other", FindAndClickImageAction('Media/marauder.png', delay=1), "marchaction","inventory")
+
+
+
+        machine.set_initial_state("1")
+        return machine
+
+    def loharjrt (self):
+        machine = self.create_machine()
+        
+        machine.add_state("inventory", PressKeyAction('i'), "other")
+        machine.add_state("other", ManualClickAction(x=80, y=20), "loharjr","inventory")
+        machine.add_state("loharjr", FindAndClickImageAction('Media/loharjr.png'), "useaction","inventory")
+        machine.add_state("useaction", FindAndClickImageAction('Media/useaction.png'), "arrow","inventory")
+        machine.add_state("arrow", FindAndClickImageAction('Media/arrow.png',delay=1.5, offset_y=105), "rallyaction","inventory")
+        machine.add_state("rallyaction", FindAndClickImageAction('Media/rallyaction.png',delay=.3), "rallysmallaction","inventory")
+        machine.add_state("rallysmallaction", FindAndClickImageAction('Media/rallysmallaction.png',delay=.5), "marchaction","inventory")
+        machine.add_state("marchaction", FindAndClickImageAction('Media/marchaction.png',delay=.5), "end","inventory")
+        machine.add_state("end", QuitAction(game_automator=self.game_automator), "inventory","inventory")
+
+
+        machine.set_initial_state("inventory")
         return machine
     
     def farm_wood (self):

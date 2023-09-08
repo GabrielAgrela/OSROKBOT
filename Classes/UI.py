@@ -155,7 +155,7 @@ class UI(QtWidgets.QWidget):
         self.action_set_combo_box.setStyleSheet("""
             color: #fff;
         """)
-        self.action_set_names = ["farm_rss_new","farm_rss","farm_food","farm_wood","farm_stone","farm_gold", "farm_barb", "lyceum", "lyceumMid", "train_troops"]
+        self.action_set_names = ["loharjr","farm_rss_new","farm_rss","farm_food","farm_wood","farm_stone","farm_gold", "farm_barb", "lyceum", "lyceumMid", "train_troops"]
         self.action_set_combo_box.addItems(self.action_set_names)
 
         # Checkbutton for captcha
@@ -286,7 +286,7 @@ class UI(QtWidgets.QWidget):
             else:
                 self.setWindowFlags(self.windowFlags() & ~QtCore.Qt.WindowStaysOnTopHint)
             if not self.isVisible():
-                self.show()
+                self.show() 
 
 
 
