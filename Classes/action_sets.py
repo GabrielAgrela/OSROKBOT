@@ -109,6 +109,30 @@ class ActionSets:
         machine.set_initial_state("cityview")
         return machine
     
+    def farm_barb_all (self):
+        machine = self.create_machine()
+        machine.add_state("restart", PressKeyAction('escape'), "cityview")
+        machine.add_state("cityview", PressKeyAction('space',delay=.3), "birdview","cityview")
+        machine.add_state("birdview", PressKeyAction('f',delay=.3), "barbland","cityview")
+        machine.add_state("barbland", FindAndClickImageAction('Media/barbland.png',delay=.3), "searchaction","restart")
+        machine.add_state("searchaction", FindAndClickImageAction('Media/searchaction.png'), "arrow","restart")
+        machine.add_state("arrow", FindAndClickImageAction('Media/arrow.png',delay=1.5, offset_y=105), "attackaction","restart")
+        machine.add_state("attackaction", FindAndClickImageAction('Media/attackaction.png',delay=.3), "lohar","restart")
+        machine.add_state("lohar", ManualClickAction(96,80), "smallmarchaction","newtroopaction")
+        
+        machine.add_state("newtroopaction", FindAndClickImageAction('Media/newtroopaction.png',delay=.3), "marchaction","restart")
+        machine.add_state("marchaction", FindAndClickImageAction('Media/marchaction.png'), "victory","restart")
+
+        #machine.add_state("lohar", ManualClickAction(96,80), "smallmarchaction","newtroopaction")
+        
+        #machine.add_state("lohar", FindAndClickImageAction('Media/lohar.png'), "smallmarchaction","newtroopaction")
+        #machine.add_state("newtroopaction", FindAndClickImageAction('Media/newtroopaction.png'), "marchaction","newtroopaction")
+        #machine.add_state("marchaction", FindAndClickImageAction('Media/marchaction.png'), "victory","marchaction")
+        machine.add_state("smallmarchaction", FindAndClickImageAction('Media/smallmarchaction.png',delay=.5), "victory","restart")
+        machine.add_state("victory", FindImageAction('Media/victory.png', delay=2), "birdview","victory")
+        machine.set_initial_state("cityview")
+        return machine
+    
     def train_troops (self):
         machine = self.create_machine()
         machine.add_state("restart", PressKeyAction('escape'), "stable")
