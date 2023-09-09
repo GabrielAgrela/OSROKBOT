@@ -4,5 +4,5 @@ class Helpers:
     @staticmethod
     def getRandomRss():
         random.seed(time.time())
-        return lambda: random.choice(["cornicon"])
-        #return lambda: random.choice(["logicon", "cornicon", "stoneicon"])
+        #return lambda: random.choice(["cornicon"])
+        return lambda: random.choice(["goldicon"])
