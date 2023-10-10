@@ -4,6 +4,7 @@ from global_vars import GlobalVars
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import linear_kernel
 from Actions.manual_click_action import ManualClickAction
+from Actions.manual_move_action import ManualMoveAction
 
 class LyceumAction(Action):
     def __init__(self, midterm=False, delay=0, retard=0):
@@ -68,7 +69,7 @@ class LyceumAction(Action):
             print("\nD is the closest match")
 
         print(f"with : {self.score}")
-        if (self.score < 0.97):
+        if (self.score < 0.98):
             print("\nI couldn't find the answer in the database, trying with CGPT")
             return False
         else:
@@ -84,11 +85,11 @@ class LyceumAction(Action):
                     ManualClickAction(60,58).execute()
             else:
                 if option_index == 0:
-                    ManualClickAction(37,55).execute()
+                    ManualMoveAction(37,55).execute()
                 elif option_index == 1:
-                    ManualClickAction(60,55).execute()
+                    ManualMoveAction(60,55).execute()
                 elif option_index == 2:
-                    ManualClickAction(37,63).execute()
+                    ManualMoveAction(37,63).execute()
                 elif option_index == 3:
-                    ManualClickAction(60,63).execute()
+                    ManualMoveAction(60,63).execute()
             return True

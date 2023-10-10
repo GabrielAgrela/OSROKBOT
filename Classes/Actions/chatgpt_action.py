@@ -4,14 +4,16 @@ import openai
 import os
 from dotenv import load_dotenv
 from Actions.manual_click_action import ManualClickAction
+from Actions.manual_move_action import ManualMoveAction
 import time
 from termcolor import colored
 import os
+import csv 
 from global_vars import GlobalVars
-
+from Actions.check_color_action import CheckColorAction
 
 class ChatGPTAction(Action):
-    def __init__(self,midterm=False, filepath="string.txt", delay=0, retard =0):
+    def __init__(self,midterm=False, filepath="string.txt", delay=0, retard=0):
         
         load_dotenv()
         openai.api_key = os.getenv('OPENAI_KEY')
@@ -44,7 +46,7 @@ class ChatGPTAction(Action):
         print("\n\n")
         self.messages.append({"role": "user", "content": (self.message)},)
         chat = openai.ChatCompletion.create(
-            model="gpt-4-0613",
+            model="gpt-4",
             temperature=1,
             messages=self.messages,
             functions=self.functions,
@@ -53,39 +55,61 @@ class ChatGPTAction(Action):
 
         response_message = chat.choices[0].message
         
+        with open('roklyceum.csv', mode='a', newline='', encoding='utf-8') as file:
+            writer = csv.writer(file)
+            if response_message.get("function_call"):
+                function_arguments = json.loads(response_message["function_call"]["arguments"])
+                function_response = function_arguments["answer"]
 
-        if response_message.get("function_call"):
-            function_arguments = json.loads(response_message["function_call"]["arguments"])
-            function_response = function_arguments["answer"]
+                print("\n\n I think it's " , colored(function_response,"red"))
 
-            print("\n\n I think it's " , colored(function_response,"red"))
+                self.messages.clear()
+                self.messages = [{"role": "system", "content": "You are a quizz assistant in the game Rise of Kingdoms."}]
 
-            self.messages.clear()
-            self.messages = [{"role": "system", "content": "You are a quizz assistant in the game Rise of Kingdoms."}]
-
-            # Switch case for reply A, B, C, D, or E
-            if not self.midterm:
-                if function_response == "A":
-                    ManualClickAction(40,48).execute()
-                elif function_response == "B":
-                    ManualClickAction(60,50).execute()
-                elif function_response == "C":
-                    ManualClickAction(40,58).execute()
-                elif function_response == "D":
-                    ManualClickAction(60,58).execute()
+                # Switch case for reply A, B, C, D, or E
+                if not self.midterm:
+                    if function_response == "A":
+                        ManualClickAction(40,48).execute()
+                        if CheckColorAction(40,48).execute():
+                            writer.writerow([GlobalVars().Q, GlobalVars().A])
+                            #add GlobalVars().Q and GlobalVars().A to roklyceum.csv
+                    elif function_response == "B":
+                        ManualClickAction(60,50).execute()
+                        if CheckColorAction(60,50).execute():
+                            writer.writerow([GlobalVars().Q, GlobalVars().B])
+                    elif function_response == "C":
+                        ManualClickAction(40,58).execute()
+                        if CheckColorAction(40,58).execute():
+                            writer.writerow([GlobalVars().Q, GlobalVars().C])
+                    elif function_response == "D":
+                        ManualClickAction(60,58).execute()
+                        if CheckColorAction(60,58).execute():
+                            writer.writerow([GlobalVars().Q, GlobalVars().D])
+                    else:
+                        print("")
+                    
                 else:
-                    print("")
-                
-            else:
-                if function_response == "A":
-                    ManualClickAction(37,55).execute()
-                elif function_response == "B":
-                    ManualClickAction(60,55).execute()
-                elif function_response == "C":
-                    ManualClickAction(37,63).execute()
-                elif function_response == "D":
-                    ManualClickAction(60,63).execute()
-                
+                    if function_response == "A":
+                        ManualMoveAction(37,55).execute()
+                        if CheckColorAction(37,55).execute():
+                            writer.writerow([GlobalVars().Q, GlobalVars().A])
+                        print("------A---")
+                    elif function_response == "B":
+                        ManualMoveAction(60,55).execute()
+                        if CheckColorAction(60,55).execute():
+                            writer.writerow([GlobalVars().Q, GlobalVars().B])
+                        print("------B---")
+                    elif function_response == "C":
+                        ManualMoveAction(37,63).execute()
+                        if CheckColorAction(37,63).execute():
+                            writer.writerow([GlobalVars().Q, GlobalVars().C])
+                        print("------C---")
+                    elif function_response == "D":
+                        ManualMoveAction(60,63).execute()
+                        if CheckColorAction(60,63).execute():
+                            writer.writerow([GlobalVars().Q, GlobalVars().D])
+                        print("------D---")
+                    
 
         
         return True

@@ -71,16 +71,16 @@ class ExtractTextAction(Action):
         text = text.replace("\n", "")
 
         if(self.description == "Q"):
-            GlobalVars().Q=text
+            GlobalVars().Q=text.replace(",","").replace("\"","")
             os.system('cls')
         if(self.description == "A"):
-            GlobalVars().A=text
+            GlobalVars().A=text.replace(",","").replace("\"","")
         if(self.description == "B"):
-            GlobalVars().B=text
+            GlobalVars().B=text.replace(",","").replace("\"","")
         if(self.description == "C"):
-            GlobalVars().C=text
+            GlobalVars().C=text.replace(",","").replace("\"","")
         if(self.description == "D"):
-            GlobalVars().D=text
+            GlobalVars().D=text.replace(",","").replace("\"","")
         
 
         
