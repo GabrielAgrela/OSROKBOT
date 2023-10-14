@@ -20,7 +20,6 @@ class CheckColorAction(Action):
 
 
     def execute(self):
-        time.sleep(.5)
         screenshot, win = self.window_handler.screenshot_window(self.window_title)
 
         x = int(screenshot.width * self.x / 100)
@@ -42,8 +41,8 @@ class CheckColorAction(Action):
 
         # Check if the color is close to green
         if abs(color_h - target_h) < threshold:
-            print("1color is ", color)
+            print("Green: ", color)
             return True
         else:
-            print("2color is ", color)
+            print("NOT GREEN ", color)
             return False

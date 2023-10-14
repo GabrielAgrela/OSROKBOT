@@ -12,6 +12,7 @@ class LyceumAction(Action):
         self.delay = delay
         self.retard = retard
         self.score =0
+        self.optionScore =0
 
     def fetch_data_from_csv(self, csv_filename):
         with open(csv_filename, mode='r', encoding='utf-8') as file:
@@ -32,9 +33,11 @@ class LyceumAction(Action):
         max_similarity_index = cosine_similarities.argmax()
         
         # Print the highest similarity score
-        print(f"Most similar entry '{text_list[max_similarity_index]}' has a similarity score of: {cosine_similarities[max_similarity_index]:.4f}")
+        print(f"Most similar entry '{text_list[max_similarity_index]}' has a similarity score of: {cosine_similarities[max_similarity_index]:.4f} with")
         if (GlobalVars().Q == input_text):
             self.score = cosine_similarities[max_similarity_index]
+        else:
+            self.optionScore = cosine_similarities[max_similarity_index]
         
         return text_list[max_similarity_index]
 
@@ -69,7 +72,8 @@ class LyceumAction(Action):
             print("\nD is the closest match")
 
         print(f"with : {self.score}")
-        if (self.score < 0.98):
+        
+        if (self.score < 0.98 and not(self.score < 0.95 or self.optionScore < 0.95)):
             print("\nI couldn't find the answer in the database, trying with CGPT")
             return False
         else:

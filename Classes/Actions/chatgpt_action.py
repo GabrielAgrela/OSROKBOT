@@ -39,7 +39,20 @@ class ChatGPTAction(Action):
             },
         }
         ]
-                    
+    def checkCorrect(self):
+            writer = csv.writer(file)
+            with open('roklyceum.csv', mode='a', newline='', encoding='utf-8') as file:
+                time.sleep(.5)
+                if CheckColorAction(40,48).execute():
+                    writer.writerow([GlobalVars().Q, GlobalVars().A])
+                elif CheckColorAction(60,50).execute():
+                    writer.writerow([GlobalVars().Q, GlobalVars().B])
+                elif CheckColorAction(40,58).execute():
+                    writer.writerow([GlobalVars().Q, GlobalVars().C])
+                elif CheckColorAction(60,58).execute():
+                    writer.writerow([GlobalVars().Q, GlobalVars().D])
+
+
     def execute(self):
         #os.system('cls')
         self.message = "Question:" +  GlobalVars().Q + "\n" + "A:" + GlobalVars().A + "\n" + "B:" + GlobalVars().B + "\n" + "C:" + GlobalVars().C + "\n" + "D:" + GlobalVars().D
@@ -47,7 +60,7 @@ class ChatGPTAction(Action):
         self.messages.append({"role": "user", "content": (self.message)},)
         chat = openai.ChatCompletion.create(
             model="gpt-4",
-            temperature=1,
+            temperature=.1,
             messages=self.messages,
             functions=self.functions,
             function_call={"name": "return_option_based_on_prompt"}
@@ -55,60 +68,44 @@ class ChatGPTAction(Action):
 
         response_message = chat.choices[0].message
         
-        with open('roklyceum.csv', mode='a', newline='', encoding='utf-8') as file:
-            writer = csv.writer(file)
-            if response_message.get("function_call"):
-                function_arguments = json.loads(response_message["function_call"]["arguments"])
-                function_response = function_arguments["answer"]
+       
+            
+        if response_message.get("function_call"):
+            function_arguments = json.loads(response_message["function_call"]["arguments"])
+            function_response = function_arguments["answer"]
 
-                print("\n\n I think it's " , colored(function_response,"red"))
+            print("\n\n I think it's " , colored(function_response,"red"))
 
-                self.messages.clear()
-                self.messages = [{"role": "system", "content": "You are a quizz assistant in the game Rise of Kingdoms."}]
+            self.messages.clear()
+            self.messages = [{"role": "system", "content": "You are a quizz assistant in the game Rise of Kingdoms."}]
 
-                # Switch case for reply A, B, C, D, or E
-                if not self.midterm:
-                    if function_response == "A":
-                        ManualClickAction(40,48).execute()
-                        if CheckColorAction(40,48).execute():
-                            writer.writerow([GlobalVars().Q, GlobalVars().A])
-                            #add GlobalVars().Q and GlobalVars().A to roklyceum.csv
-                    elif function_response == "B":
-                        ManualClickAction(60,50).execute()
-                        if CheckColorAction(60,50).execute():
-                            writer.writerow([GlobalVars().Q, GlobalVars().B])
-                    elif function_response == "C":
-                        ManualClickAction(40,58).execute()
-                        if CheckColorAction(40,58).execute():
-                            writer.writerow([GlobalVars().Q, GlobalVars().C])
-                    elif function_response == "D":
-                        ManualClickAction(60,58).execute()
-                        if CheckColorAction(60,58).execute():
-                            writer.writerow([GlobalVars().Q, GlobalVars().D])
-                    else:
-                        print("")
-                    
+            # Switch case for reply A, B, C, D, or E
+            if not self.midterm:
+                if function_response == "A":
+                    ManualClickAction(40,48).execute()
+                elif function_response == "B":
+                    ManualClickAction(60,50).execute()
+                elif function_response == "C":
+                    ManualClickAction(40,58).execute()
+                elif function_response == "D":
+                    ManualClickAction(60,58).execute()
                 else:
-                    if function_response == "A":
-                        ManualMoveAction(37,55).execute()
-                        if CheckColorAction(37,55).execute():
-                            writer.writerow([GlobalVars().Q, GlobalVars().A])
-                        print("------A---")
-                    elif function_response == "B":
-                        ManualMoveAction(60,55).execute()
-                        if CheckColorAction(60,55).execute():
-                            writer.writerow([GlobalVars().Q, GlobalVars().B])
-                        print("------B---")
-                    elif function_response == "C":
-                        ManualMoveAction(37,63).execute()
-                        if CheckColorAction(37,63).execute():
-                            writer.writerow([GlobalVars().Q, GlobalVars().C])
-                        print("------C---")
-                    elif function_response == "D":
-                        ManualMoveAction(60,63).execute()
-                        if CheckColorAction(60,63).execute():
-                            writer.writerow([GlobalVars().Q, GlobalVars().D])
-                        print("------D---")
+                    print("")
+                self.checkCorrect()
+                
+            else:
+                if function_response == "A":
+                    ManualMoveAction(37,55).execute()
+                    print("------A---")
+                elif function_response == "B":
+                    ManualMoveAction(60,55).execute()
+                    print("------B---")
+                elif function_response == "C":
+                    ManualMoveAction(37,63).execute()
+                    print("------C---")
+                elif function_response == "D":
+                    ManualMoveAction(60,63).execute()
+                    print("------D---")
                     
 
         
