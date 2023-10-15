@@ -15,8 +15,8 @@ OSROKBOT is a highly customizable, open-source bot for Rise of Kingdoms. Utilizi
 - **Lyceum:** Will automatically do the lyceum event.
 ![Lyceum](Media/Readme/lyceum.gif)
 - **Lyceum Midterm:** Will automatically do the lyceum midterm and finals event.
-<img src="Media/Readme/lyceumwin1.png" width="400">
-<img src="Media/Readme/lyceumwin2.png" width="400">
+<img src="Media/Readme/lyceumwin1.png" width="800">
+<img src="Media/Readme/lyceumwin2.png" width="800">
 
 
 
