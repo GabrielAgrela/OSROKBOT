@@ -2,6 +2,6 @@
 
 # Ignore Python compiled files
 .env
-*.png
+/*.png
 Classes/__pycache__/
 Classes/Actions/__pycache__/
