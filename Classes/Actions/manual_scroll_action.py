@@ -1,19 +1,13 @@
-import time
+
 from Actions.action import Action
-from manual_scroll import ManualScroll
-from window_handler import WindowHandler
+from pynput.mouse import  Controller
 
 class ManualScrollAction(Action):
     def __init__(self, y_scroll=0, x_pos= 0, y_pos=0):
-        self.manual_scroll = ManualScroll()
-        self.window_handler = WindowHandler()
         self.y_scroll = y_scroll
-        self.x_pos = x_pos
-        self.y_pos = y_pos
-        self.window_title = 'Rise of Kingdoms'
-
-
+        self.mouse = Controller()
 
     def execute(self):
-        self.manual_scroll.scroll(self.y_scroll)
+        for i in range(self.y_scroll):
+            self.mouse.scroll(0, -1)
         return True

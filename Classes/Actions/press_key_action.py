@@ -1,12 +1,10 @@
 from Actions.action import Action
-from keyboard_handler import KeyboardHandler
 from window_handler import WindowHandler
 import pyautogui
 import time
 
 class PressKeyAction(Action):
     def __init__(self, key: str, delay=0, retard=0, times=1):
-        self.keyboard_handler = KeyboardHandler()
         self.key = key
         self.delay = delay
         self.retard = retard

@@ -2,8 +2,6 @@ from Actions.find_and_click_image_action import FindAndClickImageAction
 from Actions.press_key_action import PressKeyAction
 from Actions.find_image_action import FindImageAction
 from Actions.manual_click_action import ManualClickAction
-from Actions.manual_scroll_action import ManualScrollAction
-from Actions.conditional_action import ConditionalAction
 from Actions.manual_sleep_action import ManualSleepAction
 from Actions.email_action import SendEmailAction
 from Actions.quit_action import QuitAction
@@ -13,18 +11,14 @@ from Actions.extract_text_action import ExtractTextAction
 from Actions.find_marauder_action import FindMarauderAction
 from Actions.screenshot_action import ScreenshotAction
 from Actions.chatgpt_action import ChatGPTAction
-from Actions.check_color_action import CheckColorAction
 from Actions.wait_for_keypress_action import WaitForKeyPressAction
-from manual_click import ManualClick
 from state_machine import StateMachine
 from Actions.find_gems_action import FindGemAction
 from helpers import Helpers
-import random
 
 class ActionSets:
-    def __init__(self, game_automator):
-        self.manual_click = ManualClick()
-        self.game_automator = game_automator
+    def __init__(self, OS_ROKBOT):
+        self.OS_ROKBOT = OS_ROKBOT
     
     def create_machine(self):
         return StateMachine()
@@ -182,8 +176,8 @@ class ActionSets:
     def farm_rss_new (self):
         machine = self.create_machine()
         machine.add_state("pause1",  ManualSleepAction(delay=10), "test")
-        machine.add_state("test",  ScreenshotAction(96,98,18.6,20.4), "test2")
-        machine.add_state("test2", ExtractTextAction(description= "marchcount"), "restart","pause1")
+        machine.add_state("test",  ScreenshotAction(96,98,18.6,20.4,delay=1), "test2")
+        machine.add_state("test2", ExtractTextAction(description= "marchcount"), "birdview","pause1")
         machine.add_state("pause", PressKeyAction('escape', retard=.5), "pause1")
         machine.add_state("restart", PressKeyAction('escape'), "checkesc")
         machine.add_state("checkesc", FindAndClickImageAction('Media/escx.png'), "cityview","cityview",)
@@ -259,7 +253,7 @@ class ActionSets:
         machine.add_state("rallyaction", FindAndClickImageAction('Media/rallyaction.png',delay=.3), "rallysmallaction","inventory")
         machine.add_state("rallysmallaction", FindAndClickImageAction('Media/rallysmallaction.png',delay=.5), "marchaction","inventory")
         machine.add_state("marchaction", FindAndClickImageAction('Media/marchaction.png',delay=.5), "end","inventory")
-        machine.add_state("end", QuitAction(game_automator=self.game_automator), "inventory","inventory")
+        machine.add_state("end", QuitAction(OS_ROKBOT=self.OS_ROKBOT), "inventory","inventory")
 
 
         machine.set_initial_state("inventory")
@@ -366,11 +360,11 @@ class ActionSets:
         machine.set_initial_state("armyc")
         return machine
 
-    def emailtest (self):
+    def email_captcha (self):
         machine = self.create_machine()
         machine.add_state("findcaptcha",  FindAndClickImageAction('Media/captchachest.png',delay=11), "notify","findcaptcha")
         machine.add_state("notify",  SendEmailAction(), "pause")
-        machine.add_state("pause",  PauseAction(game_automator=self.game_automator), "findcaptcha")
+        machine.add_state("pause",  PauseAction(OS_ROKBOT=self.OS_ROKBOT), "findcaptcha")
         machine.set_initial_state("findcaptcha")
         return machine
     

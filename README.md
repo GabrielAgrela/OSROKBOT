@@ -3,6 +3,21 @@
 
 OSROKBOT is a highly customizable, open-source bot for Rise of Kingdoms. Utilizing state machines and image detection, it provides a powerful platform for automation within the game. It is designed to be scalable, working with any 16:9 ratio screen.
 
+## Actions
+
+- **Scout Exploration:** Scouts explore fog and structures when available.
+- **Farm Barbarians:** Farms barbarians at the pre-set level with lohar (you can change the commander) or all commanders in the field.
+![Farming Barbarians](Media/Readme/farmbarbs.gif)
+
+- **Farm Resources:** Farms resources at the automaticly chosen gatherers. For this, it is recommended that you use 720p res for now.
+![Farming Resources](Media/Readme/farmrss.gif)
+- **Catcha Recogniztion:** Will pause when captcha is detected and email you. You can then manually solve the captcha and the bot will continue.
+- **Lyceum:** Will automatically do the lyceum event.
+![Lyceum](Media/Readme/lyceum.gif)
+- **Lyceum Midterm:** Will automatically do the lyceum midterm and finals event.
+
+
+
 ## Features
 
 - **Highly Customizable:** Developers can implement new actions or create new state machines using the actions and images already provided.
@@ -17,7 +32,7 @@ OSROKBOT is a highly customizable, open-source bot for Rise of Kingdoms. Utilizi
 
 - **Tesseract:** OSROKBOT requires Tesseract binaries. You must install them on your system.
 - **Env:** Install Python
-- **Python Libraries:** Install the required Python libraries by running:
+- **Python Libraries:** Install the required Python libraries by running (after running there may be errors related to other non installed libs, just install them for now):
 
   ```bash
   pip install -r requirements.txt

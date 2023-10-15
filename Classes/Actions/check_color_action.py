@@ -1,15 +1,11 @@
 import time
 from Actions.action import Action
-from manual_move import ManualMove
 from window_handler import WindowHandler
 import time
-from PIL import ImageGrab
-import pyautogui
 from colorsys import rgb_to_hsv
 
 class CheckColorAction(Action):
     def __init__(self,x=50,y=50, delay=0, retard=0.0):
-        self.manual_move = ManualMove()
         self.window_handler = WindowHandler()
         self.delay = delay
         self.window_title = 'Rise of Kingdoms'

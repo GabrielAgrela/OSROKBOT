@@ -2,11 +2,11 @@ import sys
 from PyQt5 import QtWidgets, QtGui, QtCore
 
 from action_sets import ActionSets
-from game_automator import GameAutomator
+from OS_ROKBOT import OSROKBOT
 import pygetwindow as gw
 import time
 from window_handler import WindowHandler
-from global_vars import GlobalVars, GLOBAL_VARS
+from global_vars import GLOBAL_VARS
 import threading
 
 class UI(QtWidgets.QWidget):
@@ -14,9 +14,9 @@ class UI(QtWidgets.QWidget):
         super().__init__()
         
 
-        self.game_automator = GameAutomator(window_title, delay)
-        self.game_automator.signal_emitter.pause_toggled.connect(self.on_pause_toggled) # Connect the signal to the slot
-        self.action_sets = ActionSets(game_automator=self.game_automator)
+        self.OS_ROKBOT = OSROKBOT(window_title, delay)
+        self.OS_ROKBOT.signal_emitter.pause_toggled.connect(self.on_pause_toggled) # Connect the signal to the slot
+        self.action_sets = ActionSets(OS_ROKBOT=self.OS_ROKBOT)
         self.target_title = window_title
         self.timer = QtCore.QTimer(self)
         self.timer.timeout.connect(self.update_position)
@@ -32,7 +32,7 @@ class UI(QtWidgets.QWidget):
             border: 2px solid #4a90e2;  
             border-radius: 8px;
             padding: 5px;
-            width: 22px;
+            width: 34px;
             height: 22px;
         }
         QPushButton:hover {
@@ -155,7 +155,7 @@ class UI(QtWidgets.QWidget):
         self.action_set_combo_box.setStyleSheet("""
             color: #fff;
         """)
-        self.action_set_names = ["loharjr","farm_gems","farm_rss_new","farm_rss","farm_food","farm_wood","farm_stone","farm_gold", "farm_barb","farm_barb_all", "lyceum", "lyceumMid", "train_troops"]
+        self.action_set_names = ["farm_rss_new","farm_rss","farm_food","farm_wood","farm_stone","farm_gold", "farm_barb","farm_barb_all", "lyceum", "lyceumMid"]
         self.action_set_combo_box.addItems(self.action_set_names)
 
         # Checkbutton for captcha
@@ -178,7 +178,7 @@ class UI(QtWidgets.QWidget):
 
         # Background label
         self.current_state_label_BG = QtWidgets.QLabel() 
-        self.current_state_label_BG.setFixedWidth(77)
+        self.current_state_label_BG.setFixedWidth(97)
         self.current_state_label_BG.setFixedHeight(80)
         self.current_state_label_BG.setStyleSheet("""
             text-align: center;
@@ -205,7 +205,7 @@ class UI(QtWidgets.QWidget):
             background-color: transparent;
         """)
         self.current_state_label = QtWidgets.QLabel("Ready!")
-        self.current_state_label.setFixedWidth(77)
+        self.current_state_label.setFixedWidth(97)
         self.current_state_label.setFixedHeight(70)
         self.current_state_label.setStyleSheet("""
             text-align: center;
@@ -256,7 +256,7 @@ class UI(QtWidgets.QWidget):
         self.pause_button.hide()
         #self.setFixedSize(100, 150)
         #fix horizontal size
-        self.setFixedWidth(80)
+        self.setFixedWidth(100)
 
         #transparent backgourd
         self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
@@ -309,19 +309,19 @@ class UI(QtWidgets.QWidget):
 
 
     def start_automation(self):
-        if self.game_automator.is_running or not self.game_automator.all_threads_joined:
+        if self.OS_ROKBOT.is_running or not self.OS_ROKBOT.all_threads_joined:
             self.current_state_label.setText('Finishing last job\nwait 2s')
             return
         else:
-            if self.game_automator.is_paused():
+            if self.OS_ROKBOT.is_paused():
                 self.toggle_pause()
             selected_index = self.action_set_combo_box.currentIndex()
             if selected_index != -1:
                 action_group = getattr(self.action_sets, self.action_set_names[selected_index])()
                 actions_groups = [action_group]
                 if self.check_captcha_checkbutton.isChecked():
-                    actions_groups.append(self.action_sets.emailtest())
-                self.game_automator.start(actions_groups)
+                    actions_groups.append(self.action_sets.email_captcha())
+                self.OS_ROKBOT.start(actions_groups)
                 self.status_label.setText(' Running')
                 self.status_label.setStyleSheet("color: green;font-weight: bold;")
             self.play_button.hide()
@@ -330,7 +330,7 @@ class UI(QtWidgets.QWidget):
 
     def stop_automation(self):
         
-        self.game_automator.stop()
+        self.OS_ROKBOT.stop()
         self.status_label.setText(' Ready')
         self.status_label.setStyleSheet("color: #4a90e2; font-weight: bold; text-align: left;")
         self.play_button.show()
@@ -339,8 +339,8 @@ class UI(QtWidgets.QWidget):
         threading.Thread(target=self.call_current_state, args=("Ready",)).start()
 
     def toggle_pause(self):
-        self.game_automator.toggle_pause()
-        if self.game_automator.is_paused():
+        self.OS_ROKBOT.toggle_pause()
+        if self.OS_ROKBOT.is_paused():
             threading.Thread(target=self.call_current_state, args=("Paused",)).start()
         
         

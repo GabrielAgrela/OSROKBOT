@@ -6,3 +6,10 @@ Pillow
 mss
 pygetwindow
 termcolor
+pynput
+sendgrid
+requests
+dotenv
+pytesseract
+openai
+keyboard
