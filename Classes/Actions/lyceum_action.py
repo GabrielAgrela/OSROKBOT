@@ -73,7 +73,7 @@ class LyceumAction(Action):
 
         print(f"with : {self.score}")
         
-        if (self.score < 0.98 and not(self.score < 0.95 or self.optionScore < 0.95)):
+        if (self.score < 0.96 or self.optionScore < 0.85):
             print("\nI couldn't find the answer in the database, trying with CGPT")
             return False
         else:

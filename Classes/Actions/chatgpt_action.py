@@ -40,8 +40,9 @@ class ChatGPTAction(Action):
         }
         ]
     def checkCorrect(self):
-            writer = csv.writer(file)
+            
             with open('roklyceum.csv', mode='a', newline='', encoding='utf-8') as file:
+                writer = csv.writer(file)
                 time.sleep(.5)
                 if CheckColorAction(40,48).execute():
                     writer.writerow([GlobalVars().Q, GlobalVars().A])
