@@ -48,7 +48,7 @@ Create a `.env` file in the project root directory with the following content:
 OPENAI_KEY=your_openai_key
 TESSERACT_PATH=your_tesseract_path
 EMAIL=your_email
-ANTIALIAS_METHOD=ANTIALIAS
+ANTIALIAS_METHOD=LANCZOS
 ```
 
 Replace the placeholders with your actual values.
