@@ -69,10 +69,9 @@ class ExtractTextAction(Action):
             return True
         text = pytesseract.image_to_string(img, lang='eng', config='--oem 3 --psm 6 -c tessedit_char_blacklist=|')
         text = text.replace("\n", "")
-
+        print(text)
         if(self.description == "Q"):
             GlobalVars().Q=text.replace(",","").replace("\"","")
-            os.system('cls')
         if(self.description == "A"):
             GlobalVars().A=text.replace(",","").replace("\"","")
         if(self.description == "B"):

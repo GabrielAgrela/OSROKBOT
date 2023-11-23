@@ -60,7 +60,7 @@ class ChatGPTAction(Action):
         print("\n\n")
         self.messages.append({"role": "user", "content": (self.message)},)
         chat = openai.ChatCompletion.create(
-            model="gpt-4",
+            model="gpt-4-1106-preview",
             temperature=.1,
             messages=self.messages,
             functions=self.functions,

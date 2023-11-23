@@ -7,7 +7,7 @@ import pygetwindow as gw
 from PyQt5.QtCore import pyqtSignal
 
 class OSROKBOT:
-    def __init__(self, window_title, delay=0):
+    def __init__(self, window_title, delay=1):
         
         self.window_title = window_title
         self.delay = delay
