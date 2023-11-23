@@ -56,6 +56,7 @@ Replace the placeholders with your actual values.
 ### Usage
 
 You can create new state machines or actions using the existing framework. Feel free to screenshot your images for new state machines or different actions.
+Remember to run the script as administrator.
 
 ## Development
 
