@@ -48,7 +48,7 @@ Create a `.env` file in the project root directory with the following content:
 OPENAI_KEY=your_openai_key
 TESSERACT_PATH=your_tesseract_path
 EMAIL=your_email
-ANTIALIAS_METHOD=ANTIALIAS
+ANTIALIAS_METHOD=LANCZOS
 ```
 
 Replace the placeholders with your actual values.
@@ -56,6 +56,7 @@ Replace the placeholders with your actual values.
 ### Usage
 
 You can create new state machines or actions using the existing framework. Feel free to screenshot your images for new state machines or different actions.
+Remember to run the script as administrator.
 
 ## Development
 

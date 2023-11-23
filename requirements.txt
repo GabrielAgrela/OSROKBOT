@@ -13,3 +13,4 @@ dotenv
 pytesseract
 openai
 keyboard
+scikit-learn
