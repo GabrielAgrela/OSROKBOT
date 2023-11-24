@@ -59,7 +59,7 @@ class ChatGPTAction(Action):
         self.message = "Question:" +  GlobalVars().Q + "\n" + "A:" + GlobalVars().A + "\n" + "B:" + GlobalVars().B + "\n" + "C:" + GlobalVars().C + "\n" + "D:" + GlobalVars().D
         print("\n\n")
         self.messages.append({"role": "user", "content": (self.message)},)
-        chat = openai.ChatCompletion.create(
+        chat = openai.chat.completions.create(
             model="gpt-4-1106-preview",
             temperature=.1,
             messages=self.messages,
@@ -67,46 +67,43 @@ class ChatGPTAction(Action):
             function_call={"name": "return_option_based_on_prompt"}
         )
 
-        response_message = chat.choices[0].message
+        print(chat.choices[0].message.function_call.arguments)
         
-       
-            
-        if response_message.get("function_call"):
-            function_arguments = json.loads(response_message["function_call"]["arguments"])
-            function_response = function_arguments["answer"]
+        function_arguments = json.loads(chat.choices[0].message.function_call.arguments)
+        function_response = function_arguments["answer"]
 
-            print("\n\n I think it's " , colored(function_response,"red"))
+        print("\n\n I think it's " , colored(function_response,"red"))
 
-            self.messages.clear()
-            self.messages = [{"role": "system", "content": "You are a quizz assistant in the game Rise of Kingdoms."}]
+        self.messages.clear()
+        self.messages = [{"role": "system", "content": "You are a quizz assistant in the game Rise of Kingdoms."}]
 
-            # Switch case for reply A, B, C, D, or E
-            if not self.midterm:
-                if function_response == "A":
-                    ManualClickAction(40,48).execute()
-                elif function_response == "B":
-                    ManualClickAction(60,50).execute()
-                elif function_response == "C":
-                    ManualClickAction(40,58).execute()
-                elif function_response == "D":
-                    ManualClickAction(60,58).execute()
-                else:
-                    print("")
-                self.checkCorrect()
-                
+        # Switch case for reply A, B, C, D, or E
+        if not self.midterm:
+            if function_response == "A":
+                ManualClickAction(40,48).execute()
+            elif function_response == "B":
+                ManualClickAction(60,50).execute()
+            elif function_response == "C":
+                ManualClickAction(40,58).execute()
+            elif function_response == "D":
+                ManualClickAction(60,58).execute()
             else:
-                if function_response == "A":
-                    ManualMoveAction(37,55).execute()
-                    print("------A---")
-                elif function_response == "B":
-                    ManualMoveAction(60,55).execute()
-                    print("------B---")
-                elif function_response == "C":
-                    ManualMoveAction(37,63).execute()
-                    print("------C---")
-                elif function_response == "D":
-                    ManualMoveAction(60,63).execute()
-                    print("------D---")
+                print("")
+            self.checkCorrect()
+            
+        else:
+            if function_response == "A":
+                ManualMoveAction(37,55).execute()
+                print("------A---")
+            elif function_response == "B":
+                ManualMoveAction(60,55).execute()
+                print("------B---")
+            elif function_response == "C":
+                ManualMoveAction(37,63).execute()
+                print("------C---")
+            elif function_response == "D":
+                ManualMoveAction(60,63).execute()
+                print("------D---")
                     
 
         
