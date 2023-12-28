@@ -32,6 +32,8 @@ This bot is not intended for mainstream users as it requires setup and likely so
 
 ## Getting Started
 
+### [Quick tutorial for starting programmers](https://youtu.be/xBQC3M0O-B8)
+
 ### Prerequisites
 
 - **Tesseract:** OSROKBOT requires [Tesseract binaries.](https://github.com/UB-Mannheim/tesseract/wiki) You must install them on your system.
