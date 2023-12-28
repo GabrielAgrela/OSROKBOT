@@ -34,7 +34,7 @@ This bot is not intended for mainstream users as it requires setup and likely so
 
 ### Prerequisites
 
-- **Tesseract:** OSROKBOT requires ![Tesseract binaries.]([Media/Readme/farmrss.gif](https://github.com/UB-Mannheim/tesseract/wiki)) You must install them on your system.
+- **Tesseract:** OSROKBOT requires [Tesseract binaries.](https://github.com/UB-Mannheim/tesseract/wiki) You must install them on your system.
 - **Env:** Install Python
 - **Python Libraries:** Install the required Python libraries by running (after running there may be errors related to other non installed libs, just install them for now):
 
